@@ -1,0 +1,82 @@
+{
+  "users": [],
+  "vehicles": [
+    {
+      "Id": "veh-1",
+      "Make": "Toyota",
+      "Model": "Corolla",
+      "Class": "C",
+      "PricePerDay": 1000
+    },
+    {
+      "Id": "veh-2",
+      "Make": "Skoda",
+      "Model": "Octavia",
+      "Class": "C",
+      "PricePerDay": 1500
+    },
+    {
+      "Id": "veh-3",
+      "Make": "BMW",
+      "Model": "X3",
+      "Class": "SUV",
+      "PricePerDay": 2000
+    }
+  ],
+  "orders": [
+    {
+      "Id": "2c645fb9-44c4-4dba-a1de-b762067e1696",
+      "MerchantOrderId": "ORD-eb86add8-df4a-452a-9099-e1291a5f6cb6",
+      "UserId": "demo-user",
+      "Amount": 1,
+      "Currency": "EUR",
+      "Status": "CREATED",
+      "Items": [
+        {
+          "ItemId": null,
+          "Name": "Toyota Corolla",
+          "Price": 1000,
+          "Quantity": 1
+        }
+      ],
+      "CreatedAt": "2025-12-30T17:31:32.7648686Z"
+    },
+    {
+      "Id": "1b995e9f-5daa-4de1-af44-2152c1cf6aac",
+      "MerchantOrderId": "ORD-a06fef0d-6be9-4c0b-b84a-5d373f485158",
+      "UserId": "demo-user",
+      "Amount": 0,
+      "Currency": "EUR",
+      "Status": "CREATED",
+      "Items": [
+        {
+          "ItemId": null,
+          "Name": "Toyota Corolla",
+          "Price": 1000,
+          "Quantity": 1
+        }
+      ],
+      "CreatedAt": "2025-12-30T17:33:48.842527Z"
+    }
+  ],
+  "payments": [
+    {
+      "Id": "37370174-f82b-41e7-aaa5-52a794bc2db5",
+      "OrderId": "2c645fb9-44c4-4dba-a1de-b762067e1696",
+      "PspPaymentId": "PAY-0ee9e92b-ca20-43b0-8f45-b5ae92f4f9ed",
+      "PaymentUrl": "http://localhost:5000/psp/mock-pay?payment_id=PAY-0ee9e92b-ca20-43b0-8f45-b5ae92f4f9ed",
+      "Stan": "68117483",
+      "Status": "INIT",
+      "CreatedAt": "2025-12-30T17:31:32.7770136Z"
+    },
+    {
+      "Id": "3c4951ec-c084-4e18-882e-52908ecdcac9",
+      "OrderId": "1b995e9f-5daa-4de1-af44-2152c1cf6aac",
+      "PspPaymentId": "PAY-82644863-61c7-401a-8e3f-6c29881fc64b",
+      "PaymentUrl": "http://localhost:5000/psp/mock-pay?payment_id=PAY-82644863-61c7-401a-8e3f-6c29881fc64b",
+      "Stan": "85327472",
+      "Status": "INIT",
+      "CreatedAt": "2025-12-30T17:33:48.8611963Z"
+    }
+  ]
+}

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import API from "../api";
 import { useNavigate } from "react-router-dom";
-import QRCode from "react-qr-code";
+import API from "../api";
 
 export default function Checkout() {
   const [method, setMethod] = useState("card"); // card | qr
-  const [merchantId, setMerchantId] = useState("SHOP-123"); // example
+  const [merchantId, setMerchantId] = useState("SHOP-123");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -30,12 +29,13 @@ export default function Checkout() {
         ERROR_URL: `${window.location.origin}/failed`,
         method, // card | qr
       };
+
       const resp = await API.post("/payments/init", payload);
       const data = resp.data;
+
       if (method === "card") {
-        if (!data?.paymentUrl) {
+        if (!data?.paymentUrl)
           throw new Error("Nedostaje paymentUrl od servera");
-        }
         window.location.href = data.paymentUrl;
       } else {
         sessionStorage.setItem("qrData", JSON.stringify(data));
@@ -52,7 +52,7 @@ export default function Checkout() {
   return (
     <main className="max-w-4xl mx-auto p-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 card">
+        <div className="md:col-span-2 card p-6 bg-white rounded-2xl shadow-sm">
           <h2 className="text-xl font-semibold mb-4">Checkout</h2>
 
           <div className="mb-4">
@@ -73,17 +73,16 @@ export default function Checkout() {
             </div>
           </div>
 
-          <div className="mb-4">
-            <label className="inline-flex items-center gap-2 mr-4">
+          <div className="mb-4 flex gap-4">
+            <label className="inline-flex items-center gap-2">
               <input
                 type="radio"
                 name="method"
                 checked={method === "card"}
                 onChange={() => setMethod("card")}
               />
-              <span className="ml-2">Kartica</span>
+              <span>Kartica</span>
             </label>
-
             <label className="inline-flex items-center gap-2">
               <input
                 type="radio"
@@ -91,7 +90,7 @@ export default function Checkout() {
                 checked={method === "qr"}
                 onChange={() => setMethod("qr")}
               />
-              <span className="ml-2">QR kod</span>
+              <span>QR kod</span>
             </label>
           </div>
 
@@ -115,7 +114,7 @@ export default function Checkout() {
           </div>
         </div>
 
-        <aside className="card">
+        <aside className="card p-6 bg-white rounded-2xl shadow-sm">
           <h3 className="font-semibold mb-3">Pregled korpe</h3>
           <ul className="space-y-3">
             {cart.map((c, i) => (
@@ -127,7 +126,7 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div className="font-semibold">
-                  {(c.price * (c.days || 1)).toFixed(2)}€
+                  {(c.price * (c.days || 1)).toFixed(2)} €
                 </div>
               </li>
             ))}

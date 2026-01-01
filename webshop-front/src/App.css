@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-title {
+  @apply text-2xl md:text-3xl font-bold mb-2;
+}
+
+.page-sub {
+  @apply text-sm text-gray-600 mb-4;
+}
+
+/* Breadcrumb / small meta */
+.breadcrumb {
+  @apply text-sm text-gray-500 inline-flex gap-2 items-center mb-3;
+}
+
+/* small responsive adjustment for cards */
+@media (min-width: 1024px) {
+  .search-bar .search-container {
+    @apply p-5 gap-4;
+  }
+  .result-media {
+    @apply w-36 h-24;
+  }
+}

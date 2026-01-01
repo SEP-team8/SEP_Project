@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Success() {
   return (
     <main className="max-w-4xl mx-auto p-8">
-      <div className="card text-center py-12">
+      <div className="card text-center py-12 bg-white rounded-2xl shadow-sm">
         <div className="text-4xl font-bold text-emerald-600 mb-4">
           Plaćanje uspešno
         </div>

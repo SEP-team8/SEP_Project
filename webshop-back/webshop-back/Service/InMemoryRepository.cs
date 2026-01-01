@@ -9,9 +9,35 @@ namespace webshop_back.Service
 
         public InMemoryRepository()
         {
-            _vehicles.Add(new Vehicle { Id = 1, Make = "Toyota", Model = "Corolla", Description = "Compact", Price = 35 });
-            _vehicles.Add(new Vehicle { Id = 2, Make = "Skoda", Model = "Octavia", Description = "Family", Price = 45 });
-            _vehicles.Add(new Vehicle { Id = 3, Make = "BMW", Model = "3 Series", Description = "Premium", Price = 80 });
+            _vehicles.Add(new Vehicle
+            {
+                Id = 1,
+                Make = "Toyota",
+                Model = "Corolla",
+                Description = "Compact",
+                Price = 35,
+                Image = "../images/toyota-corolla-hybrid.jpg"
+            });
+
+            _vehicles.Add(new Vehicle
+            {
+                Id = 2,
+                Make = "Skoda",
+                Model = "Octavia",
+                Description = "Family",
+                Price = 45,
+                Image = "../images/2024-Skoda-Octavia-RS.jpg"
+            });
+
+            _vehicles.Add(new Vehicle
+            {
+                Id = 3,
+                Make = "BMW",
+                Model = "3 Series",
+                Description = "Premium",
+                Price = 80,
+                Image = "../images/2023_bmw_3-series_sedan_m340i.jpg"
+            });
         }
 
         public IEnumerable<Vehicle> GetVehicles() => _vehicles;

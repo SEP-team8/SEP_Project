@@ -17,7 +17,7 @@ export default function Register() {
     setError("");
     setSuccess("");
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirm) {
       setError("Popunite sva obavezna polja.");
       return;
     }
@@ -56,7 +56,7 @@ export default function Register() {
 
   return (
     <main className="max-w-md mx-auto p-8">
-      <div className="card">
+      <div className="card p-6 bg-white rounded-2xl shadow-sm">
         <h2 className="text-2xl font-semibold mb-4">Registracija</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>

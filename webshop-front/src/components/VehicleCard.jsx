@@ -6,7 +6,7 @@ export default function VehicleCard({ v }) {
       <div className="h-44 md:h-48 bg-gray-100">
         <img
           src={v.image || "/placeholder.png"}
-          alt={v.model}
+          alt={`${v.make} ${v.model}`}
           className="w-full h-full object-cover"
         />
       </div>
@@ -41,9 +41,7 @@ export default function VehicleCard({ v }) {
               const cart = JSON.parse(localStorage.getItem("cart") || "[]");
               cart.push({ vehicleId: v.id, price: v.price, days: 1 });
               localStorage.setItem("cart", JSON.stringify(cart));
-              // optional: small UX hint
-              const evt = new CustomEvent("cartUpdated");
-              window.dispatchEvent(evt);
+              window.dispatchEvent(new CustomEvent("cartUpdated"));
             }}
           >
             Dodaj u korpu

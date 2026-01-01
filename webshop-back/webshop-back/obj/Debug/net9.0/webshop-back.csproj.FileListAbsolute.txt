@@ -36,3 +36,4 @@ D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\refint\web
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.pdb
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.genruntimeconfig.cache
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\ref\webshop-back.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-back.staticwebassets.runtime.json

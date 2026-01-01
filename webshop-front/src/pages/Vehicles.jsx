@@ -46,7 +46,9 @@ export default function Vehicles() {
       </div>
 
       {loading ? (
-        <div className="card">Učitavanje...</div>
+        <div className="card p-6 bg-white rounded-2xl shadow-sm">
+          Učitavanje...
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((v) => (
@@ -56,7 +58,9 @@ export default function Vehicles() {
       )}
 
       {!loading && filtered.length === 0 && (
-        <div className="card mt-6 text-gray-600">Nema vozila za prikaz.</div>
+        <div className="card mt-6 p-6 text-center bg-white rounded-2xl shadow-sm text-gray-600">
+          Nema vozila za prikaz.
+        </div>
       )}
     </main>
   );

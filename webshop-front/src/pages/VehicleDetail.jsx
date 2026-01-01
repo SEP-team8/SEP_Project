@@ -16,9 +16,7 @@ export default function VehicleDetail() {
       .then((r) => {
         if (mounted) setV(r.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch((err) => console.error(err))
       .finally(() => {
         if (mounted) setLoading(false);
       });
@@ -38,30 +36,28 @@ export default function VehicleDetail() {
     navigate("/cart");
   }
 
-  if (loading) {
+  if (loading)
     return (
       <main className="max-w-4xl mx-auto p-8">
-        <div className="card">
+        <div className="card p-6 bg-white rounded-2xl shadow-sm">
           <div className="text-gray-600">Učitavanje vozila...</div>
         </div>
       </main>
     );
-  }
 
-  if (!v) {
+  if (!v)
     return (
       <main className="max-w-4xl mx-auto p-8">
-        <div className="card text-center">
+        <div className="card p-6 text-center bg-white rounded-2xl shadow-sm">
           <div className="text-gray-600">Vozilo nije pronađeno.</div>
         </div>
       </main>
     );
-  }
 
   return (
     <main className="max-w-4xl mx-auto p-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 card">
+        <div className="md:col-span-2 card bg-white rounded-2xl shadow-sm p-4">
           <img
             src={v.image || "/placeholder.png"}
             alt={`${v.make} ${v.model}`}
@@ -75,7 +71,7 @@ export default function VehicleDetail() {
           </div>
         </div>
 
-        <aside className="card flex flex-col gap-4">
+        <aside className="card bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-4">
           <div>
             <div className="text-sm text-gray-500">Cena</div>
             <div className="text-2xl font-bold text-sky-700">
@@ -96,14 +92,14 @@ export default function VehicleDetail() {
 
           <button
             onClick={addToCart}
-            className="w-full inline-flex justify-center px-4 py-2 bg-sky-700 text-white rounded-lg"
+            className="w-full inline-flex justify-center px-4 py-2 bg-sky-700 text-white rounded-lg hover:bg-sky-600"
           >
             Rezerviši i dodaj u korpu
           </button>
 
           <button
             onClick={() => navigate(-1)}
-            className="w-full inline-flex justify-center px-4 py-2 border rounded-lg"
+            className="w-full inline-flex justify-center px-4 py-2 border rounded-lg hover:bg-gray-50"
           >
             Nazad
           </button>

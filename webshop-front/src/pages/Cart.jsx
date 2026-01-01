@@ -8,9 +8,8 @@ export default function Cart() {
   );
 
   useEffect(() => {
-    function onUpdate() {
+    const onUpdate = () =>
       setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
-    }
     window.addEventListener("cartUpdated", onUpdate);
     return () => window.removeEventListener("cartUpdated", onUpdate);
   }, []);
@@ -28,7 +27,6 @@ export default function Cart() {
   return (
     <main className="max-w-4xl mx-auto p-8">
       <h2 className="text-2xl font-semibold mb-4">Korpa</h2>
-
       {cart.length === 0 ? (
         <div className="card text-center py-12">
           <p className="text-gray-600">Korpa je prazna</p>
@@ -53,7 +51,6 @@ export default function Cart() {
                       {c.days || 1} dan(a)
                     </div>
                   </div>
-
                   <div className="flex items-center gap-4">
                     <div className="font-semibold">
                       {(c.price * (c.days || 1)).toFixed(2)} €
@@ -68,7 +65,6 @@ export default function Cart() {
                 </li>
               ))}
             </ul>
-
             <div className="mt-6 flex justify-between items-center">
               <div className="text-sm text-gray-600">
                 Ukupno artikala: {cart.length}
@@ -76,14 +72,12 @@ export default function Cart() {
               <div className="text-lg font-bold">{total.toFixed(2)} €</div>
             </div>
           </div>
-
           <aside className="card">
             <h3 className="font-semibold mb-3">Sažetak</h3>
             <div className="text-sm text-gray-600">Ukupan iznos:</div>
             <div className="text-2xl font-bold text-sky-700 mt-2">
               {total.toFixed(2)} €
             </div>
-
             <button
               onClick={() => navigate("/checkout")}
               className="mt-6 w-full inline-flex justify-center px-4 py-2 bg-sky-700 text-white rounded-lg"

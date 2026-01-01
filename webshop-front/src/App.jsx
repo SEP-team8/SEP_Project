@@ -15,7 +15,7 @@ export default function App() {
   return (
     <>
       <NavBar />
-      <main>
+      <main className="bg-gray-50 min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/vehicles" element={<Vehicles />} />

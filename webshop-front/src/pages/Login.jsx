@@ -1,6 +1,6 @@
 import { useState } from "react";
-import API from "../api";
 import { useNavigate } from "react-router-dom";
+import API from "../api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -31,10 +31,8 @@ export default function Login() {
       if (user) localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
     } catch (err) {
-      console.error(err);
       const msg =
         err?.response?.data?.message ||
-        err?.response?.data ||
         "Prijava nije uspela. Proverite podatke.";
       setError(String(msg));
     } finally {
@@ -44,7 +42,7 @@ export default function Login() {
 
   return (
     <main className="max-w-md mx-auto p-8">
-      <div className="card">
+      <div className="card p-6 bg-white rounded-2xl shadow-sm">
         <h2 className="text-2xl font-semibold mb-4">Prijava</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>

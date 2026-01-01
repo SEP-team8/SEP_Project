@@ -1,7 +1,5 @@
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\appsettings.Development.json
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\appsettings.json
-D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\data.Development.json
-D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\data.json
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-back.staticwebassets.endpoints.json
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-back.exe
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-back.deps.json
@@ -10,6 +8,10 @@ D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-ba
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\webshop-back.pdb
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\Microsoft.OpenApi.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\QRCoder.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.csproj.AssemblyReference.cache
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\rpswa.dswa.cache.json
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.GeneratedMSBuildEditorConfig.editorconfig

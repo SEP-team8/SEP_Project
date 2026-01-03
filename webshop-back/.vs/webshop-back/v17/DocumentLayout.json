@@ -165,6 +165,14 @@
           "SelectedChildIndex": 4,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Vehicle.cs",
@@ -174,16 +182,7 @@
               "RelativeToolTip": "webshop-back\\Data\\Models\\Vehicle.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T12:20:19.051Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+              "WhenOpened": "2026-01-01T12:20:19.051Z"
             },
             {
               "$type": "Document",
@@ -195,8 +194,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\User\\UserDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-03T12:18:55.461Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-03T12:18:55.461Z"
             },
             {
               "$type": "Document",
@@ -206,7 +204,7 @@
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\UsersController.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
               "RelativeToolTip": "webshop-back\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAADwv1MAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAADwvyIAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-03T10:01:47.982Z",
               "EditorCaption": ""
@@ -221,8 +219,7 @@
               "RelativeToolTip": "webshop-back\\Data\\Mappings\\MapperExtensions.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAcwA4AAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T11:14:24.952Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T11:14:24.952Z"
             },
             {
               "$type": "Document",
@@ -234,8 +231,7 @@
               "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T12:43:26.556Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-01T12:43:26.556Z"
             },
             {
               "$type": "Document",
@@ -247,8 +243,7 @@
               "RelativeToolTip": "webshop-back\\Service\\EfRepository.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAA6wEsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T11:28:10.52Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T11:28:10.52Z"
             },
             {
               "$type": "Document",
@@ -260,8 +255,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\VehicleDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T11:12:55.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T11:12:55.811Z"
             },
             {
               "$type": "Document",
@@ -273,8 +267,7 @@
               "RelativeToolTip": "webshop-back\\Data\\Mappings\\MappingProfile.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAowBMAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T11:13:37.355Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T11:13:37.355Z"
             },
             {
               "$type": "Document",
@@ -286,8 +279,7 @@
               "RelativeToolTip": "webshop-back\\Controllers\\VehiclesController.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAwwAwAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T12:50:31.766Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-01T12:50:31.766Z"
             },
             {
               "$type": "Document",
@@ -299,8 +291,7 @@
               "RelativeToolTip": "webshop-back\\Data\\Models\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T12:40:28.118Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-01T12:40:28.118Z"
             },
             {
               "$type": "Document",
@@ -312,8 +303,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\User\\ChangePasswordRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-03T09:59:06.401Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-03T09:59:06.401Z"
             },
             {
               "$type": "Document",
@@ -325,8 +315,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\User\\UpdateUserRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-03T09:58:21.647Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-03T09:58:21.647Z"
             },
             {
               "$type": "Document",
@@ -338,8 +327,7 @@
               "RelativeToolTip": "webshop-back\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T12:38:21.779Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-01T12:38:21.779Z"
             },
             {
               "$type": "Document",
@@ -351,8 +339,7 @@
               "RelativeToolTip": "webshop-back\\Service\\AuthService.cs",
               "ViewState": "AgIAADYAAAAAAAAAAAAwwEcAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T22:26:47.791Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-01T22:26:47.791Z"
             },
             {
               "$type": "Document",
@@ -364,8 +351,7 @@
               "RelativeToolTip": "webshop-back\\Helpers\\TokenProvider.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAzwCcAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T10:02:03.121Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T10:02:03.121Z"
             },
             {
               "$type": "Document",
@@ -377,8 +363,7 @@
               "RelativeToolTip": "webshop-back\\Service\\ProfileService.cs",
               "ViewState": "AgIAAD0AAAAAAAAAAAAqwFwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-03T10:00:00.158Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-03T10:00:00.158Z"
             },
             {
               "$type": "Document",
@@ -390,8 +375,7 @@
               "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IProfileService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-03T09:59:39.722Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-03T09:59:39.722Z"
             },
             {
               "$type": "Document",
@@ -403,8 +387,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\Auth\\RegisterUserRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T09:49:15.198Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T09:49:15.198Z"
             },
             {
               "$type": "Document",
@@ -416,8 +399,7 @@
               "RelativeToolTip": "webshop-back\\Data\\AppDbContext.cs",
               "ViewState": "AgIAAEsAAAAAAAAAAAAuwGsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T10:39:43.047Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T10:39:43.047Z"
             },
             {
               "$type": "Document",
@@ -429,8 +411,7 @@
               "RelativeToolTip": "webshop-back\\Data\\Models\\UserRole.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T09:51:37.667Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T09:51:37.667Z"
             },
             {
               "$type": "Document",
@@ -442,8 +423,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\Auth\\ResponseStatus.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAA+wA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T10:22:24.376Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T10:22:24.376Z"
             },
             {
               "$type": "Document",
@@ -455,8 +435,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\Auth\\ResponsePayload.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T10:21:45.243Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T10:21:45.243Z"
             },
             {
               "$type": "Document",
@@ -468,8 +447,7 @@
               "RelativeToolTip": "webshop-back\\DTOs\\Auth\\AuthResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T10:13:58.842Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T10:13:58.842Z"
             },
             {
               "$type": "Document",
@@ -481,8 +459,7 @@
               "RelativeToolTip": "webshop-back\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAA6wCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-02T11:57:31.911Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-02T11:57:31.911Z"
             },
             {
               "$type": "Document",

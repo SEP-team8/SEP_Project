@@ -33,11 +33,11 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
             <h1 className="text-3xl font-extrabold">
-              Iznajmi automobil brzo i sigurno
+              Rent a car quickly and safely
             </h1>
             <p className="text-gray-600 mt-2 max-w-xl">
-              Najbolje cene, transparentni uslovi i instant rezervacije. Izaberi
-              auto, rezerviši i plati online.
+              The best prices, transparent terms and instant bookings. Choose
+              car, book and pay online.
             </p>
           </div>
           <div className="w-full md:w-1/2">
@@ -47,7 +47,7 @@ export default function Home() {
             >
               <input
                 className="flex-1 bg-transparent outline-none px-3 py-2"
-                placeholder="Pretraži po marki, modelu, gradu..."
+                placeholder="Search by make, model, city..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -55,7 +55,7 @@ export default function Home() {
                 type="submit"
                 className="btn bg-sky-700 text-white px-4 py-2 rounded-lg"
               >
-                Pretraži
+                Search
               </button>
             </form>
           </div>
@@ -65,9 +65,9 @@ export default function Home() {
       {/* Featured Vehicles */}
       <section className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Istaknuta vozila</h2>
+          <h2 className="text-xl font-semibold">Featured vehicles</h2>
           <Link to="/vehicles" className="text-sky-700">
-            Prikaži sva
+            Show all
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -80,19 +80,19 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="mt-8">
         <div className="card p-6 bg-white rounded-2xl shadow-sm">
-          <h3 className="text-lg font-semibold">Zašto izabrati nas</h3>
+          <h3 className="text-lg font-semibold">Why choose us?</h3>
           <ul className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-600">
             <li>
-              <strong>24/7 podrška</strong>
-              <div className="text-xs">Kontakt uvek dostupan</div>
+              <strong>24/7 support</strong>
+              <div className="text-xs">Contact always available</div>
             </li>
             <li>
-              <strong>Bez skrivenih troškova</strong>
-              <div className="text-xs">Transparentni uslovi</div>
+              <strong>No hidden costs</strong>
+              <div className="text-xs">Transparent conditions</div>
             </li>
             <li>
-              <strong>Brza rezervacija</strong>
-              <div className="text-xs">Rezerviši u par klikova</div>
+              <strong>Quick booking</strong>
+              <div className="text-xs">Book in a few clicks</div>
             </li>
           </ul>
         </div>
@@ -101,9 +101,9 @@ export default function Home() {
       {/* Quick List */}
       <section className="mt-8">
         <div className="card p-6 bg-white rounded-2xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-3">Brza lista</h3>
+          <h3 className="text-lg font-semibold mb-3">Quick list</h3>
           {filtered.length === 0 ? (
-            <p className="text-gray-600">Nema vozila za prikaz.</p>
+            <p className="text-gray-600">There are no vehicles to display.</p>
           ) : (
             <ul className="grid gap-3">
               {filtered.slice(0, 8).map((v) => (
@@ -116,7 +116,7 @@ export default function Home() {
                       {v.make} {v.model}
                     </span>
                     <span className="text-sky-700 font-semibold">
-                      {v.price} €/dan
+                      {v.price} €/day
                     </span>
                   </Link>
                 </li>

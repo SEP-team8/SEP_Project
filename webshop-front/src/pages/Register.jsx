@@ -18,15 +18,15 @@ export default function Register() {
     setSuccess("");
 
     if (!name || !email || !password) {
-      setError("Popunite sva obavezna polja.");
+      setError("Fill in all required fields..");
       return;
     }
     if (password !== confirm) {
-      setError("Lozinke se ne poklapaju.");
+      setError("The passwords don't match.");
       return;
     }
     if (password.length < 6) {
-      setError("Lozinka mora imati najmanje 6 karaktera.");
+      setError("Password must have at least 6 characters.");
       return;
     }
 
@@ -34,8 +34,8 @@ export default function Register() {
     try {
       const resp = await API.post("/auth/register", { name, email, password });
       // očekujemo { token, user } ili wrapper
-      const token = resp?.data?.token || resp?.data?.data?.token;
-      const user = resp?.data?.user || resp?.data?.data?.user;
+      const token = resp?.data?.token;
+      const user = resp?.data?.user;
 
       if (token) {
         sessionStorage.setItem("token", token);
@@ -47,14 +47,14 @@ export default function Register() {
         return;
       }
 
-      setSuccess("Registracija uspela. Možete se prijaviti.");
+      setSuccess("Registration successful. You can apply.");
       setTimeout(() => navigate("/login"), 1200);
     } catch (err) {
       console.error(err);
       const msg =
         err?.response?.data?.message ||
         err?.response?.data ||
-        "Registracija neuspešna.";
+        "Registration failed.";
       setError(String(msg));
     } finally {
       setLoading(false);
@@ -64,10 +64,10 @@ export default function Register() {
   return (
     <main className="max-w-md mx-auto p-8">
       <div className="card">
-        <h2 className="text-2xl font-semibold mb-4">Registracija</h2>
+        <h2 className="text-2xl font-semibold mb-4">Registration</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="text-sm text-gray-700">Ime i prezime</label>
+            <label className="text-sm text-gray-700">First and last name</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -88,7 +88,7 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-700">Lozinka</label>
+            <label className="text-sm text-gray-700">Password</label>
             <input
               type="password"
               value={password}
@@ -99,7 +99,7 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-700">Ponovite lozinku</label>
+            <label className="text-sm text-gray-700">Repeat password</label>
             <input
               type="password"
               value={confirm}
@@ -120,7 +120,7 @@ export default function Register() {
                 loading ? "bg-sky-300" : "bg-sky-700 hover:bg-sky-600"
               }`}
             >
-              {loading ? "Registrujem..." : "Registruj se"}
+              {loading ? "Registering..." : "Register"}
             </button>
 
             <button
@@ -129,7 +129,7 @@ export default function Register() {
               disabled={loading}
               className="inline-flex items-center px-4 py-2 rounded-lg border"
             >
-              Prijava
+              Login
             </button>
           </div>
         </form>

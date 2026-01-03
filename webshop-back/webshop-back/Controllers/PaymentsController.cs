@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using webshop_back.Models;
+using webshop_back.Data.Models;
 using webshop_back.Service;
+using webshop_back.Service.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]

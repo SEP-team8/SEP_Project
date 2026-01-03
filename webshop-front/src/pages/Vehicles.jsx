@@ -32,14 +32,14 @@ export default function Vehicles() {
   });
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold">Vozila</h2>
+        <h2 className="text-2xl font-semibold">Vehicles</h2>
         <div className="w-80">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Pretraži..."
+            placeholder="Search..."
             className="w-full p-2 border rounded-md"
           />
         </div>
@@ -47,7 +47,7 @@ export default function Vehicles() {
 
       {loading ? (
         <div className="card p-6 bg-white rounded-2xl shadow-sm">
-          Učitavanje...
+          Loading...
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -59,7 +59,7 @@ export default function Vehicles() {
 
       {!loading && filtered.length === 0 && (
         <div className="card mt-6 p-6 text-center bg-white rounded-2xl shadow-sm text-gray-600">
-          Nema vozila za prikaz.
+          No vehicles to display.
         </div>
       )}
     </main>

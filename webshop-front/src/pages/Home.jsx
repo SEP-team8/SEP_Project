@@ -15,7 +15,7 @@ export default function Home() {
     return () => (mounted = false);
   }, []);
 
-  const featured = vehicles.slice(0, 4);
+  const featured = vehicles.slice(0, 3);
   const filtered = vehicles.filter((v) => {
     if (!query) return true;
     const q = query.toLowerCase();
@@ -27,7 +27,7 @@ export default function Home() {
   });
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Hero Section */}
       <section className="bg-white rounded-2xl p-8 mb-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -70,7 +70,7 @@ export default function Home() {
             Prikaži sva
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((v) => (
             <VehicleCard key={v.id} v={v} />
           ))}

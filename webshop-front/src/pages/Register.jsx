@@ -17,7 +17,7 @@ export default function Register() {
     setError("");
     setSuccess("");
 
-    if (!name || !email || !password || !confirm) {
+    if (!name || !email || !password) {
       setError("Popunite sva obavezna polja.");
       return;
     }
@@ -33,13 +33,20 @@ export default function Register() {
     setLoading(true);
     try {
       const resp = await API.post("/auth/register", { name, email, password });
-      if (resp.data?.token) {
-        localStorage.setItem("token", resp.data.token);
-        if (resp.data.user)
-          localStorage.setItem("user", JSON.stringify(resp.data.user));
+      // očekujemo { token, user } ili wrapper
+      const token = resp?.data?.token || resp?.data?.data?.token;
+      const user = resp?.data?.user || resp?.data?.data?.user;
+
+      if (token) {
+        sessionStorage.setItem("token", token);
+        if (user) sessionStorage.setItem("user", JSON.stringify(user));
+        window.dispatchEvent(
+          new CustomEvent("authChanged", { detail: { user } })
+        );
         navigate("/");
         return;
       }
+
       setSuccess("Registracija uspela. Možete se prijaviti.");
       setTimeout(() => navigate("/login"), 1200);
     } catch (err) {
@@ -56,7 +63,7 @@ export default function Register() {
 
   return (
     <main className="max-w-md mx-auto p-8">
-      <div className="card p-6 bg-white rounded-2xl shadow-sm">
+      <div className="card">
         <h2 className="text-2xl font-semibold mb-4">Registracija</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>

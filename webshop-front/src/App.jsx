@@ -10,6 +10,9 @@ import Failed from "./pages/Failed";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NavBar from "./components/NavBar";
+import Profile from "./pages/Profile";
+import AdminVehicles from "./pages/AdminVehicles";
+import AddUpdateVehicle from "./pages/AddUpdateVehicle";
 
 export default function App() {
   return (
@@ -27,6 +30,9 @@ export default function App() {
           <Route path="/failed" element={<Failed />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/admin/vehicles" element={<AdminVehicles />} />
+          <Route path="/admin/vehicle/:id?" element={<AddUpdateVehicle />} />
         </Routes>
       </main>
     </>

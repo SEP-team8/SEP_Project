@@ -21,18 +21,27 @@ export default function Login() {
     setLoading(true);
     try {
       const resp = await API.post("/auth/login", { email, password });
-      const { token, user } = resp.data || {};
+      // prilagodi u zavisnosti od response shape; ovde očekujemo { token, user }
+      const token = resp?.data?.token || resp?.data?.data?.token;
+      const user = resp?.data?.user || resp?.data?.data?.user;
+
       if (!token) {
         setError("Neispravan odgovor servera - nedostaje token.");
         setLoading(false);
         return;
       }
-      localStorage.setItem("token", token);
-      if (user) localStorage.setItem("user", JSON.stringify(user));
+
+      sessionStorage.setItem("token", token);
+      if (user) sessionStorage.setItem("user", JSON.stringify(user));
+      window.dispatchEvent(
+        new CustomEvent("authChanged", { detail: { user } })
+      );
       navigate("/");
     } catch (err) {
+      console.error(err);
       const msg =
         err?.response?.data?.message ||
+        err?.response?.data ||
         "Prijava nije uspela. Proverite podatke.";
       setError(String(msg));
     } finally {
@@ -42,7 +51,7 @@ export default function Login() {
 
   return (
     <main className="max-w-md mx-auto p-8">
-      <div className="card p-6 bg-white rounded-2xl shadow-sm">
+      <div className="card">
         <h2 className="text-2xl font-semibold mb-4">Prijava</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>

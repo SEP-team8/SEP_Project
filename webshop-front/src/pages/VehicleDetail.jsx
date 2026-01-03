@@ -25,13 +25,13 @@ export default function VehicleDetail() {
 
   function addToCart() {
     if (!v) return;
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
     cart.push({
       vehicleId: v.id,
       price: v.price,
       days: Math.max(1, Number(days)),
     });
-    localStorage.setItem("cart", JSON.stringify(cart));
+    sessionStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(new CustomEvent("cartUpdated"));
     navigate("/cart");
   }
@@ -40,7 +40,7 @@ export default function VehicleDetail() {
     return (
       <main className="max-w-4xl mx-auto p-8">
         <div className="card p-6 bg-white rounded-2xl shadow-sm">
-          <div className="text-gray-600">Učitavanje vozila...</div>
+          <div className="text-gray-600">Loading...</div>
         </div>
       </main>
     );
@@ -49,19 +49,21 @@ export default function VehicleDetail() {
     return (
       <main className="max-w-4xl mx-auto p-8">
         <div className="card p-6 text-center bg-white rounded-2xl shadow-sm">
-          <div className="text-gray-600">Vozilo nije pronađeno.</div>
+          <div className="text-gray-600">Vehicle not found.</div>
         </div>
       </main>
     );
 
   return (
-    <main className="max-w-4xl mx-auto p-8">
+    <main className="max-w-5xl mx-auto p-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 card bg-white rounded-2xl shadow-sm p-4">
           <img
-            src={v.image || "/placeholder.png"}
+            src={
+              v.image ? `data:image/*;base64,${v.image}` : "/placeholder.png"
+            }
             alt={`${v.make} ${v.model}`}
-            className="w-full h-80 object-cover rounded-md"
+            className="w-full h-full object-cover"
           />
           <div className="mt-4">
             <h2 className="text-2xl font-bold">
@@ -73,14 +75,14 @@ export default function VehicleDetail() {
 
         <aside className="card bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-4">
           <div>
-            <div className="text-sm text-gray-500">Cena</div>
+            <div className="text-sm text-gray-500">Price</div>
             <div className="text-2xl font-bold text-sky-700">
-              {v.price} € / dan
+              {v.price} € / day
             </div>
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Dani</label>
+            <label className="block text-sm text-gray-600 mb-1">Days</label>
             <input
               type="number"
               min="1"
@@ -94,14 +96,14 @@ export default function VehicleDetail() {
             onClick={addToCart}
             className="w-full inline-flex justify-center px-4 py-2 bg-sky-700 text-white rounded-lg hover:bg-sky-600"
           >
-            Rezerviši i dodaj u korpu
+            Add to cart
           </button>
 
           <button
             onClick={() => navigate(-1)}
             className="w-full inline-flex justify-center px-4 py-2 border rounded-lg hover:bg-gray-50"
           >
-            Nazad
+            Back
           </button>
         </aside>
       </div>

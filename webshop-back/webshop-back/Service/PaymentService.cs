@@ -1,4 +1,4 @@
-﻿using webshop_back.Models;
+﻿using webshop_back.Data.Models;
 
 namespace webshop_back.Service
 {

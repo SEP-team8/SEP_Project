@@ -1,0 +1,33 @@
+[
+  {
+    "ContainingType": "BankAPI.Controllers.PaymentsController",
+    "Method": "InitPayment",
+    "RelativePath": "api/payments/init",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "BankAPI.DTOs.InitPaymentRequestDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "PspID",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Signature",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Timestamp",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

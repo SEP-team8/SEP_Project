@@ -17,6 +17,27 @@
   },
   {
     "ContainingType": "BankAPI.Controllers.PaymentsController",
+    "Method": "ExecutePayment",
+    "RelativePath": "api/payments/{paymentRequestId}/pay",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentRequestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "BankAPI.DTOs.CardPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankAPI.Controllers.PaymentsController",
     "Method": "InitPayment",
     "RelativePath": "api/payments/init",
     "HttpMethod": "POST",

@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 using webshop_back.Data;
 using webshop_back.Data.Mapping;
-using webshop_back.Data.Seed; // DbInitializer (ako želiš automatski seed)
+using webshop_back.Data.Models;
+using webshop_back.Data.Seed;
 using webshop_back.Helpers;
+using webshop_back.Middleware;
 using webshop_back.Service;
 using webshop_back.Service.Interfaces;
 using webshop_back.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TokenProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
 // AutoMapper
@@ -96,6 +100,7 @@ app.UseHttpsRedirection();
 app.UseCors("FrontendPolicy");
 app.UseAuthorization();
 app.MapControllers();
+app.UseMiddleware<TenantResolverMiddleware>();
 
 // Optional: seed DB on startup (only for dev/test)
 using (var scope = app.Services.CreateScope())
@@ -107,6 +112,25 @@ using (var scope = app.Services.CreateScope())
 
     // seed initial data if empty
     DbInitializer.Seed(db);
+
+    var repo = scope.ServiceProvider.GetRequiredService<IRepository>();
+
+    if (!db.Set<Merchant>().Any(m => m.MerchantId == "SHOP-123"))
+    {
+        var (raw, stored) = ApiKeyHasher.Generate();
+        var merchant = new Merchant
+        {
+            MerchantId = "SHOP-123",
+            Name = "Dev Shop 123",
+            ApiKeyHash = stored,
+            IsActive = true,
+            AllowedReturnUrls = System.Text.Json.JsonSerializer.Serialize(new[] { "https://localhost:3000" })
+        };
+        repo.AddMerchant(merchant);
+
+        // Print raw key to console once (dev)
+        Console.WriteLine("Seeded merchant SHOP-123 raw key (store safely): " + raw);
+    }
 }
 
 app.Run();

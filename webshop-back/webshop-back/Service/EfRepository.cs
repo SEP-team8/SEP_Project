@@ -71,5 +71,46 @@ namespace webshop_back.Service
             _db.Vehicles.Remove(existing);
             _db.SaveChanges();
         }
+
+        public Merchant? GetMerchant(string merchantId)
+        {
+            return _db.Set<Merchant>().AsNoTracking().FirstOrDefault(m => m.MerchantId == merchantId);
+        }
+
+        public Merchant? GetMerchantByMerchantId(string merchantId)
+        {
+            if (string.IsNullOrEmpty(merchantId)) return null;
+            return _db.Set<Merchant>().AsNoTracking().FirstOrDefault(m => m.MerchantId == merchantId && m.IsActive);
+        }
+
+        public Merchant? GetMerchantByDomain(string domain)
+        {
+            if (string.IsNullOrEmpty(domain)) return null;
+
+            var host = domain.Trim().ToLowerInvariant();
+
+            var exact = _db.Set<Merchant>().AsNoTracking()
+                .FirstOrDefault(m => !string.IsNullOrEmpty(m.Domain) && m.Domain.ToLower() == host && m.IsActive);
+            if (exact != null) return exact;
+
+            var allWithDomain = _db.Set<Merchant>().AsNoTracking()
+                .Where(m => !string.IsNullOrEmpty(m.Domain) && m.IsActive)
+                .ToList();
+
+            foreach (var m in allWithDomain)
+            {
+                var md = m.Domain!.Trim().ToLowerInvariant();
+                if (host == md) return m;
+                if (host.EndsWith("." + md)) return m;
+            }
+
+            return null;
+        }
+
+        public void AddMerchant(Merchant merchant)
+        {
+            _db.Set<Merchant>().Add(merchant);
+            _db.SaveChanges();
+        }
     }
 }

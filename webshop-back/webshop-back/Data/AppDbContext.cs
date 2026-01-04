@@ -10,6 +10,7 @@ namespace webshop_back.Data
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Vehicle> Vehicles { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Merchant> Merchants { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,7 +75,7 @@ namespace webshop_back.Data
                     .IsRequired(false);
             });
 
-            // Orders
+            // Orders (expanded)
             modelBuilder.Entity<Order>(b =>
             {
                 b.ToTable("Orders");
@@ -85,7 +86,11 @@ namespace webshop_back.Data
                     .IsRequired();
 
                 b.Property(o => o.UserId)
-                    .IsRequired();
+                    .IsRequired(false);
+
+                b.Property(o => o.MerchantId)
+                    .HasMaxLength(100)
+                    .IsRequired(false);
 
                 b.Property(o => o.Amount)
                     .HasColumnType("decimal(18,2)")
@@ -99,8 +104,48 @@ namespace webshop_back.Data
                     .HasMaxLength(64)
                     .HasDefaultValue("Initialized");
 
+                b.Property(o => o.PaymentId)
+                    .HasMaxLength(200)
+                    .IsRequired(false);
+
+                b.Property(o => o.PaymentUrl)
+                    .HasColumnType("nvarchar(max)")
+                    .IsRequired(false);
+
+                b.Property(o => o.Stan)
+                    .HasMaxLength(64)
+                    .IsRequired(false);
+
+                b.Property(o => o.GlobalTransactionId)
+                    .HasMaxLength(200)
+                    .IsRequired(false);
+
                 b.Property(o => o.CreatedAt)
                     .HasDefaultValueSql("GETUTCDATE()");
+
+                b.Property(o => o.UpdatedAt)
+                    .IsRequired(false);
+
+                b.Property(o => o.ExpiresAt)
+                    .IsRequired(false);
+            });
+
+            // Merchants mapping
+            modelBuilder.Entity<Merchant>(b =>
+            {
+                b.ToTable("Merchants");
+                b.HasKey(m => m.Id);
+
+                b.Property(m => m.MerchantId).HasMaxLength(100).IsRequired();
+                b.HasIndex(m => m.MerchantId).IsUnique();
+
+                b.Property(m => m.Name).HasMaxLength(255).IsRequired(false);
+                b.Property(m => m.ApiKeyHash).HasMaxLength(1024).IsRequired();
+                b.Property(m => m.IsActive).HasDefaultValue(true);
+                b.Property(m => m.AllowedReturnUrls).HasColumnType("nvarchar(max)").IsRequired(false);
+                b.Property(m => m.Domain).HasMaxLength(255).IsRequired(false);
+                b.Property(m => m.ContactEmail).HasMaxLength(255).IsRequired(false);
+                b.Property(m => m.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             });
         }
     }

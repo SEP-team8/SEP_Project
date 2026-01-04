@@ -13,5 +13,11 @@ namespace webshop_back.Service.Interfaces
         void AddVehicle(Vehicle vehicle);
         void UpdateVehicle(Vehicle vehicle);
         void DeleteVehicle(int id);
+
+
+        Merchant? GetMerchant(string merchantId);
+        Merchant? GetMerchantByMerchantId(string merchantId);
+        Merchant? GetMerchantByDomain(string domain);
+        void AddMerchant(Merchant merchant);
     }
 }

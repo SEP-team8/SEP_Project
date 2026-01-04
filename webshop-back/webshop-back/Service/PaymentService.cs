@@ -1,33 +1,41 @@
 ﻿using webshop_back.Data.Models;
+using webshop_back.Service.Interfaces;
 
 namespace webshop_back.Service
 {
-    public class PaymentService
+    public class PaymentService : IPaymentService
     {
-        // Simulate generating payment id and payment url (bank)
-        public PaymentInitResponse InitializePayment(PaymentInitRequest req)
+        private readonly IConfiguration _config;
+
+        public PaymentService(IConfiguration config)
         {
-            var pid = "PAY-" + Guid.NewGuid().ToString("N").Substring(0, 12);
-            var response = new PaymentInitResponse
+            _config = config;
+        }
+
+        public PaymentInitResponse InitializePaymentToAcquirer(PaymentInitRequest req, Order order)
+        {
+            // Simple stub implementation: generate PaymentId and PaymentUrl pointing to local PSP simulator
+            var paymentId = $"P-{Guid.NewGuid():N}";
+            var amount = req.AMOUNT;
+            var currency = req.CURRENCY;
+
+            // base url for PSP simulator (configurable)
+            var simulatorBase = _config["Psp:SimulatorBaseUrl"]?.TrimEnd('/') ?? "https://localhost:5001";
+
+            // Build PSP simulate URL — PSP will render form and post back to callback/complete endpoints
+            var paymentUrl = $"{simulatorBase}/psp/simulate-payment?paymentId={Uri.EscapeDataString(paymentId)}&successUrl={Uri.EscapeDataString(req.SUCCESS_URL)}&failedUrl={Uri.EscapeDataString(req.FAILED_URL)}";
+
+            // For QR flow, provide some dummy payload
+            var qrPayload = $"PAYMENT:{paymentId};AMOUNT:{amount};CUR:{currency}";
+
+            return new PaymentInitResponse
             {
-                PaymentId = pid,
-                Amount = req.AMOUNT,
-                Currency = req.CURRENCY
+                PaymentId = paymentId,
+                PaymentUrl = paymentUrl,
+                QrPayload = qrPayload,
+                Amount = amount,
+                Currency = currency
             };
-
-            if ((req.Method ?? "card").ToLower() == "card")
-            {
-                // generate a simulated bank payment url that the frontend will redirect to
-                // In real world: PSP requests bank, bank returns PAYMENT_URL. Here we simulate that.
-                response.PaymentUrl = $"https://localhost:5001/psp/simulate-payment?paymentId={pid}&successUrl={Uri.EscapeDataString(req.SUCCESS_URL)}&failedUrl={Uri.EscapeDataString(req.FAILED_URL)}";
-            }
-            else
-            {
-                // QR payload: include amount, currency, merchant account — minimal example
-                response.QrPayload = $"PAY|{req.CURRENCY}|{req.AMOUNT}|ME{req.MERCHANT_ID}|ORDER{req.MERCHANT_ORDER_ID}";
-            }
-
-            return response;
         }
     }
 }

@@ -32,18 +32,24 @@ namespace webshop_back.Controllers
             return null;
         }
 
+        [Authorize]
         [HttpGet("me")]
-        public async Task<IActionResult> GetMe()
+        public async Task<ActionResult<PublicUserDto>> Me()
         {
-            var userId = GetUserIdFromClaims();
-            if (userId == null) return Unauthorized();
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var user = await _profileService.GetProfileAsync(userId);
+            if (user == null) return NotFound();
 
-            var dto = await _profileService.GetProfileAsync(userId.Value);
-            if (dto == null) return NotFound();
-
-            return Ok(dto);
+            return new PublicUserDto
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Role = user.Role,
+                ProfilePictureBase64 = user.ProfilePictureBase64
+            };
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserRequest request)
         {
@@ -62,6 +68,7 @@ namespace webshop_back.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
@@ -74,6 +81,7 @@ namespace webshop_back.Controllers
             return Ok(new { message = "Password changed" });
         }
 
+        [Authorize]
         [HttpPost("picture")]
         [RequestSizeLimit(6 * 1024 * 1024)] // limit ~6MB
         public async Task<IActionResult> UploadPicture([FromForm] IFormFile file)

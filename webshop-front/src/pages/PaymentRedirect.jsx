@@ -8,23 +8,32 @@ export default function PaymentRedirect() {
     return (
       <main className="max-w-md mx-auto p-8">
         <div className="card text-center py-8 bg-white rounded-2xl shadow-sm">
-          <p className="text-gray-600 mb-4">Nema QR podataka</p>
+          <p className="text-gray-600 mb-4">No QR data</p>
           <Link
             to="/checkout"
             className="inline-flex px-4 py-2 bg-sky-700 text-white rounded-lg"
           >
-            Nazad
+            Back
           </Link>
         </div>
       </main>
     );
 
+  const successUrl = `${window.location.origin}/payment-result`;
+  const failedUrl = `${window.location.origin}/payment-result`;
+
+  const simulateUrl = `${
+    window.location.origin
+  }/psp/simulate-payment?paymentId=${encodeURIComponent(
+    data.paymentId ?? ""
+  )}&successUrl=${encodeURIComponent(
+    successUrl
+  )}&failedUrl=${encodeURIComponent(failedUrl)}`;
+
   return (
     <main className="max-w-md mx-auto p-8">
       <div className="card text-center bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="text-2xl font-semibold mb-4">
-          Skenirajte QR kod da platite
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4">Scan the QR code to pay</h2>
         <div className="flex justify-center mb-6">
           <QRCode value={data.qrPayload || ""} size={180} />
         </div>
@@ -41,20 +50,28 @@ export default function PaymentRedirect() {
           </span>
         </div>
         <p className="text-gray-600 mb-6">
-          Koristite vašu mBanking aplikaciju da skenirate i platite.
+          Use your mBanking app to scan and pay or use PSP simulator.
         </p>
+
         <div className="flex justify-center gap-3">
-          <Link
-            to="/checkout"
+          <a
+            href={simulateUrl}
             className="inline-flex px-4 py-2 border rounded-lg"
+            target="_blank"
+            rel="noreferrer"
           >
-            Nazad
-          </Link>
+            Open PSP simulator (simulate)
+          </a>
+
+          {/* Test button — mark as paid (client-only) redirects to payment-result with params,
+              useful for quick manual testing without opening simulator. */}
           <Link
-            to="/success"
+            to={`/payment-result?paymentId=${encodeURIComponent(
+              data.paymentId ?? ""
+            )}&global=GTID-${Date.now()}&status=OK`}
             className="inline-flex px-4 py-2 bg-sky-700 text-white rounded-lg"
           >
-            Označi kao plaćeno (test)
+            Mark as paid (test)
           </Link>
         </div>
       </div>

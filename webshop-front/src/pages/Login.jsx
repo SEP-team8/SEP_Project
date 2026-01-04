@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
+import { useAuth } from "../components/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,35 +9,44 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
+  const params = new URLSearchParams(location.search);
+  const next = params.get("next") || "/";
 
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
-
     if (!email || !password) {
       setError("Email and password are required.");
       return;
     }
-
     setLoading(true);
     try {
       const resp = await API.post("/auth/login", { email, password });
-      // prilagodi u zavisnosti od response shape; ovde očekujemo { token, user }
       const token = resp?.data?.token;
       const user = resp?.data?.user || resp?.data?.data?.user;
-
       if (!token) {
         setError("Bad server response - missing token.");
         setLoading(false);
         return;
       }
 
-      sessionStorage.setItem("token", token);
-      if (user) sessionStorage.setItem("user", JSON.stringify(user));
-      window.dispatchEvent(
-        new CustomEvent("authChanged", { detail: { user } })
-      );
-      navigate("/");
+      await login({ token, user });
+
+      const pendingRaw = sessionStorage.getItem("pendingCheckout");
+      if (pendingRaw) {
+        try {
+          const pending = JSON.parse(pendingRaw);
+          if (Array.isArray(pending.cart)) {
+            sessionStorage.setItem("cart", JSON.stringify(pending.cart));
+          }
+        } catch {}
+        sessionStorage.removeItem("pendingCheckout");
+      }
+
+      navigate(next);
     } catch (err) {
       console.error(err);
       const msg =
@@ -86,7 +96,7 @@ export default function Login() {
                 loading ? "bg-sky-300" : "bg-sky-700 hover:bg-sky-600"
               }`}
             >
-              {loading ? "Login..." : "Sign up"}
+              {loading ? "Logging in..." : "Login"}
             </button>
 
             <button

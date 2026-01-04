@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
 
 export default function Register() {
@@ -9,16 +9,18 @@ export default function Register() {
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  const next = params.get("next") || "/";
 
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     if (!name || !email || !password) {
-      setError("Fill in all required fields..");
+      setError("Fill in all required fields.");
       return;
     }
     if (password !== confirm) {
@@ -33,22 +35,28 @@ export default function Register() {
     setLoading(true);
     try {
       const resp = await API.post("/auth/register", { name, email, password });
-      // očekujemo { token, user } ili wrapper
-      const token = resp?.data?.token;
-      const user = resp?.data?.user;
+      const token = resp?.data?.token || resp?.data?.data?.token;
+      const user = resp?.data?.user || resp?.data?.data?.user;
 
       if (token) {
-        sessionStorage.setItem("token", token);
-        if (user) sessionStorage.setItem("user", JSON.stringify(user));
-        window.dispatchEvent(
-          new CustomEvent("authChanged", { detail: { user } })
-        );
+        await login({ token, user });
+        const pendingRaw = sessionStorage.getItem("pendingCheckout");
+        if (pendingRaw) {
+          try {
+            const pending = JSON.parse(pendingRaw);
+            if (Array.isArray(pending.cart)) {
+              sessionStorage.setItem("cart", JSON.stringify(pending.cart));
+            }
+          } catch {}
+          sessionStorage.removeItem("pendingCheckout");
+        }
         navigate("/");
         return;
       }
 
-      setSuccess("Registration successful. You can apply.");
-      setTimeout(() => navigate("/login"), 1200);
+      setError("");
+      alert("Registration successful. Please login.");
+      navigate(`/login?next=${encodeURIComponent(next)}`);
     } catch (err) {
       console.error(err);
       const msg =
@@ -64,7 +72,7 @@ export default function Register() {
   return (
     <main className="max-w-md mx-auto p-8">
       <div className="card">
-        <h2 className="text-2xl font-semibold mb-4">Registration</h2>
+        <h2 className="text-2xl font-semibold mb-4">Register</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label className="text-sm text-gray-700">First and last name</label>
@@ -110,7 +118,6 @@ export default function Register() {
           </div>
 
           {error && <div className="text-sm text-red-600">{error}</div>}
-          {success && <div className="text-sm text-green-600">{success}</div>}
 
           <div className="flex gap-3">
             <button
@@ -125,7 +132,7 @@ export default function Register() {
 
             <button
               type="button"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate(`/login${location.search}`)}
               disabled={loading}
               className="inline-flex items-center px-4 py-2 rounded-lg border"
             >

@@ -13,6 +13,7 @@ import NavBar from "./components/NavBar";
 import Profile from "./pages/Profile";
 import AdminVehicles from "./pages/AdminVehicles";
 import AddUpdateVehicle from "./pages/AddUpdateVehicle";
+import PaymentResult from "./pages/PaymentResult";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment-redirect" element={<PaymentRedirect />} />
+          <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failed" element={<Failed />} />
           <Route path="/login" element={<Login />} />

@@ -2,9 +2,8 @@
 {
     public enum PaymentRequestStatus
     {
-        Created, 
+        Pending, 
         Expired, 
-        InProgress, 
         Success, 
         Failed
     }

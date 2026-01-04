@@ -3,6 +3,7 @@ using BankAPI.DTOs;
 using BankAPI.Helpers.HmacValidator;
 using BankAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankAPI.Controllers
 {
@@ -56,7 +57,7 @@ namespace BankAPI.Controllers
                 Currency = dto.Currency,
                 Stan = dto.Stan,
                 PspTimestamp = dto.PspTimestamp,
-                Status = PaymentRequestStatus.Created,
+                Status = PaymentRequestStatus.Pending,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(15)
             };
 
@@ -67,10 +68,44 @@ namespace BankAPI.Controllers
             {
                 PaymentRequestId = paymentRequest.PaymentRequestId,
                 PaymentReqyestUrl =
-                    $"https://bank.local/pay/{paymentRequest.PaymentRequestId}"
+                    $"http://localhost:3000/pay/{paymentRequest.PaymentRequestId}"
             };
 
             return Ok(response);
         }
+
+        [HttpGet("{paymentRequestId:guid}")]
+        public async Task<IActionResult> GetPaymentRequest(Guid paymentRequestId)
+        {
+            var paymentRequest = await _context.PaymentRequests
+                .Where(p => p.PaymentRequestId == paymentRequestId)
+                .Select(p => new
+                {
+                    p.PaymentRequestId,
+                    p.Amount,
+                    Currency = p.Currency.ToString(),
+                    p.ExpiresAt,
+                    p.Status
+                })
+                .FirstOrDefaultAsync();
+
+            if (paymentRequest == null)
+            {
+                return NotFound("Payment request not found.");
+            }
+
+            if (paymentRequest.Status != PaymentRequestStatus.Pending)
+            {
+                return BadRequest("Payment request is not valid.");
+            }
+
+            if (paymentRequest.ExpiresAt < DateTime.UtcNow)
+            {
+                return BadRequest("Payment request expired.");
+            }
+
+            return Ok(paymentRequest);
+        }
+
     }
 }

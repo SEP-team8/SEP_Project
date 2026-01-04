@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "BankAPI.Controllers.PaymentsController",
+    "Method": "GetPaymentRequest",
+    "RelativePath": "api/payments/{paymentRequestId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentRequestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankAPI.Controllers.PaymentsController",
     "Method": "InitPayment",
     "RelativePath": "api/payments/init",
     "HttpMethod": "POST",

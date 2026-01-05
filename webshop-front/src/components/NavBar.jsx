@@ -1,11 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import API from "../api"; // tvoj axios instance sa tokenom
+import API from "../api";
 
 export default function NavBar() {
   const navigate = useNavigate();
 
-  // cart count
   const [cartCount, setCartCount] = useState(() => {
     try {
       return JSON.parse(sessionStorage.getItem("cart") || "[]").length;
@@ -14,10 +13,8 @@ export default function NavBar() {
     }
   });
 
-  // user state
   const [user, setUser] = useState(null);
 
-  // funkcija za osvežavanje user-a
   async function refreshUser() {
     try {
       const res = await API.get("/users/me");
@@ -30,7 +27,6 @@ export default function NavBar() {
     }
   }
 
-  // inicijalni fetch user-a
   useEffect(() => {
     const raw = sessionStorage.getItem("user");
     if (raw) {
@@ -41,7 +37,6 @@ export default function NavBar() {
       }
     }
 
-    // odmah fetch users/me da bude aktuelno
     refreshUser();
 
     function onCartUpdate() {
@@ -87,7 +82,6 @@ export default function NavBar() {
     <header className="bg-white border-b shadow-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo + Navigation */}
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-800 rounded-md flex items-center justify-center text-white font-bold">
@@ -105,18 +99,16 @@ export default function NavBar() {
               <Link to="/vehicles" className="text-gray-600 hover:text-sky-700">
                 Vehicles
               </Link>
-              <Link to="/about" className="text-gray-600 hover:text-sky-700">
+              {/* <Link to="/about" className="text-gray-600 hover:text-sky-700">
                 Kako radi
               </Link>
               <Link to="/contact" className="text-gray-600 hover:text-sky-700">
                 Kontakt
-              </Link>
+              </Link> */}
             </nav>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-4">
-            {/* Cart */}
             <Link
               to="/cart"
               className="relative inline-flex items-center gap-2 text-gray-600 hover:text-sky-700"
@@ -142,7 +134,13 @@ export default function NavBar() {
               )}
             </Link>
 
-            {/* Admin button */}
+            <Link
+              to="/orders"
+              className="relative inline-flex items-center gap-2 text-gray-600 hover:text-sky-700"
+            >
+              <span className="hidden sm:inline text-sm">My orders</span>
+            </Link>
+
             {user?.role === "Admin" && (
               <Link
                 to="/admin/vehicles"
@@ -152,7 +150,6 @@ export default function NavBar() {
               </Link>
             )}
 
-            {/* Auth area */}
             {!user ? (
               <div className="hidden sm:flex gap-2">
                 <Link
@@ -206,7 +203,6 @@ export default function NavBar() {
               </div>
             )}
 
-            {/* Mobile menu button */}
             <button className="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
               <svg
                 className="w-6 h-6"

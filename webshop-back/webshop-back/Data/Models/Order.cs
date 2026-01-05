@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace webshop_back.Data.Models
+﻿namespace webshop_back.Data.Models
 {
     public class Order
     {
@@ -27,5 +25,7 @@ namespace webshop_back.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ExpiresAt { get; set; }
+
+        public ICollection<OrderItem>? Items { get; set; }
     }
 }

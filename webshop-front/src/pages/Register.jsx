@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
+import { useAuth } from "../components/AuthContext";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -11,6 +12,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
 
   const params = new URLSearchParams(location.search);
   const next = params.get("next") || "/";
@@ -40,17 +42,20 @@ export default function Register() {
 
       if (token) {
         await login({ token, user });
+
         const pendingRaw = sessionStorage.getItem("pendingCheckout");
         if (pendingRaw) {
           try {
             const pending = JSON.parse(pendingRaw);
             if (Array.isArray(pending.cart)) {
               sessionStorage.setItem("cart", JSON.stringify(pending.cart));
+              window.dispatchEvent(new CustomEvent("cartUpdated"));
             }
           } catch {}
           sessionStorage.removeItem("pendingCheckout");
         }
-        navigate("/");
+
+        navigate(next);
         return;
       }
 
@@ -58,7 +63,7 @@ export default function Register() {
       alert("Registration successful. Please login.");
       navigate(`/login?next=${encodeURIComponent(next)}`);
     } catch (err) {
-      console.error(err);
+      console.error("Register failed:", err);
       const msg =
         err?.response?.data?.message ||
         err?.response?.data ||

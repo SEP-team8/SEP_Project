@@ -9,15 +9,25 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   async function refreshUser() {
-    const t = sessionStorage.getItem("token");
-    if (!t) {
+    const storedToken = sessionStorage.getItem("token");
+    const storedUser = sessionStorage.getItem("user");
+
+    if (!storedToken) {
       setToken(null);
       setUser(null);
       setLoading(false);
       return;
     }
+
+    setToken(storedToken);
+
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {}
+    }
+
     try {
-      setToken(t);
       const res = await API.get("/users/me");
       setUser(res.data);
       sessionStorage.setItem("user", JSON.stringify(res.data));
@@ -35,31 +45,35 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     refreshUser();
   }, []);
+  const login = async ({ token: newToken, user: backendUser }) => {
+    if (!newToken) {
+      throw new Error("login() called without token");
+    }
 
-  const login = async ({ token: newToken, user: maybeUser }) => {
     sessionStorage.setItem("token", newToken);
     setToken(newToken);
 
+    if (backendUser) {
+      sessionStorage.setItem("user", JSON.stringify(backendUser));
+      setUser(backendUser);
+
+      window.dispatchEvent(
+        new CustomEvent("authChanged", { detail: { user: backendUser } })
+      );
+      return;
+    }
+
     try {
       const res = await API.get("/users/me");
-      const fresh = res.data;
-      sessionStorage.setItem("user", JSON.stringify(fresh));
-      setUser(fresh);
+      sessionStorage.setItem("user", JSON.stringify(res.data));
+      setUser(res.data);
+
       window.dispatchEvent(
-        new CustomEvent("authChanged", { detail: { user: fresh } })
+        new CustomEvent("authChanged", { detail: { user: res.data } })
       );
     } catch (err) {
-      if (maybeUser) {
-        sessionStorage.setItem("user", JSON.stringify(maybeUser));
-        setUser(maybeUser);
-        window.dispatchEvent(
-          new CustomEvent("authChanged", { detail: { user: maybeUser } })
-        );
-      } else {
-        sessionStorage.removeItem("token");
-        setToken(null);
-        setUser(null);
-      }
+      console.error("login fallback failed:", err);
+      logout();
     }
   };
 

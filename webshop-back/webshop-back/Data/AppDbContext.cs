@@ -11,6 +11,7 @@ namespace webshop_back.Data
         public DbSet<Vehicle> Vehicles { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Merchant> Merchants { get; set; } = null!;
+        public DbSet<OrderItem> OrderItems { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,15 +38,17 @@ namespace webshop_back.Data
                     .HasMaxLength(512)
                     .IsRequired();
 
-                // ENUM -> STRING
                 b.Property(u => u.Role)
                     .HasConversion<string>()
                     .HasMaxLength(32)
                     .IsRequired();
 
-                // profile picture
                 b.Property(u => u.ProfilePicture)
                     .HasColumnType("varbinary(max)")
+                    .IsRequired(false);
+
+                b.Property(u => u.MerchantId)
+                    .HasMaxLength(100)
                     .IsRequired(false);
             });
 
@@ -73,9 +76,13 @@ namespace webshop_back.Data
                 b.Property(v => v.Image)
                     .HasColumnType("varbinary(max)")
                     .IsRequired(false);
+
+                b.Property(v => v.MerchantId)
+                    .HasMaxLength(100)
+                    .IsRequired(false);
             });
 
-            // Orders (expanded)
+            // Orders
             modelBuilder.Entity<Order>(b =>
             {
                 b.ToTable("Orders");
@@ -146,6 +153,24 @@ namespace webshop_back.Data
                 b.Property(m => m.Domain).HasMaxLength(255).IsRequired(false);
                 b.Property(m => m.ContactEmail).HasMaxLength(255).IsRequired(false);
                 b.Property(m => m.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            });
+
+            //OrderItem mapping
+            modelBuilder.Entity<OrderItem>(b =>
+            {
+                b.ToTable("OrderItems");
+                b.HasKey(oi => oi.Id);
+
+                b.Property(oi => oi.OrderId).HasMaxLength(100).IsRequired();
+                b.Property(oi => oi.VehicleId).IsRequired();
+                b.Property(oi => oi.VehicleName).HasMaxLength(255).IsRequired(false);
+                b.Property(oi => oi.PricePerDay).HasColumnType("decimal(18,2)").IsRequired();
+                b.Property(oi => oi.Days).IsRequired();
+
+                b.HasOne(oi => oi.Order)
+                 .WithMany(o => o.Items)
+                 .HasForeignKey(oi => oi.OrderId)
+                 .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

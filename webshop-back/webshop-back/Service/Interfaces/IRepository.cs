@@ -9,7 +9,9 @@ namespace webshop_back.Service.Interfaces
         void UpdateOrder(Order order);
 
         IEnumerable<Vehicle> GetVehicles();
+        IEnumerable<Vehicle> GetVehiclesForMerchant(string? merchantId);
         Vehicle? GetVehicle(int id);
+        Vehicle? GetVehicleForMerchant(int id, string? merchantId);
         void AddVehicle(Vehicle vehicle);
         void UpdateVehicle(Vehicle vehicle);
         void DeleteVehicle(int id);
@@ -19,5 +21,10 @@ namespace webshop_back.Service.Interfaces
         Merchant? GetMerchantByMerchantId(string merchantId);
         Merchant? GetMerchantByDomain(string domain);
         void AddMerchant(Merchant merchant);
+
+        IEnumerable<Order> GetOrdersForUser(int userId);
+        Order? GetOrderWithItems(string orderId);
+        void AddOrderWithItems(Order order, IEnumerable<OrderItem> items);
+
     }
 }

@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// webshop_back/Services/AuthService.cs
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using webshop_back.Data;
 using webshop_back.Data.Models;
 using webshop_back.DTOs;
 using webshop_back.DTOs.Auth;
 using webshop_back.Helpers;
-using Microsoft.EntityFrameworkCore;
 using webshop_back.DTOs.User;
-
 
 namespace webshop_back.Services
 {
@@ -14,18 +14,20 @@ namespace webshop_back.Services
     {
         private readonly AppDbContext _context;
         private readonly TokenProvider _tokenProvider;
+        private readonly ITenantProvider _tenantProvider;
 
-        public AuthService(AppDbContext context, TokenProvider tokenProvider)
+        public AuthService(AppDbContext context, TokenProvider tokenProvider, ITenantProvider tenantProvider)
         {
             _context = context;
             _tokenProvider = tokenProvider;
+            _tenantProvider = tenantProvider;
         }
 
         public async Task<ResponsePayload<AuthResponse>> Register(RegisterUserRequest request)
         {
             try
             {
-                // check existing email or username
+                // check existing email
                 if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 {
                     return new ResponsePayload<AuthResponse>
@@ -39,12 +41,18 @@ namespace webshop_back.Services
                 {
                     Name = request.Name,
                     Email = request.Email,
-                    //PasswordHash = hasher.HashPassword(user, request.Password),
                     Role = UserRole.User
                 };
 
                 var hasher = new PasswordHasher<User>();
                 user.PasswordHash = hasher.HashPassword(user, request.Password);
+
+                // assign current merchant id if available (multi-tenant)
+                var currentMerchant = _tenantProvider?.CurrentMerchantId;
+                if (!string.IsNullOrEmpty(currentMerchant))
+                {
+                    user.MerchantId = currentMerchant;
+                }
 
                 _context.Users.Add(user);
 

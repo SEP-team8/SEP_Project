@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../api"; // koristi tvoj axios instance
+import API from "../api";
 
 export default function Cart() {
   const navigate = useNavigate();
+
   const [rawCart, setRawCart] = useState(() =>
     JSON.parse(sessionStorage.getItem("cart") || "[]")
   );
-  const [cart, setCart] = useState(rawCart); // enriched cart (with name)
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const onUpdate = () => {
@@ -18,7 +19,6 @@ export default function Cart() {
     return () => window.removeEventListener("cartUpdated", onUpdate);
   }, []);
 
-  // kada se rawCart promeni, fetch-uj nedostajuće nazive i obogati
   useEffect(() => {
     let mounted = true;
 
@@ -70,10 +70,7 @@ export default function Cart() {
     copy.splice(index, 1);
     setCart(copy);
 
-    const storageCopy = copy.map(({ name, ...rest }) => ({
-      ...rest,
-      name,
-    }));
+    const storageCopy = copy.map(({ name, ...rest }) => rest);
     sessionStorage.setItem("cart", JSON.stringify(storageCopy));
     window.dispatchEvent(new CustomEvent("cartUpdated"));
   }
@@ -83,6 +80,43 @@ export default function Cart() {
     setRawCart([]);
     sessionStorage.removeItem("cart");
     window.dispatchEvent(new CustomEvent("cartUpdated"));
+  }
+
+  async function pay() {
+    if (cart.length === 0) return;
+
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to continue.");
+      navigate("/login?next=/cart");
+      return;
+    }
+
+    try {
+      const orderResp = await API.post("/orders", {
+        items: cart.map((c) => ({
+          vehicleId: c.vehicleId,
+          days: c.days || 1,
+        })),
+      });
+
+      const orderId = orderResp.data.orderId;
+      if (!orderId) throw new Error("OrderId missing from backend");
+
+      //STA SE SALJE PSP-U I MOZDA IZMENUTI I BACK STA PRIMA
+      const payResp = await API.post("/payments/init", {
+        MERCHANT_ORDER_ID: orderId,
+        AMOUNT: total,
+      });
+
+      const paymentUrl = payResp.data?.paymentUrl;
+      if (!paymentUrl) throw new Error("PaymentUrl from server is missing");
+
+      window.location.href = paymentUrl;
+    } catch (err) {
+      console.error(err);
+      alert("Payment initialization failed.");
+    }
   }
 
   return (
@@ -117,9 +151,7 @@ export default function Cart() {
               {cart.map((c, i) => (
                 <li key={i} className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-sm">
-                      {c.name ?? `Vehicle ${c.vehicleId}`}
-                    </div>
+                    <div className="font-semibold text-sm">{c.name}</div>
                     <div className="text-xs text-gray-500">
                       {c.days || 1} day(s)
                     </div>
@@ -154,10 +186,10 @@ export default function Cart() {
               {total.toFixed(2)} €
             </div>
             <button
-              onClick={() => navigate("/checkout")}
+              onClick={pay}
               className="mt-6 w-full inline-flex justify-center px-4 py-2 bg-sky-700 text-white rounded-lg"
             >
-              Checkout
+              Pay
             </button>
           </aside>
         </div>

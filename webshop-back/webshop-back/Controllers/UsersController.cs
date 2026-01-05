@@ -18,13 +18,11 @@ namespace webshop_back.Controllers
             _profileService = profileService;
         }
 
-        // Helper: extract user id from token claims (tries multiple claim names)
         private int? GetUserIdFromClaims()
         {
             var user = HttpContext.User;
             if (user == null) return null;
 
-            // common possibilities: "id", ClaimTypes.NameIdentifier, "sub"
             var claim = user.FindFirst("id") ?? user.FindFirst(ClaimTypes.NameIdentifier) ?? user.FindFirst("sub");
             if (claim == null) return null;
 
@@ -36,8 +34,10 @@ namespace webshop_back.Controllers
         [HttpGet("me")]
         public async Task<ActionResult<PublicUserDto>> Me()
         {
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var user = await _profileService.GetProfileAsync(userId);
+            var userId = GetUserIdFromClaims();
+            if (userId == null) return Unauthorized();
+
+            var user = await _profileService.GetProfileAsync(userId.Value);
             if (user == null) return NotFound();
 
             return new PublicUserDto

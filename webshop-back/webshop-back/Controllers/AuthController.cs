@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using webshop_back.DTOs.Auth; // prilagodi namespace
-using webshop_back.Services; // IAuthService
 
 [ApiController]
 [Route("api/[controller]")]

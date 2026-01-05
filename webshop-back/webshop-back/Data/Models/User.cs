@@ -8,5 +8,7 @@
         public string PasswordHash { get; set; } = "";
         public byte[]? ProfilePicture { get; set; }
         public UserRole Role { get; set; } = UserRole.User;
+
+        public string? MerchantId { get; set; }
     }
 }

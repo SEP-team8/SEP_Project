@@ -1,4 +1,6 @@
-﻿namespace webshop_back.Data.Models
+﻿using webshop_back.DTOs;
+
+namespace webshop_back.Data.Models
 {
     public class PaymentInitRequest
     {
@@ -12,5 +14,7 @@
         public string FAILED_URL { get; set; } = "";
         public string ERROR_URL { get; set; } = "";
         public string? Method { get; set; } // "card" or "qr"
+
+        public List<OrderItemDto>? Items { get; set; }
     }
 }

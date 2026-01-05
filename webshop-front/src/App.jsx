@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
 import PaymentRedirect from "./pages/PaymentRedirect";
 import Success from "./pages/Success";
 import Failed from "./pages/Failed";
@@ -14,6 +13,7 @@ import Profile from "./pages/Profile";
 import AdminVehicles from "./pages/AdminVehicles";
 import AddUpdateVehicle from "./pages/AddUpdateVehicle";
 import PaymentResult from "./pages/PaymentResult";
+import OrdersHistory from "./pages/OrdersHistory";
 
 export default function App() {
   return (
@@ -25,7 +25,6 @@ export default function App() {
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/vehicle/:id" element={<VehicleDetail />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment-redirect" element={<PaymentRedirect />} />
           <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/success" element={<Success />} />
@@ -35,6 +34,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/vehicles" element={<AdminVehicles />} />
           <Route path="/admin/vehicle/:id?" element={<AddUpdateVehicle />} />
+          <Route path="/orders" element={<OrdersHistory />} />
         </Routes>
       </main>
     </>

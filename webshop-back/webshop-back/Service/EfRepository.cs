@@ -43,6 +43,21 @@ namespace webshop_back.Service
             return _db.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id);
         }
 
+        public IEnumerable<Vehicle> GetVehiclesForMerchant(string? merchantId)
+        {
+            if (string.IsNullOrEmpty(merchantId))
+                return _db.Vehicles.AsNoTracking().ToList();
+            return _db.Vehicles.AsNoTracking().Where(v => v.MerchantId == merchantId).ToList();
+        }
+
+        public Vehicle? GetVehicleForMerchant(int id, string? merchantId)
+        {
+            if (string.IsNullOrEmpty(merchantId))
+                return GetVehicle(id);
+            return _db.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id && v.MerchantId == merchantId);
+        }
+
+
         public void AddVehicle(Vehicle vehicle)
         {
             _db.Vehicles.Add(vehicle);
@@ -110,6 +125,31 @@ namespace webshop_back.Service
         public void AddMerchant(Merchant merchant)
         {
             _db.Set<Merchant>().Add(merchant);
+            _db.SaveChanges();
+        }
+
+        public IEnumerable<Order> GetOrdersForUser(int userId)
+        {
+            return _db.Orders
+                .AsNoTracking()
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+        }
+
+        public Order? GetOrderWithItems(string orderId)
+        {
+            return _db.Orders
+                .Include(o => o.Items)
+                .AsNoTracking()
+                .FirstOrDefault(o => o.OrderId == orderId);
+        }
+
+        public void AddOrderWithItems(Order order, IEnumerable<OrderItem> items)
+        {
+            _db.Orders.Add(order);
+            if (items != null)
+                _db.Set<OrderItem>().AddRange(items);
             _db.SaveChanges();
         }
     }

@@ -15,5 +15,7 @@
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ExpiresAt { get; set; }
         public string? PaymentUrl { get; set; } // link to PSP payment page (if applicable)
+
+        public IEnumerable<OrderItemDto>? Items { get; set; }
     }
 }

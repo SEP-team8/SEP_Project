@@ -8,5 +8,7 @@
         public string Description { get; set; } = "";
         public decimal Price { get; set; } // per day
         public byte[]? Image { get; set; }
+
+        public string? MerchantId { get; set; }
     }
 }

@@ -9,7 +9,6 @@ using webshop_back.Data.Mapping;
 using webshop_back.Data.Models;
 using webshop_back.Data.Seed;
 using webshop_back.Helpers;
-using webshop_back.Middleware;
 using webshop_back.Service;
 using webshop_back.Service.Interfaces;
 using webshop_back.Services;
@@ -42,36 +41,31 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TokenProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddHttpClient();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ITenantProvider, HttpContextTenantProvider>();
 
 
-// AutoMapper
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 
-// DbContext - koristi SQL Server (DefaultConnection iz appsettings.json)
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(conn))
 {
-    // fallback to in-memory for dev if not provided (optional)
-    //builder.Services.AddDbContext<AppDbContext>(opts => opts.UseInMemoryDatabase("webshop_dev_db"));
+    
 }
 else
 {
     builder.Services.AddDbContext<AppDbContext>(opts => opts.UseSqlServer(conn));
 }
 
-// Repository: EF implementation (scoped)
 builder.Services.AddScoped<IRepository, EfRepository>();
 
-// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
@@ -86,31 +80,22 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Use swagger in dev
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// serve wwwroot (images etc.)
-app.UseStaticFiles();
 
-app.UseHttpsRedirection();
-app.UseCors("FrontendPolicy");
-app.UseAuthorization();
-app.MapControllers();
-app.UseMiddleware<TenantResolverMiddleware>();
 
-// Optional: seed DB on startup (only for dev/test)
+
+
 using (var scope = app.Services.CreateScope())
 {
     var sp = scope.ServiceProvider;
     var db = sp.GetRequiredService<AppDbContext>();
-    // apply migrations (if you prefer automatic)
     db.Database.Migrate();
 
-    // seed initial data if empty
     DbInitializer.Seed(db);
 
     var repo = scope.ServiceProvider.GetRequiredService<IRepository>();
@@ -124,13 +109,20 @@ using (var scope = app.Services.CreateScope())
             Name = "Dev Shop 123",
             ApiKeyHash = stored,
             IsActive = true,
-            AllowedReturnUrls = System.Text.Json.JsonSerializer.Serialize(new[] { "https://localhost:3000" })
+            AllowedReturnUrls = System.Text.Json.JsonSerializer.Serialize(new[] { "https://localhost:3000" }),
+            Domain = "localhost"
         };
         repo.AddMerchant(merchant);
 
-        // Print raw key to console once (dev)
         Console.WriteLine("Seeded merchant SHOP-123 raw key (store safely): " + raw);
     }
 }
+
+app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseCors("FrontendPolicy");
+app.UseMiddleware<TenantResolverMiddleware>();
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();

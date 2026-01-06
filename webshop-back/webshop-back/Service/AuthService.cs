@@ -1,9 +1,9 @@
-﻿// webshop_back/Services/AuthService.cs
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using webshop_back.Data;
 using webshop_back.Data.Models;
-using webshop_back.DTOs;
 using webshop_back.DTOs.Auth;
 using webshop_back.Helpers;
 using webshop_back.DTOs.User;
@@ -15,25 +15,61 @@ namespace webshop_back.Services
         private readonly AppDbContext _context;
         private readonly TokenProvider _tokenProvider;
         private readonly ITenantProvider _tenantProvider;
+        private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _env;
 
-        public AuthService(AppDbContext context, TokenProvider tokenProvider, ITenantProvider tenantProvider)
+        public AuthService(
+            AppDbContext context,
+            TokenProvider tokenProvider,
+            ITenantProvider tenantProvider,
+            IConfiguration configuration,
+            IHostEnvironment env)
         {
             _context = context;
             _tokenProvider = tokenProvider;
             _tenantProvider = tenantProvider;
+            _configuration = configuration;
+            _env = env;
+        }
+
+        private string? ResolveMerchantId()
+        {
+            // 1. pokušaj iz headera
+            var merchantId = _tenantProvider?.CurrentMerchantId;
+
+            if (!string.IsNullOrWhiteSpace(merchantId))
+                return merchantId;
+
+            // 2. fallback samo u Development okruženju
+            if (_env.IsDevelopment())
+            {
+                return _configuration["Dev:DefaultMerchantId"];
+            }
+
+            return null;
         }
 
         public async Task<ResponsePayload<AuthResponse>> Register(RegisterUserRequest request)
         {
             try
             {
-                // check existing email
-                if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+                var currentMerchant = ResolveMerchantId();
+                if (string.IsNullOrEmpty(currentMerchant))
                 {
                     return new ResponsePayload<AuthResponse>
                     {
                         Status = ResponseStatus.BadRequest,
-                        Message = "The email is already in use"
+                        Message = "Merchant context is missing"
+                    };
+                }
+
+                if (await _context.Users.AnyAsync(
+                        u => u.Email == request.Email && u.MerchantId == currentMerchant))
+                {
+                    return new ResponsePayload<AuthResponse>
+                    {
+                        Status = ResponseStatus.BadRequest,
+                        Message = "The email is already in use for this merchant"
                     };
                 }
 
@@ -41,56 +77,33 @@ namespace webshop_back.Services
                 {
                     Name = request.Name,
                     Email = request.Email,
-                    Role = UserRole.User
+                    Role = UserRole.User,
+                    MerchantId = currentMerchant
                 };
 
                 var hasher = new PasswordHasher<User>();
                 user.PasswordHash = hasher.HashPassword(user, request.Password);
 
-                // assign current merchant id if available (multi-tenant)
-                var currentMerchant = _tenantProvider?.CurrentMerchantId;
-                if (!string.IsNullOrEmpty(currentMerchant))
-                {
-                    user.MerchantId = currentMerchant;
-                }
-
                 _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateException dbEx)
-                {
-                    var inner = dbEx.InnerException?.Message ?? dbEx.Message;
-                    var entriesInfo = string.Join("; ", dbEx.Entries.Select(e => e.Entity.GetType().Name + (e.State.ToString())));
-                    return new ResponsePayload<AuthResponse>
-                    {
-                        Status = ResponseStatus.InternalServerError,
-                        Message = $"An error occurred while saving the entity changes. DB message: {inner}. Entries: {entriesInfo}"
-                    };
-                }
-
-                // create token
                 string token = _tokenProvider.Create(user);
-
-                var authResponse = new AuthResponse
-                {
-                    Token = token,
-                    User = new UserDto
-                    {
-                        Id = user.Id,
-                        Name = user.Name,
-                        Email = user.Email,
-                        Role = user.Role.ToString()
-                    }
-                };
 
                 return new ResponsePayload<AuthResponse>
                 {
-                    Data = authResponse,
                     Status = ResponseStatus.Created,
-                    Message = "Registration successful"
+                    Message = "Registration successful",
+                    Data = new AuthResponse
+                    {
+                        Token = token,
+                        User = new UserDto
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            Email = user.Email,
+                            Role = user.Role.ToString()
+                        }
+                    }
                 };
             }
             catch (Exception ex)
@@ -98,7 +111,7 @@ namespace webshop_back.Services
                 return new ResponsePayload<AuthResponse>
                 {
                     Status = ResponseStatus.InternalServerError,
-                    Message = $"An error occurred while processing your request: {ex.Message} {ex.InnerException?.Message}"
+                    Message = $"An error occurred while processing your request: {ex.Message}"
                 };
             }
         }
@@ -107,19 +120,33 @@ namespace webshop_back.Services
         {
             try
             {
-                User? user = await _context.Users.AsNoTracking().SingleOrDefaultAsync(
-                    u => u.Email == request.Email);
+                var currentMerchant = ResolveMerchantId();
+                if (string.IsNullOrEmpty(currentMerchant))
+                {
+                    return new ResponsePayload<AuthResponse>
+                    {
+                        Status = ResponseStatus.BadRequest,
+                        Message = "Merchant context is missing"
+                    };
+                }
+
+                var user = await _context.Users.AsNoTracking()
+                    .SingleOrDefaultAsync(u =>
+                        u.Email == request.Email &&
+                        u.MerchantId == currentMerchant);
 
                 if (user is null)
                 {
                     return new ResponsePayload<AuthResponse>
                     {
                         Status = ResponseStatus.NotFound,
-                        Message = "User not found"
+                        Message = "User not found for this merchant"
                     };
                 }
 
-                var verification = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password);
+                var verification = new PasswordHasher<User>()
+                    .VerifyHashedPassword(user, user.PasswordHash, request.Password);
+
                 if (verification == PasswordVerificationResult.Failed)
                 {
                     return new ResponsePayload<AuthResponse>
@@ -131,23 +158,21 @@ namespace webshop_back.Services
 
                 string token = _tokenProvider.Create(user);
 
-                var authResponse = new AuthResponse
-                {
-                    Token = token,
-                    User = new UserDto
-                    {
-                        Id = user.Id,
-                        Name = user.Name,
-                        Email = user.Email,
-                        Role = user.Role.ToString()
-                    }
-                };
-
                 return new ResponsePayload<AuthResponse>
                 {
-                    Data = authResponse,
                     Status = ResponseStatus.OK,
-                    Message = "Login successful"
+                    Message = "Login successful",
+                    Data = new AuthResponse
+                    {
+                        Token = token,
+                        User = new UserDto
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            Email = user.Email,
+                            Role = user.Role.ToString()
+                        }
+                    }
                 };
             }
             catch (Exception ex)

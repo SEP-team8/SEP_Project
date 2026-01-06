@@ -1,7 +1,13 @@
 import axios from "axios";
 
+// Uvek koristi env var, fallback samo za lokalni dev (localhost)
+const baseURL = import.meta.env.VITE_API_BASE;
+if (!baseURL) {
+  console.warn("VITE_API_BASE nije postavljen! Pokušavam sa defaultom...");
+}
+
 const API = axios.create({
-  baseURL: "https://localhost:7171/api",
+  baseURL: baseURL || "https://api.shop1.localhost:7171/api",
   withCredentials: false,
   timeout: 20000,
 });
@@ -15,10 +21,6 @@ API.interceptors.request.use((cfg) => {
     };
   }
 
-  /**
-   * DEV / TEST ONLY
-   * omogućava multi-tenant bez domena
-   */
   const merchantId = sessionStorage.getItem("merchantId");
   if (merchantId) {
     cfg.headers = {

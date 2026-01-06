@@ -13,7 +13,11 @@ public class PaymentsController : ControllerBase
     private readonly ILogger<PaymentsController> _logger;
     private readonly IConfiguration _config;
 
-    public PaymentsController(IPaymentService paymentService, IRepository repo, ILogger<PaymentsController> logger, IConfiguration config)
+    public PaymentsController(
+        IPaymentService paymentService,
+        IRepository repo,
+        ILogger<PaymentsController> logger,
+        IConfiguration config)
     {
         _paymentService = paymentService;
         _repo = repo;
@@ -38,8 +42,26 @@ public class PaymentsController : ControllerBase
         if (order.MerchantId != merchant.MerchantId)
             return Forbid();
 
+        // 1️⃣ Uzimamo frontend URL iz Merchant-a
+        var allowedReturnUrls = System.Text.Json.JsonSerializer
+            .Deserialize<string[]>(merchant.AllowedReturnUrls)!;
+        var returnUrl = allowedReturnUrls.First(); // uzimamo prvi URL
+
+        // 2️⃣ Uzimamo backend HTTPS port iz appsettings
+        var backendPort = _config["Dev:HttpsPort"] ?? "7171";
+
+        // 3️⃣ Ako payment već postoji, vratimo ga sa ispravnim URL-om
         if (!string.IsNullOrEmpty(order.PaymentId))
         {
+            // osvežimo paymentUrl u slučaju da se port promenio ili returnUrl nije isti
+            order.PaymentUrl =
+                $"https://localhost:{backendPort}/psp/simulate-payment" +
+                $"?paymentId={Uri.EscapeDataString(order.PaymentId)}" +
+                $"&successUrl={Uri.EscapeDataString(returnUrl)}" +
+                $"&failedUrl={Uri.EscapeDataString(returnUrl)}";
+
+            _repo.UpdateOrder(order);
+
             return Ok(new
             {
                 paymentId = order.PaymentId,
@@ -49,7 +71,15 @@ public class PaymentsController : ControllerBase
             });
         }
 
+        // 4️⃣ Kreiramo novi payment
         var pspResp = _paymentService.InitializePaymentToAcquirer(req, order);
+
+        // override paymentUrl da koristi pravi frontend
+        pspResp.PaymentUrl =
+            $"https://localhost:{backendPort}/psp/simulate-payment" +
+            $"?paymentId={Uri.EscapeDataString(pspResp.PaymentId)}" +
+            $"&successUrl={Uri.EscapeDataString(returnUrl)}" +
+            $"&failedUrl={Uri.EscapeDataString(returnUrl)}";
 
         order.PaymentId = pspResp.PaymentId;
         order.PaymentUrl = pspResp.PaymentUrl;
@@ -84,7 +114,8 @@ public class PaymentsController : ControllerBase
         CallbackDto payload;
         try
         {
-            payload = System.Text.Json.JsonSerializer.Deserialize<CallbackDto>(body, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            payload = System.Text.Json.JsonSerializer.Deserialize<CallbackDto>(body,
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         }
         catch (Exception ex)
         {
@@ -104,7 +135,9 @@ public class PaymentsController : ControllerBase
 
         if (payload.Amount.HasValue && payload.Amount.Value != order.Amount)
         {
-            _logger.LogWarning("Callback amount mismatch for {OrderId} payload {PayloadAmount} expected {OrderAmount}", order.OrderId, payload.Amount, order.Amount);
+            _logger.LogWarning(
+                "Callback amount mismatch for {OrderId} payload {PayloadAmount} expected {OrderAmount}",
+                order.OrderId, payload.Amount, order.Amount);
         }
 
         order.Status = payload.Status;
@@ -112,7 +145,6 @@ public class PaymentsController : ControllerBase
         order.UpdatedAt = DateTime.UtcNow;
 
         _repo.UpdateOrder(order);
-
 
         return Ok(new { message = "Order updated", orderId = order.OrderId, status = order.Status });
     }

@@ -50,6 +50,36 @@ namespace webshop_back.Data.Seed
                     Price = 80,
                     Image = LoadImage("2023_bmw_3-series_sedan_m340i.jpg"),
                     MerchantId = "SHOP-123"
+                },
+
+
+
+                new Vehicle
+                {
+                    Make = "CCCCCCCCCCCC",
+                    Model = "Corolla",
+                    Description = "Compact",
+                    Price = 35,
+                    Image = LoadImage("toyota-corolla-hybrid.jpg"),
+                    MerchantId = "SHOP-321"
+                },
+                new Vehicle
+                {
+                    Make = "BBBBBBBBBBB",
+                    Model = "Octavia",
+                    Description = "Family",
+                    Price = 45,
+                    Image = LoadImage("2024-skoda-octavia-rs.jpg"),
+                    MerchantId = "SHOP-321"
+                },
+                new Vehicle
+                {
+                    Make = "AAAAAAAAAAA",
+                    Model = "3 Series",
+                    Description = "Premium",
+                    Price = 80,
+                    Image = LoadImage("2023_bmw_3-series_sedan_m340i.jpg"),
+                    MerchantId = "SHOP-321"
                 }
             };
 

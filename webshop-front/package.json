@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:shop1": "vite --port 5173 --mode shop1",
+    "dev:shop2": "vite --port 5174 --mode shop2"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.11",

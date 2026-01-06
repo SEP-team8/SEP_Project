@@ -6,6 +6,12 @@ import App from "./App";
 import { AuthProvider } from "./components/AuthContext";
 import "./index.css";
 
+const merchantId = import.meta.env.VITE_MERCHANT_ID;
+if (!merchantId) {
+  throw new Error("VITE_MERCHANT_ID is missing");
+}
+sessionStorage.setItem("merchantId", merchantId);
+
 const root = createRoot(document.getElementById("root"));
 
 root.render(

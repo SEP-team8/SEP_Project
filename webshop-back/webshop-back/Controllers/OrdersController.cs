@@ -11,10 +11,12 @@ using webshop_back.Service.Interfaces;
 public class OrdersController : ControllerBase
 {
     private readonly IRepository _repo;
+    private readonly IConfiguration _config;
 
-    public OrdersController(IRepository repo)
+    public OrdersController(IRepository repo, IConfiguration config)
     {
         _repo = repo;
+        _config = config;
     }
 
     private int GetUserId()
@@ -41,8 +43,23 @@ public class OrdersController : ControllerBase
         // privremeni payment id (kasnije PSP može da ga zameni)
         var paymentId = "P-" + Guid.NewGuid().ToString("N");
 
-        // STAN – uzimamo prvih 6 karaktera paymentId (realna praksa)
+        // STAN – uzimamo prvih 6 karaktera paymentId
         var stan = paymentId.Substring(0, 6);
+
+        // 1️⃣ Uzimamo frontend URL iz Merchant-a
+        var allowedReturnUrls = System.Text.Json.JsonSerializer
+            .Deserialize<string[]>(merchant.AllowedReturnUrls)!;
+        var returnUrl = allowedReturnUrls.First(); // možeš dodati logiku za odabir po portu ili domenu
+
+        // 2️⃣ Uzimamo backend HTTPS port iz appsettings
+        var backendPort = _config["Dev:HttpsPort"] ?? "7171";
+
+        // 3️⃣ Generišemo payment URL koji simulator koristi
+        var paymentUrl =
+            $"https://localhost:{backendPort}/psp/simulate-payment" +
+            $"?paymentId={Uri.EscapeDataString(paymentId)}" +
+            $"&successUrl={Uri.EscapeDataString(returnUrl)}" +
+            $"&failedUrl={Uri.EscapeDataString(returnUrl)}";
 
         var order = new Order
         {
@@ -60,11 +77,7 @@ public class OrdersController : ControllerBase
 
             // payment-related
             PaymentId = paymentId,
-            PaymentUrl =
-                $"https://localhost:7171/psp/simulate-payment" +
-                $"?paymentId={paymentId}" +
-                $"&successUrl={Uri.EscapeDataString("http://localhost:5173/payment-result")}" +
-                $"&failedUrl={Uri.EscapeDataString("http://localhost:5173/payment-result")}",
+            PaymentUrl = paymentUrl,
 
             Stan = stan,
             GlobalTransactionId = null, // PSP callback će popuniti
@@ -108,7 +121,6 @@ public class OrdersController : ControllerBase
         });
     }
 
-    // GET /api/orders
     [HttpGet]
     public IActionResult GetMyOrders()
     {
@@ -130,7 +142,6 @@ public class OrdersController : ControllerBase
         return Ok(dto);
     }
 
-    // GET /api/orders/{orderId}
     [HttpGet("{orderId}")]
     public IActionResult GetOrder(string orderId)
     {

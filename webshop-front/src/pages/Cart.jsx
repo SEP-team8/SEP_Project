@@ -103,10 +103,14 @@ export default function Cart() {
       const orderId = orderResp.data.orderId;
       if (!orderId) throw new Error("OrderId missing from backend");
 
-      //STA SE SALJE PSP-U I MOZDA IZMENUTI I BACK STA PRIMA
+      const origin = window.location.origin;
+
       const payResp = await API.post("/payments/init", {
         MERCHANT_ORDER_ID: orderId,
         AMOUNT: total,
+        CURRENCY: "EUR",
+        SUCCESS_URL: `${origin}/payment-success`,
+        FAILED_URL: `${origin}/payment-failed`,
       });
 
       const paymentUrl = payResp.data?.paymentUrl;

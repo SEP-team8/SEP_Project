@@ -9,6 +9,8 @@ namespace BankAPI.Services
 
         Task<PaymentRequestDto> GetPaymentRequest(Guid paymentRequestId);
 
-        Task<InitializePaymentServiceResult> InitializePayment(InitPaymentRequestDto dto, Guid pspId, string signature, DateTime timestamp);
+        Task<InitializePaymentServiceResult> InitializePayment(InitPaymentRequestDto dto, Guid pspId, string signature, DateTime timestamp, bool isQrPayment);
+
+        Task<QRPaymentResponseDto> GenerateQrPayment(Guid paymentRequestId);
     }
 }

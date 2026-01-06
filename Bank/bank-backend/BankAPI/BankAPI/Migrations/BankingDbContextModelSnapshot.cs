@@ -28,6 +28,10 @@ namespace BankAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Balance")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -214,7 +218,7 @@ namespace BankAPI.Migrations
 
             modelBuilder.Entity("BankAPI.Models.PaymentRequest", b =>
                 {
-                    b.HasOne("BankAPI.Models.Merchant", null)
+                    b.HasOne("BankAPI.Models.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -225,6 +229,8 @@ namespace BankAPI.Migrations
                         .HasForeignKey("PspId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Merchant");
                 });
 
             modelBuilder.Entity("BankAPI.Models.Transaction", b =>

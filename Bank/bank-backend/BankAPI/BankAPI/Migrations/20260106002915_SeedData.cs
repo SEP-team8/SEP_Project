@@ -15,10 +15,11 @@ namespace BankAPI.Migrations
             // =====================
             migrationBuilder.InsertData(
                 table: "BankAccounts",
-                columns: new[] { "AccountId", "Balance", "Currency" },
+                columns: new[] { "AccountId", "AccountNumber", "Balance", "Currency" },
                 values: new object[]
                 {
                     new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    "123-4567890123456-78",
                     10000.00m,
                     1
                 });

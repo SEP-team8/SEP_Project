@@ -38,6 +38,32 @@
   },
   {
     "ContainingType": "BankAPI.Controllers.PaymentsController",
+    "Method": "GenerateQrPayment",
+    "RelativePath": "api/payments/{paymentRequestId}/qr",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentRequestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BankAPI.DTOs.QRPaymentResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BankAPI.Controllers.PaymentsController",
     "Method": "InitPayment",
     "RelativePath": "api/payments/init",
     "HttpMethod": "POST",
@@ -62,6 +88,11 @@
       {
         "Name": "Timestamp",
         "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsQrPayment",
+        "Type": "System.Boolean",
         "IsRequired": false
       }
     ],

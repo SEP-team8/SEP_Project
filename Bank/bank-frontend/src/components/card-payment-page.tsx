@@ -3,15 +3,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CardPaymentForm, CardFormData } from './card-payment-form';
 
-export interface PaymentRequestDto{
+export interface CardPaymentRequestDto{
     amount: number;
     currency: string;
 }
 
-export function PaymentPage() {
+export function CardPaymentPage() {
     const { paymentRequestId } = useParams<{ paymentRequestId: string }>();
 
-    const [payment, setPayment] = useState<PaymentRequestDto | null>(null);
+    const [payment, setPayment] = useState<CardPaymentRequestDto | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export function PaymentPage() {
         if (!paymentRequestId) return;
 
         axios
-            .get<PaymentRequestDto>(
+            .get<CardPaymentRequestDto>(
                 `https://localhost:7278/api/payments/${paymentRequestId}`
             )
             .then(res => setPayment(res.data))

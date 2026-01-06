@@ -157,7 +157,7 @@ namespace BankAPI.Context
                     .HasForeignKey(e => e.PspId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne<Merchant>()
+                entity.HasOne(e => e.Merchant)
                     .WithMany()
                     .HasForeignKey(e => e.MerchantId)
                     .OnDelete(DeleteBehavior.Restrict);

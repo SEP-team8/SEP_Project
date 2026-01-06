@@ -92,7 +92,15 @@ namespace BankAPI.Services
                 if (card.BankAccount.Balance < paymentRequest.Amount)
                     return PaymentExecutionResult.InsufficientFunds;
 
+                var merchant = await _context.Merchants
+                    .Include(c => c.BankAccount)
+                    .FirstOrDefaultAsync(b => b.Id == paymentRequest.MerchantId);
+
+                if (merchant.BankAccount == null)
+                    return PaymentExecutionResult.InvalidState;
+
                 card.BankAccount.Balance -= paymentRequest.Amount;
+                merchant.BankAccount.Balance += paymentRequest.Amount;
 
                 _context.Transactions.Add(new Transaction
                 {
@@ -148,7 +156,7 @@ namespace BankAPI.Services
             return paymentRequest;
         }
 
-        public async Task<InitializePaymentServiceResult> InitializePayment(InitPaymentRequestDto dto, Guid pspId, string signature, DateTime timestamp)
+        public async Task<InitializePaymentServiceResult> InitializePayment(InitPaymentRequestDto dto, Guid pspId, string signature, DateTime timestamp, bool isQrPayment)
         {
             var psp = await _context.Psps.FindAsync(pspId);
             if (psp == null)
@@ -203,9 +211,45 @@ namespace BankAPI.Services
                 Response = new InitPaymentResponseDto
                 {
                     PaymentRequestId = paymentRequest.PaymentRequestId,
-                    PaymentReqyestUrl =
-                        $"http://localhost:3000/pay/{paymentRequest.PaymentRequestId}"
+                    PaymentRequestUrl = isQrPayment ?
+                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}" :
+                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}"
                 }
+            };
+        }
+
+        public async Task<QRPaymentResponseDto> GenerateQrPayment(Guid paymentRequestId)
+        {
+            var paymentRequest = await _context.PaymentRequests
+            .Include(p => p.Merchant)
+            .ThenInclude(m => m.BankAccount)
+            .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
+
+            if (paymentRequest == null)
+                throw new Exception("Payment request not found");
+
+            if (paymentRequest.Status != PaymentRequestStatus.Pending)
+                throw new Exception("Payment request not valid");
+
+            if (paymentRequest.ExpiresAt < DateTime.UtcNow)
+                throw new Exception("Payment request expired");
+
+            var ipsData = new IpsQrData
+            {
+                Amount = paymentRequest.Amount,
+                Currency = paymentRequest.Currency.ToString(),
+                MerchantName = paymentRequest.Merchant.Name,
+                MerchantAccount = paymentRequest.Merchant.BankAccount.AccountNumber,
+                Purpose = "Placanje robe"
+            };
+
+            var payload = IpsQrPayloadGenerator.Generate(ipsData);
+            var qrBase64 = QrImageGenerator.GenerateBase64(payload);
+
+            return new QRPaymentResponseDto
+            {
+                PaymentRequestId = paymentRequestId,
+                QrCodeBase64 = qrBase64
             };
         }
     }

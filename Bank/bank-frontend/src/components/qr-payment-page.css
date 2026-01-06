@@ -1,0 +1,60 @@
+/* Page wrapper */
+.payment-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+/* Card */
+.payment-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Title */
+.payment-card h2 {
+    margin: 0 0 24px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1f2937; /* dark gray */
+}
+
+/* QR image */
+.payment-card img {
+    display: block;
+    margin: 0 auto;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Instruction text */
+.payment-card p {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #4b5563;
+    line-height: 1.4;
+}
+
+/* Loading & error states */
+.payment-container > div {
+    font-size: 1rem;
+    color: #374151;
+}
+
+/* Error state */
+.payment-container > div:not(.payment-card) {
+    color: #b91c1c;
+}

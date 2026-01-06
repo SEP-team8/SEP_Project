@@ -23,12 +23,13 @@ namespace BankAPI.Controllers
         [FromBody] InitPaymentRequestDto dto,
         [FromHeader(Name = "PspID")] Guid pspId,
         [FromHeader(Name = "Signature")] string signature,
-        [FromHeader(Name = "Timestamp")] DateTime timestamp)
+        [FromHeader(Name = "Timestamp")] DateTime timestamp,
+        [FromHeader(Name = "IsQrPayment")] bool isQrPayment)
         {
             if (Math.Abs((DateTime.UtcNow - timestamp).TotalMinutes) > 30)
                 return Unauthorized("Timestamp expired");
 
-            InitializePaymentServiceResult result = await _paymentService.InitializePayment(dto, pspId, signature, timestamp);
+            InitializePaymentServiceResult result = await _paymentService.InitializePayment(dto, pspId, signature, timestamp, isQrPayment);
 
             return result.Result switch
             {
@@ -66,6 +67,13 @@ namespace BankAPI.Controllers
                 return Ok();
 
             return BadRequest();
+        }
+
+        [HttpPost("{paymentRequestId}/qr")]
+        public async Task<ActionResult<QRPaymentResponseDto>> GenerateQrPayment(Guid paymentRequestId)
+        {
+            var result = await _paymentService.GenerateQrPayment(paymentRequestId);
+            return Ok(result);
         }
     }
 }

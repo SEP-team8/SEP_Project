@@ -16,6 +16,7 @@ namespace BankAPI.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Currency = table.Column<int>(type: "int", nullable: false)
                 },

@@ -1,6 +1,7 @@
 ﻿using BankAPI.DTOs;
 using BankAPI.Models;
 using BankAPI.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
@@ -19,6 +20,7 @@ namespace BankAPI.Controllers
         }
 
         [HttpPost("init")]
+        [DisableCors]
         public async Task<IActionResult> InitPayment(
         [FromBody] InitPaymentRequestDto dto,
         [FromHeader(Name = "PspID")] Guid pspId,

@@ -28,6 +28,11 @@ builder.Services.AddDbContext<BankingDbContext>(options =>
 builder.Services.AddScoped<IHmacValidator, HmacValidator>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+builder.Services.AddHttpClient<IPspClient, PspClient>(c =>
+{
+    c.BaseAddress = new Uri("https://localhost:5002"); // PSP API
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

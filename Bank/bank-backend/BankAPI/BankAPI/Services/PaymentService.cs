@@ -12,14 +12,17 @@ namespace BankAPI.Services
     {
         private readonly BankingDbContext _context;
         private readonly IHmacValidator _hmacValidator;
+        public IPspClient _pspClient;
 
         public PaymentService(
             BankingDbContext context,
-            IHmacValidator hmacValidator
+            IHmacValidator hmacValidator,
+            IPspClient pspClient
         )
         {
             _context = context;
             _hmacValidator = hmacValidator;
+            _pspClient = pspClient;
         }
 
         private bool IsCardExpired(string expiry)
@@ -43,15 +46,15 @@ namespace BankAPI.Services
             return lastDayOfMonth < DateTime.UtcNow.Date;
         }
 
-        public async Task<PaymentExecutionResult> ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request)
+        public async Task<PaymentExecutionResult>   ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request)
         {
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
 
-            try
-            {
-                var paymentRequest = await _context.PaymentRequests
+            var paymentRequest = await _context.PaymentRequests
                 .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
 
+            try
+            {
                 if (paymentRequest == null)
                     return PaymentExecutionResult.NotFound;
 
@@ -102,11 +105,14 @@ namespace BankAPI.Services
                 card.BankAccount.Balance -= paymentRequest.Amount;
                 merchant.BankAccount.Balance += paymentRequest.Amount;
 
+                var globalTransactionId = Guid.NewGuid();
+                var acquirerTimestamp = DateTime.UtcNow;
+
                 _context.Transactions.Add(new Transaction
                 {
                     PaymentRequestId = paymentRequestId,
-                    GlobalTransactionId = Guid.NewGuid(),
-                    AcquirerTimestamp = DateTime.UtcNow,
+                    GlobalTransactionId = globalTransactionId,
+                    AcquirerTimestamp = acquirerTimestamp,
                     Status = TransactionStatus.Successfull
                 });
 
@@ -115,11 +121,30 @@ namespace BankAPI.Services
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
 
+                await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
+                {
+                    PaymentRequestId = paymentRequestId,
+                    Stan = paymentRequest.Stan,
+                    GlobalTransactionId = globalTransactionId,
+                    AcquirerTimestamp = acquirerTimestamp,
+                    Status = TransactionStatus.Successfull
+                });
+
                 return PaymentExecutionResult.Success;
             }
             catch
             {
                 await dbTransaction.RollbackAsync();
+
+                await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
+                {
+                    PaymentRequestId = paymentRequestId,
+                    Stan = paymentRequest.Stan,
+                    GlobalTransactionId = null,
+                    AcquirerTimestamp = DateTime.UtcNow,
+                    Status = TransactionStatus.Failed
+                });
+
                 return PaymentExecutionResult.InvalidCard;
             }
         }
@@ -221,9 +246,9 @@ namespace BankAPI.Services
         public async Task<QRPaymentResponseDto> GenerateQrPayment(Guid paymentRequestId)
         {
             var paymentRequest = await _context.PaymentRequests
-            .Include(p => p.Merchant)
-            .ThenInclude(m => m.BankAccount)
-            .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
+                .Include(p => p.Merchant)
+                .ThenInclude(m => m.BankAccount)
+                .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
 
             if (paymentRequest == null)
                 throw new Exception("Payment request not found");

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PSPbackend.DTOs;
+using PSPbackend.DTOs.Bank;
+using PSPbackend.Models;
+using PSPbackend.Services;
 
 namespace PSPbackend.Controllers
 {
@@ -8,41 +10,62 @@ namespace PSPbackend.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
+        private readonly IBankClient _bank;
         private readonly IConfiguration _config;
 
-        public PaymentController(IConfiguration config)
+
+        public PaymentController(IBankClient bank, IConfiguration config)
         {
+            _bank = bank;
             _config = config;
         }
 
-        [HttpPost("payment/{method}")]
-        public ActionResult<PaymentResponse> StartPayment(
-            [FromRoute] string method,
-            [FromBody] PaymentRequest request)
+        [HttpPost("startPayment")]
+        public async Task<ActionResult<PaymentResponseDto>> StartPayment( [FromRoute] string method, [FromBody] PaymentRequestDto req, CancellationToken ct)
         {
-            if (string.IsNullOrWhiteSpace(request?.PurchaseId))
-                return BadRequest("PurchaseId is required.");
+            if (req?.Purchase is null || string.IsNullOrWhiteSpace(req.Purchase.Id))
+                return BadRequest("purchase.id is required.");
 
-            method = method.ToLower(); //izmena
+            if (req.Purchase.Amount <= 0)
+                return BadRequest("purchase.amount must be > 0.");
 
-            // base url from appsettings.json
-            var baseUrl = _config[$"PaymentProviders:{method}"];
+            if (string.IsNullOrWhiteSpace(req.Purchase.Currency))
+                return BadRequest("purchase.currency is required.");
 
-            if (string.IsNullOrWhiteSpace(baseUrl))
-                return BadRequest("Unsupported payment method.");
+            method = (method ?? req.PaymentMethod ?? "").Trim().ToLowerInvariant();
+            var isCard = method == "card";
+            var isQr = method == "qr";
+            if (!isCard && !isQr)
+                return BadRequest("Only 'card' and 'qr' supported currently");
 
-            //napravi transaction id ovo izmena
-            var transactionId = "12345";
+            //Stan -> mozda se drugacije generise videti
+            var stan = Random.Shared.Next(100000, 999999).ToString(); // 6 cifara
+            var pspTimestamp = DateTime.UtcNow;
 
-           
-            var redirectUrl = $"{baseUrl}?transactionId={transactionId}"; // iz responsa 
-            //dodaj transakcije
-
-            return Ok(new PaymentResponse
+            var currencyEnum = req.Purchase.Currency.ToUpperInvariant() switch
             {
-                RedirectUrl = redirectUrl,
-                TransactionId = transactionId
-            });
+                "RSD" => Currency.RSD,
+                "EUR" => Currency.EUR,
+                "USD" => Currency.USD,
+                _ => throw new InvalidOperationException("Unsupported currency")
+            };
+
+            //Merchand id psp dobije od banke
+            Guid bankMerchantId = Guid.Parse(_config["Bank:MerchantId"]!); 
+            var bankBody = new InitPaymentRequestDto((float)req.Purchase.Amount, currencyEnum, bankMerchantId, stan, pspTimestamp);
+
+            //Send bank request
+            var bankRes = await _bank.InitAsync(bankBody, isQrPayment: isQr, ct);
+
+            //sacuvaj transakciju u DB dodati 
+            var transactionId = Guid.NewGuid(); 
+
+            return Ok(new PaymentResponseDto(
+                transactionId,
+                bankRes.PaymentRequestId,
+                bankRes.PaymentRequestUrl
+            ));
         }
+
     }
 }

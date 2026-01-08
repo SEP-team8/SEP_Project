@@ -28,7 +28,7 @@ export default function PaymentCard() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-      //Fetch purchase data from backend API web shop ?
+       // TODO: kasnije ovo dolazi od webshop backenda
       setPurchase(MOCK_PURCHASE);
   }, []);
 
@@ -40,10 +40,15 @@ export default function PaymentCard() {
 
     const payload = {
       paymentMethod,
-      purchase,
+      purchase: {
+        id: purchase.id,
+        merchant: purchase.merchant,
+        amount: purchase.total,     // total -> amount mapiranje izmena spram web shopa
+        currency: purchase.currency
+      }
     };
 
-    const url = `/api/psp/payment/${paymentMethod}`;
+    const url = "/api/psp/startPayment";
 
     try {
       const res = await fetch(url, {
@@ -52,12 +57,19 @@ export default function PaymentCard() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("PSP payment failed");
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        throw new Error(`PSP payment failed: ${res.status}. ${errText}`);
+      }
 
       // expected: { redirectUrl: "...", transactionId: "..." }
       const data = await res.json();
 
-      // redirect to URL provided by backend 
+      if (!data?.redirectUrl) {
+        throw new Error("Backend nije vratio redirectUrl.");
+      }
+
+      // redirect na bank front (PaymentRequestUrl koji vraća banka)
       window.location.href = data.redirectUrl;
   
     } catch (e) {

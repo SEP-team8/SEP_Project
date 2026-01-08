@@ -13,7 +13,6 @@ namespace PSPbackend.Controllers
         private readonly IBankClient _bank;
         private readonly IConfiguration _config;
 
-
         public PaymentController(IBankClient bank, IConfiguration config)
         {
             _bank = bank;
@@ -21,9 +20,9 @@ namespace PSPbackend.Controllers
         }
 
         [HttpPost("startPayment")]
-        public async Task<ActionResult<PaymentResponseDto>> StartPayment( [FromRoute] string method, [FromBody] PaymentRequestDto req, CancellationToken ct)
+        public async Task<ActionResult<PaymentResponseDto>> StartPayment([FromBody] PaymentRequestDto req, CancellationToken ct)
         {
-            if (req?.Purchase is null || string.IsNullOrWhiteSpace(req.Purchase.Id))
+            if (req?.Purchase is null || string.IsNullOrWhiteSpace(req.Purchase.MerchantOrderId))
                 return BadRequest("purchase.id is required.");
 
             if (req.Purchase.Amount <= 0)
@@ -32,7 +31,9 @@ namespace PSPbackend.Controllers
             if (string.IsNullOrWhiteSpace(req.Purchase.Currency))
                 return BadRequest("purchase.currency is required.");
 
-            method = (method ?? req.PaymentMethod ?? "").Trim().ToLowerInvariant();
+            Console.WriteLine("Nasao je ovo");
+
+            var method = req.PaymentMethod.Trim().ToLowerInvariant();
             var isCard = method == "card";
             var isQr = method == "qr";
             if (!isCard && !isQr)
@@ -58,7 +59,7 @@ namespace PSPbackend.Controllers
             var bankRes = await _bank.InitAsync(bankBody, isQrPayment: isQr, ct);
 
             //sacuvaj transakciju u DB dodati 
-            var transactionId = Guid.NewGuid(); 
+            var transactionId = Guid.NewGuid();
 
             return Ok(new PaymentResponseDto(
                 transactionId,

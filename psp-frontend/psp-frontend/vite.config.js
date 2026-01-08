@@ -5,9 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 5173,       // fiksan port
+    strictPort: true, // ne prelazi na drugi port ako je zauzet
     proxy: {
       "/api": {
-        target: "http://localhost:8080", //PSP backend
+        target: "http://localhost:5199", //PSP backend
         changeOrigin: true,
         secure: false,
       },

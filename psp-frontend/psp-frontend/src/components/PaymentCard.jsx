@@ -11,14 +11,10 @@ import { useEffect, useState } from "react";
 
 
 const MOCK_PURCHASE = {
-  id: "order_12345",
-  merchant: "Rent-a-Car Agency",
-  service: "Iznajmljivanje vozila",
-  vehicle: "VW Golf / Economy class",
-  period: { from: "12.06.2026", to: "15.06.2026" },
-  total: 129.99,
+  merchantId: "Rent-a-Car Agency",
+  merchantOrderId: "ORDER12345",
+  amount: 129.99,
   currency: "EUR",
-  note: "Podaci o kupovini dostavljeni od strane trgovca"
 };
 
 export default function PaymentCard() {
@@ -40,10 +36,10 @@ export default function PaymentCard() {
 
     const payload = {
       paymentMethod,
+      merchantId: purchase.merchant,
       purchase: {
-        id: purchase.id,
-        merchant: purchase.merchant,
-        amount: purchase.total,     // total -> amount mapiranje izmena spram web shopa
+        merchantOrderId: purchase.merchantOrderId,
+        amount: purchase.amount,     
         currency: purchase.currency
       }
     };
@@ -61,8 +57,6 @@ export default function PaymentCard() {
         const errText = await res.text().catch(() => "");
         throw new Error(`PSP payment failed: ${res.status}. ${errText}`);
       }
-
-      // expected: { redirectUrl: "...", transactionId: "..." }
       const data = await res.json();
 
       if (!data?.redirectUrl) {
@@ -70,6 +64,7 @@ export default function PaymentCard() {
       }
 
       // redirect na bank front (PaymentRequestUrl koji vraća banka)
+      console.log("Redirecting to:", data.redirectUrl);
       window.location.href = data.redirectUrl;
   
     } catch (e) {
@@ -165,27 +160,12 @@ export default function PaymentCard() {
           <h2>Podaci o kupovini</h2>
 
           <div className="info-row">
-            <span className="label">Trgovac:</span>
-            <span className="value">{purchase ? purchase.merchant : '—'}</span>
-          </div>
-
-          <div className="info-row">
             <span className="label">Usluga:</span>
-            <span className="value">{purchase ? purchase.service : '—'}</span>
+            <span className="value">Iznajmljivanje vozila</span>
           </div>
 
-          <div className="info-row">
-            <span className="label">Vozilo:</span>
-            <span className="value">{purchase ? purchase.vehicle : '—'}</span>
-          </div>
-
-          <div className="info-row last">
-            <span className="label">Period:</span>
-            <span className="value">{purchase ? `${purchase.period.from} — ${purchase.period.to}` : '—'}</span>
-          </div>
-
-          <div className="total">Ukupan iznos: <strong>{purchase ? `${purchase.total} ${purchase.currency}` : '—'}</strong></div>
-          <p className="note">{purchase ? purchase.note : ''}</p>
+          <div className="total">Ukupan iznos: <strong>{purchase ? `${purchase.amount} ${purchase.currency}` : '—'}</strong></div>
+          <p className="note">Podaci o kupovini dostavljeni od strane trgovca.</p>
         </section>
       </div>
 

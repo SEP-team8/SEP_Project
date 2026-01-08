@@ -12,8 +12,8 @@ namespace PSPbackend.DTOs
     {
         public string PaymentMethod { get; set; } = string.Empty; 
         public string MerchantId { get; set; } = string.Empty;     //npr. "shop_001"
-        
-        //public string MerchantPassword { get; set; } = string.Empty;  // MERCHANT_PASSWORD nisam sigurna da li treba
+        public string MerchantPassword { get; set; } = string.Empty;  //za autentifikaciju
+        public DateTime MerchantTimestamp { get; set; }
         public PurchaseDto Purchase { get; set; } = new PurchaseDto();
     }
 }

@@ -37,6 +37,8 @@ export default function PaymentCard() {
     const payload = {
       paymentMethod,
       merchantId: purchase.merchant,
+      merchantPassworcd: "securepassword", // TODO: ovo ide iz webshopa, hardkodovano za sada
+      mechantTimeStamop: new Date().toISOString(), // TODO: ovo ide iz webshopa, hardkodovano za sada
       purchase: {
         merchantOrderId: purchase.merchantOrderId,
         amount: purchase.amount,     

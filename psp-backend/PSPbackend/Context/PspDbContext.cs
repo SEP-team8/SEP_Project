@@ -69,10 +69,6 @@ namespace PSPbackend.Context
                 entity.HasIndex(x => new { x.MerchantId, x.Stan, x.PspTimestamp })
                     .IsUnique();
 
-                // Da ti ne duplira isti merchantOrderId za istog merchant-a
-                entity.HasIndex(x => new { x.MerchantId, x.MerchantOrderId })
-                    .IsUnique();
-
                 // BankPaymentRequestId (ako postoji) da je jedinstven
                 entity.HasIndex(x => x.BankPaymentRequestId)
                     .IsUnique();

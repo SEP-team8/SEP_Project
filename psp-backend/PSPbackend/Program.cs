@@ -45,3 +45,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//ALTER USER postgres WITH PASSWORD 'NovaSifra123!';

@@ -110,3 +110,17 @@
   "ErrorUrl": "http://shop1.localhost:5173/payment-result"
 }
 
+===== PSP REQUEST =====
+2026-01-09T21:26:07.8496983Z
+{
+  "MerchantId": "44444444-4444-4444-4444-444444444444",
+  "MerchantPassword": "psp-secret-321",
+  "Amount": 250,
+  "Currency": "EUR",
+  "MerchantOrderId": "eba55b38-64a8-487e-a9b1-f890b1d34c02",
+  "MerchantTimestamp": "2026-01-09T21:26:07.8478459Z",
+  "SuccessUrl": "http://shop2.localhost:5174/success",
+  "FailedUrl": "http://shop2.localhost:5174/failed",
+  "ErrorUrl": "http://shop2.localhost:5174/payment-result"
+}
+

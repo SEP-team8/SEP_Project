@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -58,11 +62,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 178,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\appsettings.json",
               "RelativeDocumentMoniker": "webshop-back\\appsettings.json",
@@ -76,20 +80,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Program.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Program.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Program.cs",
+              "RelativeToolTip": "webshop-back\\Program.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAUwGQAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T21:15:53.867Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "webshop-back\\Data\\AppDbContext.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
               "RelativeToolTip": "webshop-back\\Data\\AppDbContext.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAUwGEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAEwFsAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-09T20:51:52.707Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\OrderItem.cs",
@@ -102,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Order.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Order.cs",
               "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\Order.cs",
@@ -123,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "TenantResolverMiddleware.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Middleware\\TenantResolverMiddleware.cs",
               "RelativeDocumentMoniker": "webshop-back\\Middleware\\TenantResolverMiddleware.cs",
@@ -136,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\OrdersController.cs",
@@ -149,7 +166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "UsersController.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\UsersController.cs",
@@ -162,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "VehiclesController.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\VehiclesController.cs",
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\VehiclesController.cs",
@@ -175,7 +192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AuthService.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\AuthService.cs",
               "RelativeDocumentMoniker": "webshop-back\\Service\\AuthService.cs",
@@ -188,7 +205,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "EfRepository.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\EfRepository.cs",
               "RelativeDocumentMoniker": "webshop-back\\Service\\EfRepository.cs",
@@ -201,7 +218,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "PaymentService.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\PaymentService.cs",
               "RelativeDocumentMoniker": "webshop-back\\Service\\PaymentService.cs",
@@ -214,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "PaymentsController.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\PaymentsController.cs",
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\PaymentsController.cs",

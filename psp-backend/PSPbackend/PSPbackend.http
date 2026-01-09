@@ -1,0 +1,6 @@
+@PSPbackend_HostAddress = http://localhost:5199
+
+GET {{PSPbackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

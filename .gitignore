@@ -5,6 +5,7 @@
 bin/
 obj/
 out/
+*.rsuser
 *.user
 *.suo
 *.userosscache

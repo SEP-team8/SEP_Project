@@ -1,0 +1,181 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.payment-card {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #1b2430;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header / brand + safe badge */
+.psp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 0;
+  padding: 8px 22px 22px 22px;
+  background: inherit;
+  width: 100%;
+}
+.psp-logo { height: 85px; width: auto; display: block; }
+.psp-brand { display: flex; align-items: center; gap: 12px; }
+.psp-text { font-size: 24px; font-weight: 700; font-style: italic; color: #1a5a96; }
+.psp-name { font-size: 20px; font-weight: 800; color: #2d78bd; }
+.psp-safe {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(#f7fbff,#f4f8fb);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #e6eef6;
+  flex: 0 1 auto;
+}
+.safe-icon { height: 28px; width: 28px; display: block; }
+.psp-safe p { font-size: 14px; color: #2d78bd; line-height: 1.2; }
+.psp-safe p strong { color: #143a64; }
+
+/* Content wrapper - two column layout */
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 22px auto;
+  max-width: 1200px;
+  padding: 0 22px;
+  width: 100%;
+}
+
+/* Purchase info card */
+.purchase-info {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 6px rgba(16,24,40,0.08), 0 2px 4px rgba(16,24,40,0.04);
+  border: 1px solid #e8eef7;
+  order: 2;
+}
+.purchase-info h2 { font-size: 16px; margin-bottom: 14px; color: #0f1724; }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 10px 0;
+  align-items: center;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f3f5;
+}
+.info-row:last-of-type { border-bottom: none; }
+.label { width: 100px; color: #6b7884; font-weight: 600; flex: 0 0 auto; text-align: left; }
+.value { color: #0f1724; font-weight: 700; flex: 1; text-align: right; }
+.value.small { font-weight: 600; color: #1f2a36; }
+.price-block { text-align: right; min-width: 140px; }
+.price-block .price { color: #0f1724; font-size: 24px; font-weight: 900; letter-spacing: 0.2px; }
+.total { text-align: right; margin-top: 14px; font-weight: 800; color: #1a5a96; font-size: 18px; }
+.total strong { color: #1a5a96; font-size: 20px; display: inline-block; margin-left: 6px; }
+.note { text-align: center; font-size: 12px; color: #90a0ac; margin-top: 10px; }
+
+/* Payment methods */
+.payment-methods {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e8eef7;
+  box-shadow: 0 4px 6px rgba(16,24,40,0.08), 0 2px 4px rgba(16,24,40,0.04);
+  order: 1;
+}
+.payment-methods h2 { font-size: 16px; margin-bottom: 12px; color: #0f1724; }
+
+/* Option */
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 2px solid #e6edf3;
+  cursor: pointer;
+  transition: all .2s ease;
+  background: #fafbfc;
+}
+.payment-option:hover { border-color: #2d78bd; background: #f8fbff; box-shadow: 0 2px 8px rgba(45,120,189,0.1); }
+.payment-option.selected { border-color: #2d78bd; background: #f0f6ff; box-shadow: 0 2px 8px rgba(45,120,189,0.15); }
+.payment-option input[type="radio"]:checked + .option-content ~ .logos-right,
+.payment-option input[type="radio"]:checked + .option-content ~ .qr-icon,
+.payment-option input[type="radio"]:checked + .option-content ~ .paypal-icon,
+.payment-option input[type="radio"]:checked + .option-content ~ .crypto-logos {
+  border-color: #2d78bd;
+  background: #f0f6ff;
+  box-shadow: 0 2px 8px rgba(45,120,189,0.15);
+}
+.payment-option input[type="radio"]:checked { accent-color: #1a5a96; }
+.payment-option input[type="radio"] { margin-left: 6px; margin-right: 6px; accent-color: #1a5a96; transform: translateY(-1px); }
+
+/* Option content */
+.option-content { flex: 1; min-width: 0; }
+.option-content h3 { margin: 0 0 6px 0; font-size: 15px; color: #0f1724; }
+.option-content p { margin: 0; font-size: 13px; color: #6f8796; }
+
+/* Right side images / logos */
+.logos-right { display: flex; flex-direction: column; gap: 3px; align-items: center; padding: 0; margin: 0; }
+.logos-right img { height: 40px; width: auto; object-fit: contain; display: block; border-radius: 6px; }
+
+/* QR / PayPal / Crypto icons */
+.qr-icon { height: 64px; width: 64px; object-fit: contain; }
+.paypal-icon { height: 42px; width: auto; object-fit: contain; }
+.crypto-logos { display: flex; gap: 10px; align-items: center; justify-content: center; }
+.crypto-logos img { height: 36px; width: auto; object-fit: contain; }
+
+/* Actions */
+.actions {
+  margin-top: 24px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 22px;
+  width: 100%;
+}
+.btn-primary, .btn-secondary {
+  min-width: 300px;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.btn-primary { background: linear-gradient(135deg, #2d78bd 0%, #245f97 100%); color: #fff; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,120,189,0.3); }
+.btn-secondary { background: #fff; color: #2d78bd; border: 2px solid #2d78bd; }
+.btn-secondary:hover { background: #f0f6ff; }
+
+/* small screens */
+@media (max-width: 760px) {
+  .payment-card { padding: 0; }
+  .psp-header { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
+  .psp-logo { height: 60px; }
+  .psp-safe { width: 100%; }
+  .content-wrapper { grid-template-columns: 1fr; margin: 16px auto; padding: 0 16px; }
+  .label { width: 100px; font-size: 13px; }
+  .logos-right img, .crypto-logos img { height: 28px; }
+  .qr-icon { height: 56px; width: 56px; }
+  .price-block .price { font-size: 20px; }
+  .actions { margin-bottom: 16px; padding: 0 16px; }
+}
+
+/* Accessibility tweaks */
+.payment-option:focus-within { outline: 3px solid rgba(45,120,189,0.12); outline-offset: 2px; }

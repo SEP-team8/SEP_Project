@@ -17,160 +17,64 @@ namespace webshop_back.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Users
+            // Users mapping
             modelBuilder.Entity<User>(b =>
             {
                 b.ToTable("Users");
                 b.HasKey(u => u.Id);
-
-                b.Property(u => u.Name)
-                    .HasMaxLength(255)
-                    .IsRequired();
-
-                b.Property(u => u.Email)
-                    .HasMaxLength(255)
-                    .IsRequired();
-
-                b.HasIndex(u => u.Email)
-                    .IsUnique();
-
-                b.Property(u => u.PasswordHash)
-                    .HasMaxLength(512)
-                    .IsRequired();
-
-                b.Property(u => u.Role)
-                    .HasConversion<string>()
-                    .HasMaxLength(32)
-                    .IsRequired();
-
-                b.Property(u => u.ProfilePicture)
-                    .HasColumnType("varbinary(max)")
-                    .IsRequired(false);
-
-                b.Property(u => u.MerchantId)
-                    .IsRequired();
+                b.Property(u => u.Name).HasMaxLength(255).IsRequired();
+                b.Property(u => u.Email).HasMaxLength(255).IsRequired();
+                b.HasIndex(u => u.Email).IsUnique();
+                b.Property(u => u.PasswordHash).HasMaxLength(512).IsRequired();
+                b.Property(u => u.Role).HasConversion<string>().HasMaxLength(32).IsRequired();
+                b.Property(u => u.ProfilePicture).HasColumnType("varbinary(max)").IsRequired(false);
+                b.Property(u => u.MerchantId).IsRequired();
             });
 
-            // Vehicles
+            // Vehicles mapping
             modelBuilder.Entity<Vehicle>(b =>
             {
                 b.ToTable("Vehicles");
                 b.HasKey(v => v.Id);
-
-                b.Property(v => v.Make)
-                    .HasMaxLength(128)
-                    .IsRequired();
-
-                b.Property(v => v.Model)
-                    .HasMaxLength(128)
-                    .IsRequired();
-
-                b.Property(v => v.Description)
-                    .HasMaxLength(1024)
-                    .IsRequired(false);
-
-                b.Property(v => v.Price)
-                    .HasColumnType("decimal(18,2)")
-                    .IsRequired();
-
-                b.Property(v => v.Image)
-                    .HasColumnType("varbinary(max)")
-                    .IsRequired(false);
-
-                b.Property(v => v.MerchantId)
-                    .IsRequired();
+                b.Property(v => v.Make).HasMaxLength(128).IsRequired();
+                b.Property(v => v.Model).HasMaxLength(128).IsRequired();
+                b.Property(v => v.Description).HasMaxLength(1024).IsRequired(false);
+                b.Property(v => v.Price).HasColumnType("decimal(18,2)").IsRequired();
+                b.Property(v => v.Image).HasColumnType("varbinary(max)").IsRequired(false);
+                b.Property(v => v.MerchantId).IsRequired();
             });
 
-            // Orders
+            // Orders mapping
             modelBuilder.Entity<Order>(b =>
             {
                 b.ToTable("Orders");
                 b.HasKey(o => o.OrderId);
-
-                b.Property(o => o.OrderId)
-                    .IsRequired();
-
-                b.Property(o => o.UserId)
-                    .IsRequired();
-
-                b.Property(o => o.MerchantId)
-                    .IsRequired();
-
-                b.Property(o => o.Amount)
-                    .HasColumnType("decimal(18,2)")
-                    .IsRequired();
-
-                b.Property(o => o.Currency)
-                    .HasMaxLength(8)
-                    .HasDefaultValue("EUR")
-                    .IsRequired();
-
-                b.Property(o => o.Status)
-                    .HasConversion<string>()
-                    .HasMaxLength(64)
-                    .HasDefaultValue(OrderStatus.Initialized)
-                    .IsRequired();
-
-                b.Property(o => o.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
-
-                b.Property(o => o.UpdatedAt)
-                    .IsRequired(false);
-
-                b.Property(o => o.ExpiresAt)
-                    .IsRequired(false);
-
-                b.HasMany(o => o.Items)
-                    .WithOne()
-                    .HasForeignKey("OrderId")
-                    .OnDelete(DeleteBehavior.Cascade);
+                b.Property(o => o.UserId).IsRequired();
+                b.Property(o => o.MerchantId).IsRequired();
+                b.Property(o => o.Amount).HasColumnType("decimal(18,2)").IsRequired();
+                b.Property(o => o.Currency).HasMaxLength(8).HasDefaultValue("EUR").IsRequired();
+                b.Property(o => o.Status).HasConversion<string>().HasMaxLength(64).HasDefaultValue(OrderStatus.Initialized).IsRequired();
+                b.Property(o => o.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+                b.Property(o => o.UpdatedAt).IsRequired(false);
+                b.Property(o => o.ExpiresAt).IsRequired(false);
             });
 
             // Merchants mapping
             modelBuilder.Entity<Merchant>(b =>
             {
                 b.ToTable("Merchants");
-
                 b.HasKey(m => m.MerchantId);
-                b.Property(m => m.MerchantId).IsRequired();
-
                 b.HasIndex(m => m.MerchantId).IsUnique();
-
                 b.Property(m => m.Name).HasMaxLength(255).IsRequired(false);
-
-                b.Property(m => m.ApiKeyHash)
-                    .HasMaxLength(1024)
-                    .IsRequired();
-
-                b.Property(m => m.PspMerchantId)
-                    .IsRequired();
-
-                b.Property(m => m.PspMerchantSecret)
-                    .HasMaxLength(512)
-                    .IsRequired();
-
-                b.Property(m => m.IsActive)
-                    .HasDefaultValue(true)
-                    .IsRequired();
-
-                b.Property(m => m.AllowedReturnUrls)
-                    .HasColumnType("nvarchar(max)")
-                    .IsRequired(false);
-
-                b.Property(m => m.Domain)
-                    .HasMaxLength(255)
-                    .IsRequired(false);
-
-                b.Property(m => m.ContactEmail)
-                    .HasMaxLength(255)
-                    .IsRequired(false);
-
-                b.Property(m => m.WebhookSecret)
-                    .HasMaxLength(512)
-                    .IsRequired(false);
-
-                b.Property(m => m.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                b.Property(m => m.ApiKeyHash).HasMaxLength(1024).IsRequired();
+                b.Property(m => m.PspMerchantId).IsRequired();
+                b.Property(m => m.PspMerchantSecret).HasMaxLength(512).IsRequired();
+                b.Property(m => m.IsActive).HasDefaultValue(true).IsRequired();
+                b.Property(m => m.AllowedReturnUrls).HasColumnType("nvarchar(max)").IsRequired(false);
+                b.Property(m => m.Domain).HasMaxLength(255).IsRequired(false);
+                b.Property(m => m.ContactEmail).HasMaxLength(255).IsRequired(false);
+                b.Property(m => m.WebhookSecret).HasMaxLength(512).IsRequired(false);
+                b.Property(m => m.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             });
 
             // OrderItem mapping
@@ -178,26 +82,15 @@ namespace webshop_back.Data
             {
                 b.ToTable("OrderItems");
 
-                b.HasKey(oi => new { oi.OrderId, oi.VehicleId });
+                b.HasKey(oi => oi.Id);
 
-                b.Property(oi => oi.OrderId)
-                    .IsRequired();
+                b.Property(oi => oi.Id).ValueGeneratedOnAdd();
+                b.Property(oi => oi.OrderId).IsRequired();
+                b.Property(oi => oi.VehicleId).IsRequired();
+                b.Property(oi => oi.VehicleName).HasMaxLength(255).IsRequired(false);
+                b.Property(oi => oi.PricePerDay).HasColumnType("decimal(18,2)").IsRequired();
+                b.Property(oi => oi.Days).IsRequired();
 
-                b.Property(oi => oi.VehicleId)
-                    .IsRequired();
-
-                b.Property(oi => oi.VehicleName)
-                    .HasMaxLength(255)
-                    .IsRequired(false);
-
-                b.Property(oi => oi.PricePerDay)
-                    .HasColumnType("decimal(18,2)")
-                    .IsRequired();
-
-                b.Property(oi => oi.Days)
-                    .IsRequired();
-
-                // Optional: FK to Vehicle (if Vehicle exists)
                 b.HasOne<Vehicle>()
                     .WithMany()
                     .HasForeignKey(oi => oi.VehicleId)

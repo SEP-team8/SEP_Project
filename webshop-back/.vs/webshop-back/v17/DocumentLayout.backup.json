@@ -3,96 +3,8 @@
   "WorkspaceRootPath": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\middleware\\tenantresolvermiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\middleware\\tenantresolvermiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\helpers\\tokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\helpers\\tokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\helpers\\signaturehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\helpers\\signaturehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\helpers\\itenantprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\helpers\\itenantprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\helpers\\httpcontexttenantprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\helpers\\httpcontexttenantprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\helpers\\apikeyhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\helpers\\apikeyhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\auth\\responsestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\auth\\responsestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\auth\\responsepayload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\auth\\responsepayload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\auth\\registeruserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\auth\\registeruserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\auth\\loginuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\auth\\loginuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\auth\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\auth\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\seed\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\seed\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\paymentinitresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\paymentinitresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\paymentinitrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\paymentinitrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -103,104 +15,40 @@
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\models\\merchant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\models\\merchant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\efrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\efrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\mappings\\mapperextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\mappings\\mapperextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\profileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\profileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\middleware\\tenantresolvermiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\middleware\\tenantresolvermiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\efrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\efrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\interfaces\\iprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\interfaces\\iprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\interfaces\\ipaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\interfaces\\ipaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\vehiclescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\vehiclescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\paymentwebhookrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\paymentwebhookrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\controllers\\vehiclescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\controllers\\vehiclescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\createorderrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\createorderrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\createorderitemrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\createorderitemrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\callbackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\callbackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\user\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\user\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\user\\updateuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\user\\updateuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\user\\publicuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\user\\publicuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\dtos\\user\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\dtos\\user\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\data\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\data\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -210,47 +58,59 @@
       "DocumentGroups": [
         {
           "DockedWidth": 178,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\appsettings.json",
               "RelativeDocumentMoniker": "webshop-back\\appsettings.json",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\appsettings.json",
               "RelativeToolTip": "webshop-back\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-09T13:09:09.985Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "PaymentService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\PaymentService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\PaymentService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\PaymentService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\PaymentService.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAowFYAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T13:09:14.853Z",
+              "WhenOpened": "2026-01-09T20:21:57.829Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "Merchant.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Merchant.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\Merchant.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Merchant.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\Merchant.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAkwCcAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Data\\AppDbContext.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "webshop-back\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAUwGEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T13:15:23.203Z",
-              "IsPinned": true,
+              "WhenOpened": "2026-01-09T20:51:52.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\OrderItem.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderItem.cs",
+              "RelativeToolTip": "webshop-back\\Data\\Models\\OrderItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T21:00:44.717Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Order.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\Order.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Order.cs",
+              "RelativeToolTip": "webshop-back\\Data\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T21:00:41.796Z",
               "EditorCaption": ""
             },
             {
@@ -263,613 +123,106 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Program.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Program.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Program.cs",
-              "RelativeToolTip": "webshop-back\\Program.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAApwFwAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:54:57.672Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "ProfileService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\ProfileService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\ProfileService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\ProfileService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\ProfileService.cs",
-              "ViewState": "AgIAADcAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:41:07.716Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\AuthService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\AuthService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\AuthService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\AuthService.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAqwCIAAABcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:32:07.199Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "IRepository.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IRepository.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\Interfaces\\IRepository.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IRepository.cs",
-              "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAQAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:28:09.343Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "IProfileService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IProfileService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\Interfaces\\IProfileService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IProfileService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IProfileService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:28:03.033Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "IPaymentService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IPaymentService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\Interfaces\\IPaymentService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IPaymentService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IPaymentService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:27:51.279Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IAuthService.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IAuthService.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Service\\Interfaces\\IAuthService.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\Interfaces\\IAuthService.cs",
-              "RelativeToolTip": "webshop-back\\Service\\Interfaces\\IAuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:27:43.288Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "TenantResolverMiddleware.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Middleware\\TenantResolverMiddleware.cs",
               "RelativeDocumentMoniker": "webshop-back\\Middleware\\TenantResolverMiddleware.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Middleware\\TenantResolverMiddleware.cs",
               "RelativeToolTip": "webshop-back\\Middleware\\TenantResolverMiddleware.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAApwDcAAACLAAAAAAAAAA==",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAwwI4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:20:38.23Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TokenProvider.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\TokenProvider.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Helpers\\TokenProvider.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\TokenProvider.cs",
-              "RelativeToolTip": "webshop-back\\Helpers\\TokenProvider.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwDIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:19:19.472Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SignatureHelper.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\SignatureHelper.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Helpers\\SignatureHelper.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\SignatureHelper.cs",
-              "RelativeToolTip": "webshop-back\\Helpers\\SignatureHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:19:12.522Z",
+              "WhenOpened": "2026-01-09T20:35:44.382Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ITenantProvider.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\ITenantProvider.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Helpers\\ITenantProvider.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\ITenantProvider.cs",
-              "RelativeToolTip": "webshop-back\\Helpers\\ITenantProvider.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:18:52.822Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "HttpContextTenantProvider.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\HttpContextTenantProvider.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Helpers\\HttpContextTenantProvider.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\HttpContextTenantProvider.cs",
-              "RelativeToolTip": "webshop-back\\Helpers\\HttpContextTenantProvider.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:18:35.931Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ApiKeyHasher.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\ApiKeyHasher.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Helpers\\ApiKeyHasher.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Helpers\\ApiKeyHasher.cs",
-              "RelativeToolTip": "webshop-back\\Helpers\\ApiKeyHasher.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAqwCoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:18:31.882Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "VehiclesController.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\VehiclesController.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Controllers\\VehiclesController.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\VehiclesController.cs",
-              "RelativeToolTip": "webshop-back\\Controllers\\VehiclesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:08:32.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Controllers\\UsersController.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "webshop-back\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:08:15.377Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "PaymentsController.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\PaymentsController.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Controllers\\PaymentsController.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\PaymentsController.cs",
-              "RelativeToolTip": "webshop-back\\Controllers\\PaymentsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:04:22.113Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "webshop-back\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAA6wCUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:02:26.774Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "VehicleDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\VehicleDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\VehicleDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\VehicleDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\VehicleDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:01:13.75Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "PaymentWebhookRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\PaymentWebhookRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\PaymentWebhookRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\PaymentWebhookRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\PaymentWebhookRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:00:20.633Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "OrderItemDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\OrderItemDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\OrderItemDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\OrderItemDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\OrderItemDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:00:12.491Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "CreateOrderRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CreateOrderRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\CreateOrderRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CreateOrderRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\CreateOrderRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T18:00:06.013Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "CreateOrderItemRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CreateOrderItemRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\CreateOrderItemRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CreateOrderItemRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\CreateOrderItemRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:59:46.422Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "CallbackDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CallbackDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\CallbackDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\CallbackDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\CallbackDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:44.91Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
-              "Title": "UserDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\UserDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\User\\UserDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\UserDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\User\\UserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:36.045Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 45,
-              "Title": "UpdateUserRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\UpdateUserRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\User\\UpdateUserRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\UpdateUserRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\User\\UpdateUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:34.926Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "PublicUserDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\PublicUserDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\User\\PublicUserDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\PublicUserDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\User\\PublicUserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:31.354Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
-              "Title": "ChangePasswordRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\ChangePasswordRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\User\\ChangePasswordRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\User\\ChangePasswordRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\User\\ChangePasswordRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:28.686Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ResponseStatus.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\ResponseStatus.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\Auth\\ResponseStatus.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\ResponseStatus.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\Auth\\ResponseStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:24.599Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ResponsePayload.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\ResponsePayload.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\Auth\\ResponsePayload.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\ResponsePayload.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\Auth\\ResponsePayload.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:18.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RegisterUserRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\RegisterUserRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\Auth\\RegisterUserRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\RegisterUserRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\Auth\\RegisterUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:14.318Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "LoginUserRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\LoginUserRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\Auth\\LoginUserRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\LoginUserRequest.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\Auth\\LoginUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:11.414Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "AuthResponse.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\AuthResponse.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\Auth\\AuthResponse.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\Auth\\AuthResponse.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\Auth\\AuthResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:58:09.314Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\AppDbContext.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "webshop-back\\Data\\AppDbContext.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAIAwwHAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:57:37.899Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "MappingProfile.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Mappings\\MappingProfile.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Mappings\\MappingProfile.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Mappings\\MappingProfile.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Mappings\\MappingProfile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:57:14.213Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "OrderDto.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\OrderDto.cs",
-              "RelativeDocumentMoniker": "webshop-back\\DTOs\\OrderDto.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\DTOs\\OrderDto.cs",
-              "RelativeToolTip": "webshop-back\\DTOs\\OrderDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:56:33.171Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "MapperExtensions.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Mappings\\MapperExtensions.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Mappings\\MapperExtensions.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Mappings\\MapperExtensions.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Mappings\\MapperExtensions.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:56:10.624Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Vehicle.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Vehicle.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\Vehicle.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Vehicle.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\Vehicle.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:55:56.243Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "UserRole.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\UserRole.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\UserRole.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\UserRole.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\UserRole.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:55:54.563Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\User.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\User.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\User.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:55:40.959Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "PaymentInitResponse.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\PaymentInitResponse.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\PaymentInitResponse.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\PaymentInitResponse.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\PaymentInitResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:55:17.948Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "PaymentInitRequest.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\PaymentInitRequest.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\PaymentInitRequest.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\PaymentInitRequest.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\PaymentInitRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:54:21.237Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "OrderStatus.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderStatus.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\OrderStatus.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderStatus.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\OrderStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:54:19.817Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "OrderItem.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderItem.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\OrderItem.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\OrderItem.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\OrderItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:53:34.389Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "Order.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Order.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Data\\Models\\Order.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Data\\Models\\Order.cs",
-              "RelativeToolTip": "webshop-back\\Data\\Models\\Order.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T17:53:03.808Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "DbInitializer.cs",
-              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Seed\\DbInitializer.cs",
-              "RelativeDocumentMoniker": "webshop-back\\Seed\\DbInitializer.cs",
-              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Seed\\DbInitializer.cs",
-              "RelativeToolTip": "webshop-back\\Seed\\DbInitializer.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAhwG8AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T15:10:22.368Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "webshop-back\\Controllers\\OrdersController.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\OrdersController.cs",
               "RelativeToolTip": "webshop-back\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAIwH0AAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAAB4AAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T15:02:03.776Z",
+              "WhenOpened": "2026-01-09T20:35:34.794Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 8,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "webshop-back\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T20:35:30.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VehiclesController.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\VehiclesController.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Controllers\\VehiclesController.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\VehiclesController.cs",
+              "RelativeToolTip": "webshop-back\\Controllers\\VehiclesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T20:35:28.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\AuthService.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Service\\AuthService.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\AuthService.cs",
+              "RelativeToolTip": "webshop-back\\Service\\AuthService.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAwwLQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T20:35:23.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "EfRepository.cs",
               "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\EfRepository.cs",
               "RelativeDocumentMoniker": "webshop-back\\Service\\EfRepository.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\EfRepository.cs",
               "RelativeToolTip": "webshop-back\\Service\\EfRepository.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAiwFMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAcwCkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-09T15:00:27.347Z",
+              "WhenOpened": "2026-01-09T20:26:23.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PaymentService.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\PaymentService.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Service\\PaymentService.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Service\\PaymentService.cs",
+              "RelativeToolTip": "webshop-back\\Service\\PaymentService.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAgwHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T20:23:16.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PaymentsController.cs",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\PaymentsController.cs",
+              "RelativeDocumentMoniker": "webshop-back\\Controllers\\PaymentsController.cs",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Controllers\\PaymentsController.cs",
+              "RelativeToolTip": "webshop-back\\Controllers\\PaymentsController.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAowH8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T20:22:48.833Z",
               "EditorCaption": ""
             }
           ]

@@ -45,8 +45,7 @@ namespace webshop_back.Service
                 MerchantTimestamp = merchantTimestamp,
                 SuccessUrl = req.SuccessUrl,
                 FailedUrl = req.FailedUrl,
-                ErrorUrl = req.ErrorUrl,
-                CallbackUrl = $"{GetBaseUrl().TrimEnd('/')}/api/payments/webhook"
+                ErrorUrl = req.ErrorUrl
             };
 
             var json = JsonSerializer.Serialize(pspRequest, new JsonSerializerOptions

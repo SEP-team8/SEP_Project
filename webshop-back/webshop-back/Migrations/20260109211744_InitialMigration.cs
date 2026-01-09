@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace webshop_back.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,6 +91,8 @@ namespace webshop_back.Migrations
                 name: "OrderItems",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: false),
                     VehicleName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -99,7 +101,7 @@ namespace webshop_back.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => new { x.OrderId, x.VehicleId });
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
@@ -119,6 +121,11 @@ namespace webshop_back.Migrations
                 table: "Merchants",
                 column: "MerchantId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_VehicleId",

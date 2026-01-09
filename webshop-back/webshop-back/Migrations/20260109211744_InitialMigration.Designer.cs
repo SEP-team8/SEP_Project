@@ -12,8 +12,8 @@ using webshop_back.Data;
 namespace webshop_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260109190208_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260109211744_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,23 +129,31 @@ namespace webshop_back.Migrations
 
             modelBuilder.Entity("webshop_back.Data.Models.OrderItem", b =>
                 {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("VehicleId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Days")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("VehicleName")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("OrderId", "VehicleId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("VehicleId");
 
@@ -232,7 +240,7 @@ namespace webshop_back.Migrations
 
             modelBuilder.Entity("webshop_back.Data.Models.OrderItem", b =>
                 {
-                    b.HasOne("webshop_back.Data.Models.Order", null)
+                    b.HasOne("webshop_back.Data.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -243,6 +251,8 @@ namespace webshop_back.Migrations
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("webshop_back.Data.Models.Order", b =>

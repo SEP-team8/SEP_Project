@@ -40,26 +40,13 @@ public class OrdersController : ControllerBase
         var now = DateTime.UtcNow;
         var orderId = Guid.NewGuid().ToString("N");
 
-        // privremeni payment id (kasnije PSP može da ga zameni)
+        // privremeni payment id za frontend dok ne dobijemo od PSP
         var paymentId = "P-" + Guid.NewGuid().ToString("N");
-
-        // STAN – uzimamo prvih 6 karaktera paymentId
         var stan = paymentId.Substring(0, 6);
 
-        // 1️⃣ Uzimamo frontend URL iz Merchant-a
         var allowedReturnUrls = System.Text.Json.JsonSerializer
             .Deserialize<string[]>(merchant.AllowedReturnUrls)!;
-        var returnUrl = allowedReturnUrls.First(); // možeš dodati logiku za odabir po portu ili domenu
-
-        // 2️⃣ Uzimamo backend HTTPS port iz appsettings
-        var backendPort = _config["Dev:HttpsPort"] ?? "7171";
-
-        // 3️⃣ Generišemo payment URL koji simulator koristi
-        var paymentUrl =
-            $"https://localhost:{backendPort}/psp/simulate-payment" +
-            $"?paymentId={Uri.EscapeDataString(paymentId)}" +
-            $"&successUrl={Uri.EscapeDataString(returnUrl)}" +
-            $"&failedUrl={Uri.EscapeDataString(returnUrl)}";
+        var returnUrl = allowedReturnUrls.First();
 
         var order = new Order
         {
@@ -67,7 +54,7 @@ public class OrdersController : ControllerBase
             UserId = userId,
             MerchantId = merchant.MerchantId,
 
-            Status = "Initialized",
+            Status = OrderStatus.Initialized,
             CreatedAt = now,
             UpdatedAt = now,
             ExpiresAt = now.AddMinutes(15),
@@ -75,12 +62,11 @@ public class OrdersController : ControllerBase
             Currency = "EUR",
             Amount = 0m,
 
-            // payment-related
-            PaymentId = paymentId,
-            PaymentUrl = paymentUrl,
-
-            Stan = stan,
-            GlobalTransactionId = null, // PSP callback će popuniti
+            // privremeni payment podaci, PSP će ih nahnadno popuniti
+            PaymentId = null,
+            PaymentUrl = null,
+            Stan = null,
+            GlobalTransactionId = null,
 
             Items = new List<OrderItem>()
         };
@@ -114,9 +100,9 @@ public class OrdersController : ControllerBase
         {
             orderId = order.OrderId,
             paymentId = order.PaymentId,
-            paymentUrl = order.PaymentUrl,
             amount = order.Amount,
             currency = order.Currency,
+            status = order.Status,
             expiresAt = order.ExpiresAt
         });
     }
@@ -125,7 +111,6 @@ public class OrdersController : ControllerBase
     public IActionResult GetMyOrders()
     {
         var userId = GetUserId();
-
         var orders = _repo.GetOrdersForUser(userId);
 
         var dto = orders.Select(o => new OrderDto

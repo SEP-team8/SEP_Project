@@ -130,7 +130,7 @@
         }
       }
     },
-    "/api/Payments/init": {
+    "/api/payments/create": {
       "post": {
         "tags": [
           "Payments"
@@ -161,10 +161,32 @@
         }
       }
     },
-    "/api/Payments/callback": {
+    "/api/payments/webhook": {
       "post": {
         "tags": [
           "Payments"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/payments/{orderId}/status": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -733,11 +755,11 @@
       "PaymentInitRequest": {
         "type": "object",
         "properties": {
-          "merchanT_ID": {
+          "merchantId": {
             "type": "string",
             "nullable": true
           },
-          "merchanT_PASSWORD": {
+          "merchantPassword": {
             "type": "string",
             "nullable": true
           },
@@ -749,27 +771,23 @@
             "type": "string",
             "nullable": true
           },
-          "merchanT_ORDER_ID": {
+          "merchantOrderId": {
             "type": "string",
             "nullable": true
           },
-          "merchanT_TIMESTAMP": {
+          "merchantTimeStamp": {
             "type": "string",
             "nullable": true
           },
-          "succesS_URL": {
+          "successUrl": {
             "type": "string",
             "nullable": true
           },
-          "faileD_URL": {
+          "failedUrl": {
             "type": "string",
             "nullable": true
           },
-          "erroR_URL": {
-            "type": "string",
-            "nullable": true
-          },
-          "method": {
+          "errorUrl": {
             "type": "string",
             "nullable": true
           },

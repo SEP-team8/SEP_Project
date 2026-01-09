@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace webshop_back.Helpers
@@ -7,7 +6,7 @@ namespace webshop_back.Helpers
     public static class SignatureHelper
     {
         // Accepts signature in hex or base64 (we assume base64 here). Adapt if your PSP uses hex.
-        public static bool VerifyHmacSha256(string? signatureHeader, string payload, string secret)
+        public static bool VerifyHmacSha256(string? signatureHeader, string payload, string secret)  //usaglasite imena headera sa PSP-om HMACSHA256
         {
             if (string.IsNullOrEmpty(signatureHeader) || string.IsNullOrEmpty(secret)) return false;
 

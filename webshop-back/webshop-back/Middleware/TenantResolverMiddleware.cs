@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using webshop_back.Data.Models;
+﻿using webshop_back.Data.Models;
 using webshop_back.Service.Interfaces;
 
 public class TenantResolverMiddleware

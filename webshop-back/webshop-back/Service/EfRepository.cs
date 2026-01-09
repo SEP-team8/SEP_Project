@@ -152,5 +152,11 @@ namespace webshop_back.Service
                 _db.Set<OrderItem>().AddRange(items);
             _db.SaveChanges();
         }
+
+        public Order? GetOrderByPaymentId(string paymentId)
+        {
+            if (string.IsNullOrEmpty(paymentId)) return null;
+            return _db.Orders.AsNoTracking().FirstOrDefault(o => o.PaymentId == paymentId);
+        }
     }
 }

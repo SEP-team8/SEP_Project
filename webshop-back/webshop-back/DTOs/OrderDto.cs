@@ -1,4 +1,6 @@
-﻿namespace webshop_back.DTOs
+﻿using webshop_back.Data.Models;
+
+namespace webshop_back.DTOs
 {
     public class OrderDto
     {
@@ -10,7 +12,7 @@
         public int? UserId { get; set; }            // nullable, if user logged in
         public decimal Amount { get; set; }
         public string Currency { get; set; } = "EUR";
-        public string Status { get; set; } = "Initialized";
+        public OrderStatus Status { get; set; } = OrderStatus.Initialized;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ExpiresAt { get; set; }

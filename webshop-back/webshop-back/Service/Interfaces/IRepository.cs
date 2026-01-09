@@ -25,6 +25,7 @@ namespace webshop_back.Service.Interfaces
         IEnumerable<Order> GetOrdersForUser(int userId);
         Order? GetOrderWithItems(string orderId);
         void AddOrderWithItems(Order order, IEnumerable<OrderItem> items);
+        Order? GetOrderByPaymentId(string paymentId);
 
     }
 }

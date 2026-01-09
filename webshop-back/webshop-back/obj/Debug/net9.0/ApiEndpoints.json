@@ -74,19 +74,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PaymentsController",
-    "Method": "Callback",
-    "RelativePath": "api/Payments/callback",
-    "HttpMethod": "POST",
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "GetStatus",
+    "RelativePath": "api/payments/{orderId}/status",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PaymentsController",
-    "Method": "Init",
-    "RelativePath": "api/Payments/init",
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "CreatePayment",
+    "RelativePath": "api/payments/create",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -97,6 +103,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "Webhook",
+    "RelativePath": "api/payments/webhook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

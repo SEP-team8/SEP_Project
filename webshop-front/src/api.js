@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Uvek koristi env var, fallback samo za lokalni dev (localhost)
 const baseURL = import.meta.env.VITE_API_BASE;
 if (!baseURL) {
   console.warn("VITE_API_BASE nije postavljen! Pokušavam sa defaultom...");
@@ -21,7 +20,11 @@ API.interceptors.request.use((cfg) => {
     };
   }
 
-  const merchantId = sessionStorage.getItem("merchantId");
+  // Pošalji X-Merchant-Id header ako postoji u sessionStorage ili env var
+  const merchantId =
+    sessionStorage.getItem("merchantId") ||
+    import.meta.env.VITE_MERCHANT_ID ||
+    null;
   if (merchantId) {
     cfg.headers = {
       ...cfg.headers,

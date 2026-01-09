@@ -108,8 +108,10 @@ namespace webshop_back.Data
                     .HasDefaultValue("EUR");
 
                 b.Property(o => o.Status)
+                    .HasConversion<string>()
                     .HasMaxLength(64)
-                    .HasDefaultValue("Initialized");
+                    .HasDefaultValue(OrderStatus.Initialized)
+                    .IsRequired();
 
                 b.Property(o => o.PaymentId)
                     .HasMaxLength(200)

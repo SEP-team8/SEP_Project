@@ -135,10 +135,10 @@ D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticweba
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticwebassets.build.json.cache
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticwebassets.development.json
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-.141C1151.Up2Date
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.dll
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\refint\webshop-back.dll
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.pdb
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\webshop-back.genruntimeconfig.cache
 D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\ref\webshop-back.dll
+D:\GitLab Repo\SEP_Project\webshop-back\webshop-back\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

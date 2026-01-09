@@ -13,7 +13,7 @@
 
         public string? MerchantId { get; set; }
 
-        public string Status { get; set; } = "Initialized";
+        public OrderStatus Status { get; set; } = OrderStatus.Initialized;
 
 
         public string? PaymentId { get; set; }      // PSP payment id

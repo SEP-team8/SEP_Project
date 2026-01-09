@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using webshop_back.Data;
 using webshop_back.Data.Mapping;
-using webshop_back.Data.Models;
 using webshop_back.Data.Seed;
 using webshop_back.Helpers;
 using webshop_back.Service;
@@ -61,7 +61,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Controllers & Swagger
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+builder.Services.AddHttpClient("psp-client", client =>
+{
+    var baseUrl = builder.Configuration["Psp:BaseUrl"];
+    if (!string.IsNullOrEmpty(baseUrl))
+    {
+        client.BaseAddress = new Uri(baseUrl);
+    }
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -85,37 +100,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
-
     DbInitializer.Seed(db);
-
-    var repo = scope.ServiceProvider.GetRequiredService<IRepository>();
-
-    if (!db.Set<Merchant>().Any())
-    {
-        var (raw, stored) = ApiKeyHasher.Generate();
-        repo.AddMerchant(new Merchant
-        {
-            MerchantId = "SHOP-123",
-            Name = "Dev Shop 123",
-            ApiKeyHash = stored,
-            IsActive = true,
-            AllowedReturnUrls = System.Text.Json.JsonSerializer.Serialize(new[] { "http://localhost:5173/payment-result" }),
-            Domain = "shop1.localhost"
-        });
-        Console.WriteLine("Seeded merchant SHOP-123 raw key: " + raw);
-
-        (raw, stored) = ApiKeyHasher.Generate();
-        repo.AddMerchant(new Merchant
-        {
-            MerchantId = "SHOP-321",
-            Name = "Dev Shop 321",
-            ApiKeyHash = stored,
-            IsActive = true,
-            AllowedReturnUrls = System.Text.Json.JsonSerializer.Serialize(new[] { "http://localhost:5174/payment-result" }),
-            Domain = "shop2.localhost"
-        });
-        Console.WriteLine("Seeded merchant SHOP-321 raw key: " + raw);
-    }
 }
 
 app.Run();

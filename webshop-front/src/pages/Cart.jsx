@@ -93,29 +93,52 @@ export default function Cart() {
     }
 
     try {
+      // 1) create order on backend (existing flow)
       const orderResp = await API.post("/orders", {
         items: cart.map((c) => ({
           vehicleId: c.vehicleId,
           days: c.days || 1,
+          pricePerDay: c.price || 0, // pass price if backend expects it
+          vehicleName: c.name || "",
         })),
       });
 
       const orderId = orderResp.data.orderId;
       if (!orderId) throw new Error("OrderId missing from backend");
 
+      // 2) Prepare payment init payload (target: POST /api/payments/create)
       const origin = window.location.origin;
 
-      const payResp = await API.post("/payments/init", {
-        MERCHANT_ORDER_ID: orderId,
-        AMOUNT: total,
-        CURRENCY: "EUR",
-        SUCCESS_URL: `${origin}/payment-success`,
-        FAILED_URL: `${origin}/payment-failed`,
-      });
+      // MERCHANT_ID: prefer sessionStorage (set on login or merchant selection), otherwise fallback to env variable
+      const merchantId =
+        sessionStorage.getItem("merchantId") ||
+        import.meta.env.VITE_MERCHANT_ID ||
+        "";
+
+      const payReq = {
+        MerchantId: merchantId,
+        Amount: parseFloat(total.toFixed(2)),
+        Currency: "EUR",
+        MerchantOrderId: orderId,
+        MerchantTimeStamp: new Date().toISOString(),
+        SuccessUrl: `${origin}/success`,
+        FailedUrl: `${origin}/failed`,
+        ErrorUrl: `${origin}/payment-result`,
+        Items: cart.map((c) => ({
+          VehicleId: c.vehicleId,
+          VehicleName: c.name || "",
+          PricePerDay: c.price || 0,
+          Days: c.days || 1,
+        })),
+      };
+
+      // 3) call payments/create on backend (this will call PSP from backend)
+      const payResp = await API.post("/payments/create", payReq);
 
       const paymentUrl = payResp.data?.paymentUrl;
       if (!paymentUrl) throw new Error("PaymentUrl from server is missing");
 
+      // 4) redirect browser to PSP/paymentUrl
       window.location.href = paymentUrl;
     } catch (err) {
       console.error(err);

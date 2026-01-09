@@ -1,5 +1,6 @@
 ﻿using PSPbackend.DTOs.Bank;
 using PSPbackend.Helpers;
+using PSPbackend.Models;
 
 namespace PSPbackend.Services
 {
@@ -14,7 +15,7 @@ namespace PSPbackend.Services
             _config = config;
         }
 
-        public async Task<InitPaymentResponseDto> InitAsync(InitPaymentRequestDto dto, bool isQrPayment, CancellationToken ct)
+        public async Task<InitPaymentResponseDto> InitAsync(InitPaymentRequestDto dto, PaymentMethod paymentMethod, CancellationToken ct)
         {
             var bankApiBaseUrl = _config["Bank:ApiBaseUrl"]!;
             //var bankFrontBaseUrl = _config["Bank:FrontBaseUrl"];
@@ -31,6 +32,8 @@ namespace PSPbackend.Services
 
             using var req = new HttpRequestMessage(HttpMethod.Post, "/api/payments/init");
             req.Content = JsonContent.Create(dto);
+
+            var isQrPayment = paymentMethod.Equals(PaymentMethod.QrCode);
 
             req.Headers.Add("PspID", pspId.ToString());
             req.Headers.Add("Signature", signature);

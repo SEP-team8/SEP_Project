@@ -4,19 +4,23 @@ namespace PSPbackend.DTOs.Bank
 {
     public class InitPaymentRequestDto
     {
-        public InitPaymentRequestDto(float amount, Currency currency, Guid merchantId, string stan, DateTime timestamp)
+        public decimal Amount { get; set; }
+        public Currency Currency { get; set; }
+        public Guid BankMerchantId { get; set; }
+        public string Stan { get; set; } = string.Empty;
+        public DateTime PspTimestamp { get; set; }
+
+        public InitPaymentRequestDto(decimal amount, Currency currency, Guid bankMerchantId, string stan, DateTime pspTimeStamp)
         {
             Amount = amount;
             Currency = currency;
-            MerchantId = merchantId;
+            BankMerchantId = bankMerchantId;
             Stan = stan;
-            Timestamp = timestamp;
+            PspTimestamp = pspTimeStamp;
         }
 
-        public float Amount { get; set; }
-        public Currency Currency {  get; set; }
-        public Guid MerchantId { get; set; }
-        public string Stan { get; set; } = string.Empty;
-        public DateTime Timestamp { get; set; }
+        public InitPaymentRequestDto()
+        {
+        }
     }
 }

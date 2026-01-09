@@ -4,6 +4,7 @@ using PSPbackend.DTOs.Bank;
 using PSPbackend.Models;
 using PSPbackend.Repos;
 using PSPbackend.Services;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PSPbackend.Controllers
 {
@@ -14,7 +15,7 @@ namespace PSPbackend.Controllers
         private readonly IBankClient _bank;
         private readonly IConfiguration _config;
         private readonly IPaymentTransactionRepository _txRepo;
-        //private readonly IMerchantAuthService _merchantAuth; dodati
+
         public PaymentController(IBankClient bank, IConfiguration config, IPaymentTransactionRepository txRepo)
         {
             _bank = bank;
@@ -22,80 +23,79 @@ namespace PSPbackend.Controllers
             _txRepo = txRepo;
         }
 
-        [HttpPost("startPayment")]
-        public async Task<ActionResult<PaymentResponseDto>> StartPayment([FromBody] PaymentRequestDto req, CancellationToken ct)
+        [HttpPost("initPayment")]
+        public ActionResult<PaymentResponseDto> InitPayment([FromBody] PaymentRequestDto req, CancellationToken ct)
         {
-            if (string.IsNullOrWhiteSpace(req.MerchantId) || string.IsNullOrWhiteSpace(req.MerchantPassword))
-                return Unauthorized("Missing merchant credentials.");
+            if (req.MerchantId == Guid.Empty|| string.IsNullOrWhiteSpace(req.MerchantPassword))
+                return BadRequest("Missing merchant credentials.");
 
-            //dodati autentifikaciju merchanta
-            //if (!await _merchantAuth.ValidateAsync(req.MerchantId, req.MerchantPassword, ct))
-            //    return Unauthorized("Invalid merchant credentials.");
+            //Unauthorized provera za merchant id iz tabele
 
-            if (req.Purchase.Amount <= 0)
-                return BadRequest("purchase.amount must be > 0.");
+            if (req.Amount <= 0)
+                return BadRequest("Amount must be > 0.");
 
-            if (string.IsNullOrWhiteSpace(req.Purchase.Currency))
-                return BadRequest("purchase.currency is required.");
+            if (!Enum.TryParse<Currency>(req.Currency, true, out _))
+            {
+                return BadRequest("Invalid or missing currency.");
+            }
 
-            var method = req.PaymentMethod.Trim().ToLowerInvariant();
-            var isCard = method == "card";
-            var isQr = method == "qr";
-            if (!isCard && !isQr)
-                return BadRequest("Only 'card' and 'qr' supported currently");
+            //Sta ovde cuvam?
 
-            //Stan -> mozda se drugacije generise videti
+            return Ok(new PaymentResponseDto
+            {
+                MerchantId = req.MerchantId,
+                Amount = req.Amount,
+                Currency = req.Currency,
+                PaymentMethods = new List<PaymentMethod>(2) { PaymentMethod.Card, PaymentMethod.QrCode } //izmena
+            });
+        }
+
+        [HttpPost("startPayment")]
+        public async Task<ActionResult<StartPaymentResponseDto>> StartPayment([FromBody] StartPaymentRequestDto req, CancellationToken ct)
+        {
+
+            if (!Enum.IsDefined(typeof(PaymentMethod), req.PaymentMethod))
+            {
+                return BadRequest("Invalid payment method.");
+            }
+
             var stan = Random.Shared.Next(100000, 999999).ToString(); // 6 cifara
             var pspTimestamp = DateTime.UtcNow;
 
-            var currencyEnum = req.Purchase.Currency.ToUpperInvariant() switch
-            {
-                "RSD" => Currency.RSD,
-                "EUR" => Currency.EUR,
-                "USD" => Currency.USD,
-                _ => throw new InvalidOperationException("Unsupported currency")
-            };
-            //Merchand id psp dobije od banke
             Guid bankMerchantId = Guid.Parse(_config["Bank:MerchantId"]!);
-            var bankBody = new InitPaymentRequestDto((float)req.Purchase.Amount, currencyEnum, bankMerchantId, stan, pspTimestamp);
+            //bankBody - uzmi iz baze new InitPaymentRequestDto()
+            var bankBody = new InitPaymentRequestDto();
 
             // INSERT transakcije (pre poziva banci)
-            var tx = new PaymentTransaction
-            {
-                TransactionId = Guid.NewGuid(),
+            //var tx = new PaymentTransaction
+            //{
+            //    MerchantId = req.MerchantId,
+            //    MerchantOrderId = req.Purchase.MerchantOrderId,
+            //    MerchantTimestamp = req.MerchantTimestamp,
 
-                MerchantId = req.MerchantId,
-                MerchantOrderId = req.Purchase.MerchantOrderId,
-                MerchantTimestamp = req.MerchantTimestamp, //convert to timestamp
+            //    Amount = req.Purchase.Amount,
+            //    Currency = currencyEnum,
 
-                Amount = req.Purchase.Amount,
-                Currency = currencyEnum,
+            //    Stan = stan,
+            //    PspTimestamp = pspTimestamp,
+            //    Status = TransactionStatus.Created,
+            //};
 
-                Stan = stan,
-                PspTimestamp = pspTimestamp,
-                BankMerchantId = bankMerchantId,
-
-                Status = TransactionStatus.Created,
-                CreatedAtUtc = DateTime.UtcNow,
-                UpdatedAtUtc = DateTime.UtcNow
-            };
-
-            await _txRepo.CreateAsync(tx, ct);
+            //await _txRepo.CreateAsync(tx, ct);
 
             //Send bank request
-            var bankRes = await _bank.InitAsync(bankBody, isQrPayment: isQr, ct); //dodati sta treba od podataka za banku
+            var bankRes = await _bank.InitAsync(bankBody, req.PaymentMethod, ct); //dodati sta treba od podataka za banku
+            //error redirect na web shop
 
             // UPDATE status
-            tx.BankPaymentRequestId = bankRes.PaymentRequestId;
-            tx.Status = TransactionStatus.RedirectedToBank;
-            await _txRepo.UpdateAsync(tx, ct);
+            //tx.BankPaymentRequestId = bankRes.PaymentRequestId;
+            //tx.Status = TransactionStatus.RedirectedToBank;
+            //await _txRepo.UpdateAsync(tx, ct);
 
             //sacuvaj transakciju u DB dodati 
             var transactionId = Guid.NewGuid();
 
-            return Ok(new PaymentResponseDto(
-                transactionId,
-                bankRes.PaymentRequestId,
+            return Ok(new StartPaymentResponseDto(
                 bankRes.PaymentRequestUrl
             ));
         }
@@ -108,16 +108,16 @@ namespace PSPbackend.Controllers
             CancellationToken ct)
         {
             // Nadji transakciju po PaymentRequestId
-            var tx = await _txRepo.GetByBankPaymentRequestIdAsync(dto.PaymentRequestId, ct);
+            //var tx = await _txRepo.GetByBankPaymentRequestIdAsync(dto.PaymentRequestId, ct);
 
-            if (tx == null)
-                return NotFound("Transaction not found.");
+            //if (tx == null)
+            //    return NotFound("Transaction not found.");
 
-            // UPDATE statusa i vremena banke
-            tx.AcquirerTimestamp = dto.AcquirerTimestamp;
-            tx.Status = dto.Status; //error, success, failed
+            //// UPDATE statusa i vremena banke
+            //tx.AcquirerTimestamp = dto.AcquirerTimestamp;
+            //tx.Status = dto.Status; //error, success, failed
 
-            await _txRepo.UpdateAsync(tx, ct);
+            //await _txRepo.UpdateAsync(tx, ct);
 
 
             //za slanje treba mi za svakog merchanta url, smisliti kako ovo 

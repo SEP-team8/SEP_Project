@@ -1,8 +1,9 @@
-﻿namespace PSPbackend.Models
+﻿namespace PSPbackend.Models.Enums
 {
     public enum TransactionStatus
     {
         Success = 0,
         Failed = 1,
+        Initialized = 2,
     }
 }

@@ -12,23 +12,23 @@ namespace PSPbackend.Repos
             _db = db;
         }
 
-        public async Task CreateAsync(PaymentTransaction tx, CancellationToken ct)
-        {
-            _db.PaymentTransactions.Add(tx);
-            await _db.SaveChangesAsync(ct);
-        }
+        //public async Task CreateAsync(PaymentTransaction tx, CancellationToken ct)
+        //{
+        //    _db.PaymentTransactions.Add(tx);
+        //    await _db.SaveChangesAsync(ct);
+        //}
 
-        public Task<PaymentTransaction?> GetByBankPaymentRequestIdAsync(Guid paymentRequestId, CancellationToken ct)
-        {
-            return _db.PaymentTransactions
-                .FirstOrDefaultAsync(x => x.BankPaymentRequestId == paymentRequestId, ct);
-        }
+        //public Task<PaymentTransaction?> GetByBankPaymentRequestIdAsync(Guid paymentRequestId, CancellationToken ct)
+        //{
+        //    return _db.PaymentTransactions
+        //        .FirstOrDefaultAsync(x => x.BankPaymentRequestId == paymentRequestId, ct);
+        //}
 
-        public async Task UpdateAsync(PaymentTransaction tx, CancellationToken ct)
-        {
-            tx.UpdatedAtUtc = DateTime.UtcNow;
-            _db.PaymentTransactions.Update(tx);
-            await _db.SaveChangesAsync(ct);
-        }
+        //public async Task UpdateAsync(PaymentTransaction tx, CancellationToken ct)
+        //{
+        //    tx.UpdatedAtUtc = DateTime.UtcNow;
+        //    _db.PaymentTransactions.Update(tx);
+        //    await _db.SaveChangesAsync(ct);
+        //}
     }
 }

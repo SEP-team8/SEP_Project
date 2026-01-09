@@ -2,9 +2,12 @@
 
 namespace PSPbackend.DTOs
 {
-    public class StartPaymentRequestDto
+    public class SelectPaymentMethodRequestDto
     {
         public Guid MerchantId { get; set; }
+        public string Stan { get; set; } = string.Empty;
+        public DateTime PspTimestamp { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
     }
+
 }

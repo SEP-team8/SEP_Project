@@ -9,6 +9,8 @@ namespace BankAPI.DTOs
         public Guid? GlobalTransactionId { get; set; }
         public DateTime AcquirerTimestamp { get; set; }
         public TransactionStatus Status { get; set; }
+        public Guid MerchantID { get; set; }
+        public DateTime PspTimestamp { get; set; }
     }
 
 }

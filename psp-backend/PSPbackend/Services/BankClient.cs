@@ -1,10 +1,11 @@
 ﻿using PSPbackend.DTOs.Bank;
 using PSPbackend.Helpers;
 using PSPbackend.Models;
+using PSPbackend.Models.Enums;
 
 namespace PSPbackend.Services
 {
-    public class BankClient: IBankClient
+    public class BankClient : IBankClient
     {
         private readonly IHttpClientFactory _httpFactory;
         private readonly IConfiguration _config;
@@ -15,45 +16,60 @@ namespace PSPbackend.Services
             _config = config;
         }
 
-        public async Task<InitPaymentResponseDto> InitAsync(InitPaymentRequestDto dto, PaymentMethod paymentMethod, CancellationToken ct)
+        public async Task<InitPaymentResponseDto> CreatePaymentAsync(PaymentTransaction transaction, CancellationToken ct)
         {
+            var request = new InitPaymentRequestDto
+            {
+                Amount = transaction.Amount,
+                Currency = transaction.Currency,
+                Stan = transaction.Stan,
+                MerchantId = transaction.MerchantId,
+                PspTimestamp = transaction.PspTimestamp,
+            };
             var bankApiBaseUrl = _config["Bank:ApiBaseUrl"]!;
-            //var bankFrontBaseUrl = _config["Bank:FrontBaseUrl"];
             var pspId = Guid.Parse(_config["Psp:PspId"]!);
             var secret = _config["Psp:SharedSecret"]!;
 
-            var timestampUtc = DateTime.UtcNow;
+            var _httpClient = _httpFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri(bankApiBaseUrl);
 
-            var payload = SignatureHelper.BuildPayload(dto, timestampUtc);
+            var isQrPayment = transaction.PaymentMethod.Equals(PaymentMethod.QrCode);
+            var timestamp = transaction.PspTimestamp;
+            var payload = SignatureHelper.BuildPayload(request, timestamp);
             var signature = SignatureHelper.CreateSignature(payload, secret);
 
-            var client = _httpFactory.CreateClient();
-            client.BaseAddress = new Uri(bankApiBaseUrl);
-
-            using var req = new HttpRequestMessage(HttpMethod.Post, "/api/payments/init");
-            req.Content = JsonContent.Create(dto);
-
-            var isQrPayment = paymentMethod.Equals(PaymentMethod.QrCode);
-
-            req.Headers.Add("PspID", pspId.ToString());
-            req.Headers.Add("Signature", signature);
-            req.Headers.Add("Timestamp", timestampUtc.ToString("O"));
-            req.Headers.Add("IsQrPayment", isQrPayment.ToString().ToLowerInvariant());
-
-            // Send Request to Bank
-            var res = await client.SendAsync(req, ct);
-
-            if (!res.IsSuccessStatusCode)
+            using var httpRequest = new HttpRequestMessage(
+                HttpMethod.Post,
+                "/api/payments/init")
             {
-                var err = await res.Content.ReadAsStringAsync(ct);
-                throw new InvalidOperationException($"Bank init failed: {(int)res.StatusCode} {err}");
+                Content = JsonContent.Create(request)
+            };
+
+            httpRequest.Headers.Add("PspID", pspId.ToString());
+            httpRequest.Headers.Add("Signature", signature);
+            httpRequest.Headers.Add("Timestamp", timestamp.ToString("O"));
+            httpRequest.Headers.Add("IsQrPayment", isQrPayment.ToString().ToLowerInvariant());
+
+            using var response = await _httpClient.SendAsync(httpRequest, ct);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // TODO: Return transactionStatus.Error to webshop
+                var error = await response.Content.ReadAsStringAsync(ct);
+                throw new InvalidOperationException(
+                    $"Bank payment creation failed: {error}");
             }
 
-            var bankResponse = await res.Content.ReadFromJsonAsync<InitPaymentResponseDto>(cancellationToken: ct)
-                      ?? throw new InvalidOperationException("Empty bank response");
+            var bankResponse = await response.Content
+                .ReadFromJsonAsync<InitPaymentResponseDto>(ct);
 
-            if (string.IsNullOrWhiteSpace(bankResponse.PaymentRequestUrl))
-                throw new InvalidOperationException("Bank did not return PaymentRequestUrl.");
+            if (bankResponse == null ||
+                bankResponse.PaymentRequestId == Guid.Empty ||
+                string.IsNullOrWhiteSpace(bankResponse.PaymentRequestUrl))
+            {
+                // TODO: Return transactionStatus.Error to webshop
+                throw new InvalidOperationException("Invalid response from bank.");
+            }
 
             return bankResponse;
         }

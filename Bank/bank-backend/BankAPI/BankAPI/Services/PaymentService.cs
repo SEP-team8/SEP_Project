@@ -128,6 +128,7 @@ namespace BankAPI.Services
                     GlobalTransactionId = globalTransactionId,
                     AcquirerTimestamp = acquirerTimestamp,
                     Status = TransactionStatus.Successfull
+                    // TODO
                 });
 
                 return PaymentExecutionResult.Success;
@@ -142,7 +143,7 @@ namespace BankAPI.Services
                     Stan = paymentRequest.Stan,
                     GlobalTransactionId = null,
                     AcquirerTimestamp = DateTime.UtcNow,
-                    Status = TransactionStatus.Failed
+                    Status = TransactionStatus.Failed,
                 });
 
                 return PaymentExecutionResult.InvalidCard;

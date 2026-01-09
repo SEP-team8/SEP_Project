@@ -7,7 +7,7 @@ namespace PSPbackend.Context
     {
         public PspDbContext(DbContextOptions<PspDbContext> options) : base(options) { }
 
-        public DbSet<Merchant> Merchants => Set<Merchant>(); //multi tenat
+        public DbSet<Merchant> Merchants => Set<Merchant>();
         public DbSet<PaymentTransaction> PaymentTransactions => Set<PaymentTransaction>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,18 +22,31 @@ namespace PSPbackend.Context
         {
             modelBuilder.Entity<Merchant>(entity =>
             {
-                entity.HasKey(x => x.MerchantId);
+                entity.ToTable("Merchants");
 
-                entity.Property(x => x.MerchantId)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.HasKey(e => e.MerchantId);
 
-                entity.Property(x => x.MerchantPassword)
-                    .IsRequired()
-                    .HasMaxLength(255);
+                entity.Property(e => e.MerchantId)
+                      .ValueGeneratedNever();
 
-                entity.HasIndex(x => x.MerchantId)
-                    .IsUnique();
+                entity.Property(e => e.BankMerchantId)
+                      .IsRequired();
+
+                entity.Property(e => e.MerchantPassword)
+                      .IsRequired()
+                      .HasMaxLength(256);
+
+                entity.Property(e => e.FailedUrl)
+                      .IsRequired()
+                      .HasMaxLength(2048);
+
+                entity.Property(e => e.SucessUrl)
+                      .IsRequired()
+                      .HasMaxLength(2048);
+
+                entity.Property(e => e.ErrorUrl)
+                      .IsRequired()
+                      .HasMaxLength(2048);
             });
         }
 
@@ -41,37 +54,57 @@ namespace PSPbackend.Context
         {
             modelBuilder.Entity<PaymentTransaction>(entity =>
             {
-                entity.HasKey(x => x.TransactionId);
+                entity.ToTable("PaymentTransactions");
 
-                entity.Property(x => x.MerchantId).IsRequired().HasMaxLength(100);
-                entity.Property(x => x.MerchantOrderId).IsRequired().HasMaxLength(120);
+                // --- COMPOSITE PRIMARY KEY ---
+                entity.HasKey(e => new
+                {
+                    e.MerchantId,
+                    e.Stan,
+                    e.PspTimestamp
+                });
 
-                entity.Property(x => x.Amount)
-                    .HasPrecision(18, 2)
-                    .IsRequired();
+                // --- Merchant relationship ---
+                entity.HasOne(e => e.Merchant)
+                      .WithMany()
+                      .HasForeignKey(e => e.MerchantId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
-                //enum
-                entity.Property(x => x.Currency)
-                   .HasConversion<int>()
-                   .IsRequired();
+                entity.Property(e => e.MerchantOrderId)
+                      .IsRequired();
 
-                entity.Property(x => x.Stan)
-                    .IsRequired()
-                    .HasMaxLength(32);
+                entity.Property(e => e.MerchantTimestamp)
+                      .IsRequired();
 
-                entity.Property(x => x.AcquirerTimestamp)
-                    .IsRequired(false);
+                entity.Property(e => e.Amount)
+                      .IsRequired()
+                      .HasPrecision(18, 2);
 
-                entity.Property(x => x.Status)
-                    .HasConversion<int>();
+                entity.Property(e => e.Currency)
+                      .IsRequired()
+                      .HasConversion<int>();
 
-                // Po specifikaciji: kombinacija MerchantId + Stan + PspTimestamp može da prati transakciju
-                entity.HasIndex(x => new { x.MerchantId, x.Stan, x.PspTimestamp })
-                    .IsUnique();
+                entity.Property(e => e.Stan)
+                      .IsRequired()
+                      .HasMaxLength(6)
+                      .IsFixedLength();
 
-                // BankPaymentRequestId (ako postoji) da je jedinstven
-                entity.HasIndex(x => x.BankPaymentRequestId)
-                    .IsUnique();
+                entity.Property(e => e.PspTimestamp)
+                      .IsRequired();
+
+                entity.Property(e => e.PaymentMethod)
+                      .IsRequired()
+                      .HasConversion<int>();
+
+                entity.Property(e => e.AcquirerTimestamp)
+                      .IsRequired(false);
+
+                entity.Property(e => e.Status)
+                      .IsRequired()
+                      .HasConversion<int>();
+
+                entity.Property(e => e.GlobalTransactionId)
+                      .IsRequired();
             });
         }
     }

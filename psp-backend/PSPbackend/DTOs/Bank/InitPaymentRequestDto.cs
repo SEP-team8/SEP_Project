@@ -1,4 +1,4 @@
-﻿using PSPbackend.Models;
+﻿using PSPbackend.Models.Enums;
 
 namespace PSPbackend.DTOs.Bank
 {
@@ -6,7 +6,7 @@ namespace PSPbackend.DTOs.Bank
     {
         public decimal Amount { get; set; }
         public Currency Currency { get; set; }
-        public Guid BankMerchantId { get; set; }
+        public Guid MerchantId { get; set; } // BankMerchantId
         public string Stan { get; set; } = string.Empty;
         public DateTime PspTimestamp { get; set; }
 
@@ -14,7 +14,7 @@ namespace PSPbackend.DTOs.Bank
         {
             Amount = amount;
             Currency = currency;
-            BankMerchantId = bankMerchantId;
+            MerchantId = bankMerchantId;
             Stan = stan;
             PspTimestamp = pspTimeStamp;
         }

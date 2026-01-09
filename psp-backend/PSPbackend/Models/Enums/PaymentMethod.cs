@@ -1,4 +1,4 @@
-﻿namespace PSPbackend.Models
+﻿namespace PSPbackend.Models.Enums
 {
     public enum PaymentMethod
     {

@@ -5,6 +5,8 @@ namespace PSPbackend.Services
 {
     public interface IBankClient
     {
-        Task<InitPaymentResponseDto> InitAsync(InitPaymentRequestDto dto, PaymentMethod paymentMethod, CancellationToken ct);
+        Task<InitPaymentResponseDto> CreatePaymentAsync(
+                PaymentTransaction transaction,
+                CancellationToken ct);
     }
 }

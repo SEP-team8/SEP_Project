@@ -15,7 +15,7 @@ namespace BankAPI.Services
         {
             // Change this
             await _httpClient.PostAsJsonAsync(
-                "/api/psp/payments/status",
+                "https://localhost:7150/api/psp/payments/status",
                 dto
             );
         }

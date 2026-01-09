@@ -15,7 +15,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IBankClient, BankClient>();
 
 builder.Services.AddDbContext<PspDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 builder.Services.AddCors(options =>
@@ -23,7 +23,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactLocalhost", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") //dodaj za banku dodatno port
+            //.WithOrigins("https://localhost:5173") //dodaj za banku dodatno port
+            .WithOrigins("*")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("ReactLocalhost");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -45,5 +48,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-//ALTER USER postgres WITH PASSWORD 'NovaSifra123!';

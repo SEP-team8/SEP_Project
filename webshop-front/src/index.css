@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* BASE: globalni stilovi prilagođeni za "travel search" look */
+@layer base {
+  :root {
+    --bg: #f3f6f8; /* blaga, skoro bela podloga */
+    --text: #0f1724; /* tamniji tekst */
+    --muted: #6b7280; /* muted gray */
+    --brand: #0077c8; /* glavna Kayak-ish plava */
+    --accent: #ff6a00; /* akcentska narandžasta (cta) */
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: var(--brand);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* standard container centriran i sa paddingom */
+  #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+}
+
+/* COMPONENTS: utility klase koje olakšavaju izradu layouta sličnog KAYAK */
+@layer components {
+  /* HEADER */
+  .site-header {
+    @apply bg-white rounded-lg shadow-sm p-4 flex items-center justify-between gap-4;
+  }
+
+  .site-brand {
+    @apply flex items-center gap-3;
+  }
+
+  .site-brand .logo {
+    @apply text-xl font-semibold tracking-tight;
+    color: var(--brand);
+  }
+
+  /* SEARCH/BANNER */
+  .search-bar {
+    @apply mx-auto transform -translate-y-6 relative z-30;
+    max-width: 1024px;
+  }
+  .search-bar .search-container {
+    @apply bg-white rounded-xl shadow-md p-4 grid grid-cols-1 md:grid-cols-3 gap-3 items-center;
+  }
+  .search-input {
+    @apply w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0;
+    border-color: #e6edf3;
+  }
+  .search-actions {
+    @apply flex items-center gap-3 justify-end;
+  }
+
+  /* PAGE LAYOUT: sidebar + results */
+  .page-grid {
+    @apply mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6;
+  }
+
+  .filters {
+    @apply col-span-1 bg-white rounded-lg shadow-sm p-4 sticky top-24 h-fit;
+  }
+
+  .results {
+    @apply col-span-1 lg:col-span-3;
+  }
+
+  .results-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6;
+  }
+
+  /* RESULT CARD */
+  .result-card {
+    @apply bg-white rounded-lg shadow-md p-4 flex gap-4 items-start;
+  }
+
+  .result-media {
+    @apply w-28 h-20 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center overflow-hidden;
+  }
+
+  .result-meta {
+    @apply flex-1;
+  }
+
+  .result-title {
+    @apply text-base font-semibold mb-1;
+  }
+
+  .result-specs {
+    @apply text-sm text-gray-600 flex gap-4 items-center mb-2;
+  }
+
+  .price-badge {
+    @apply ml-auto text-right flex flex-col items-end;
+  }
+
+  .price-primary {
+    @apply text-lg font-extrabold;
+    color: var(--brand);
+  }
+
+  .price-perday {
+    @apply text-sm text-gray-500;
+  }
+
+  /* Pills / small UI */
+  .pill {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 border border-gray-200;
+  }
+
+  /* Buttons */
+  .primary-btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md text-white font-medium shadow-sm;
+    background-color: var(--accent);
+  }
+  .primary-btn:hover {
+    opacity: 0.95;
+  }
+
+  .secondary-btn {
+    @apply inline-flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium border border-gray-200;
+    background-color: white;
+  }
+}
+
+/* small tweaks */
+@layer utilities {
+  .h-fit {
+    height: fit-content;
+  }
+}

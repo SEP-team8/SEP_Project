@@ -13,7 +13,6 @@ namespace webshop_back.Data.Mapping
             CreateMap<User, UserDto>()
                 .ForMember(d => d.ProfilePictureBase64, opt => opt.MapFrom(s => s.ProfilePicture))
                 .ForMember(d => d.Role, opt => opt.MapFrom(s => s.Role.ToString()))
-                // never map back password hash to DTO
                 .ForSourceMember(s => s.PasswordHash, opt => opt.DoNotValidate());
 
             // Vehicle -> VehicleDto
@@ -28,16 +27,11 @@ namespace webshop_back.Data.Mapping
                 .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.Currency))
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status))
                 .ForMember(d => d.CreatedAt, opt => opt.MapFrom(s => s.CreatedAt))
-                // optional additional mappings if DTO has them:
-                .ForMember(d => d.PaymentId, opt => opt.MapFrom(s => s.PaymentId))
-                .ForMember(d => d.MerchantId, opt => opt.MapFrom(s => s.MerchantId))
-                .ForMember(d => d.PaymentUrl, opt => opt.MapFrom(s => s.PaymentUrl))
-                .ForMember(d => d.GlobalTransactionId, opt => opt.MapFrom(s => s.GlobalTransactionId))
                 .ForMember(d => d.ExpiresAt, opt => opt.MapFrom(s => s.ExpiresAt));
 
-            // Reverse maps if you need to accept DTO -> Entity (careful with binary data)
+
             CreateMap<UserDto, User>()
-                .ForMember(e => e.PasswordHash, opt => opt.Ignore()); // don't overwrite hash
+                .ForMember(e => e.PasswordHash, opt => opt.Ignore());
             CreateMap<VehicleDto, Vehicle>()
                 .ForMember(e => e.Image, opt => opt.MapFrom(d => d.ImageBase64));
         }

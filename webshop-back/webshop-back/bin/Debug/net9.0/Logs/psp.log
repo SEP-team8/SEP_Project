@@ -1,29 +1,27 @@
 ===== PSP REQUEST =====
-2026-01-09T13:36:31.5309046Z
+2026-01-09T19:43:59.7493418Z
 {
-  "MerchantId": "PSP-SHOP-123",			//Ovo treab da usaglasimo to ti meni dajes da ja rucno ubacim u bazu pa ti
-  "MerchantPassword": "psp-secret-123",		//ja to saljem nazad po specifikaciji
+  "MerchantId": "22222222-2222-2222-2222-222222222222", //Ovo treab da usaglasimo to ti meni dajes da ja rucno ubacim u bazu pa ti
+  "MerchantPassword": "psp-secret-123",			//ja to saljem nazad po specifikaciji
   "Amount": 270,
   "Currency": "EUR",
-  "MerchantOrderId": "d947b87061be4ebf99f46330ba01a762",
-  "MerchantTimestamp": "2026-01-09T13:36:31.5296079Z",
+  "MerchantOrderId": "84c12323-cf4b-474b-a2c4-c875ed168a96",
+  "MerchantTimestamp": "2026-01-09T19:43:59.7456257Z",
   "SuccessUrl": "http://shop1.localhost:5173/success",
   "FailedUrl": "http://shop1.localhost:5173/failed",
   "ErrorUrl": "http://shop1.localhost:5173/payment-result",
   "CallbackUrl": "https://localhost:7171/api/payments/webhook"
 }
 
-PaymentId, PaymentUrl, Stan, GlobalTransactionId, Status
-
 ===== PSP REQUEST =====
-2026-01-09T13:40:47.7555305Z
+2026-01-09T19:49:38.2531449Z
 {
-  "MerchantId": "PSP-SHOP-321",
+  "MerchantId": "44444444-4444-4444-4444-444444444444",
   "MerchantPassword": "psp-secret-321",
-  "Amount": 240,
+  "Amount": 400,
   "Currency": "EUR",
-  "MerchantOrderId": "16cae7a395394470a1fff9bf946045e7",
-  "MerchantTimestamp": "2026-01-09T13:40:47.7537713Z",
+  "MerchantOrderId": "e846ac2d-6af2-44d4-bb08-6b336f9b8b52",
+  "MerchantTimestamp": "2026-01-09T19:49:38.2517447Z",
   "SuccessUrl": "http://shop2.localhost:5174/success",
   "FailedUrl": "http://shop2.localhost:5174/failed",
   "ErrorUrl": "http://shop2.localhost:5174/payment-result",
@@ -31,62 +29,17 @@ PaymentId, PaymentUrl, Stan, GlobalTransactionId, Status
 }
 
 ===== PSP REQUEST =====
-2026-01-09T14:58:26.2661531Z
+2026-01-09T19:51:24.4552278Z
 {
-  "MerchantId": "PSP-SHOP-321",
-  "MerchantPassword": "psp-secret-321",
-  "Amount": 240,
+  "MerchantId": "22222222-2222-2222-2222-222222222222",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 345,
   "Currency": "EUR",
-  "MerchantOrderId": "3902282eb9a04a3aa0bb38ee382f2c7f",
-  "MerchantTimestamp": "2026-01-09T14:58:26.2634354Z",
-  "SuccessUrl": "http://shop2.localhost:5174/success",
-  "FailedUrl": "http://shop2.localhost:5174/failed",
-  "ErrorUrl": "http://shop2.localhost:5174/payment-result",
-  "CallbackUrl": "https://localhost:7171/api/payments/webhook"
-}
-
-===== PSP REQUEST =====
-2026-01-09T14:59:37.3641921Z
-{
-  "MerchantId": "PSP-SHOP-321",
-  "MerchantPassword": "psp-secret-321",
-  "Amount": 240,
-  "Currency": "EUR",
-  "MerchantOrderId": "eec2e97547b94e068b42ae473690fb7f",
-  "MerchantTimestamp": "2026-01-09T14:59:37.3640523Z",
-  "SuccessUrl": "http://shop2.localhost:5174/success",
-  "FailedUrl": "http://shop2.localhost:5174/failed",
-  "ErrorUrl": "http://shop2.localhost:5174/payment-result",
-  "CallbackUrl": "https://localhost:7171/api/payments/webhook"
-}
-
-===== PSP REQUEST =====
-2026-01-09T15:09:21.4381342Z
-{
-  "MerchantId": "PSP-SHOP-321",
-  "MerchantPassword": "psp-secret-321",
-  "Amount": 240,
-  "Currency": "EUR",
-  "MerchantOrderId": "74da9578bc2446b8b077e64271dfcd2b",
-  "MerchantTimestamp": "2026-01-09T15:09:21.4353376Z",
-  "SuccessUrl": "http://shop2.localhost:5174/success",
-  "FailedUrl": "http://shop2.localhost:5174/failed",
-  "ErrorUrl": "http://shop2.localhost:5174/payment-result",
-  "CallbackUrl": "https://localhost:7171/api/payments/webhook"
-}
-
-===== PSP REQUEST =====
-2026-01-09T15:11:34.2654285Z
-{
-  "MerchantId": "PSP-SHOP-321",
-  "MerchantPassword": "psp-secret-321",
-  "Amount": 240,
-  "Currency": "EUR",
-  "MerchantOrderId": "e6b5c95dc95741f7a0e4cef4357c6ac9",
-  "MerchantTimestamp": "2026-01-09T15:11:34.2620844Z",
-  "SuccessUrl": "http://shop2.localhost:5174/success",
-  "FailedUrl": "http://shop2.localhost:5174/failed",
-  "ErrorUrl": "http://shop2.localhost:5174/payment-result",
+  "MerchantOrderId": "5628a6a6-f7ea-4747-ab23-5a75e653f926",
+  "MerchantTimestamp": "2026-01-09T19:51:24.4539768Z",
+  "SuccessUrl": "http://shop1.localhost:5173/success",
+  "FailedUrl": "http://shop1.localhost:5173/failed",
+  "ErrorUrl": "http://shop1.localhost:5173/payment-result",
   "CallbackUrl": "https://localhost:7171/api/payments/webhook"
 }
 

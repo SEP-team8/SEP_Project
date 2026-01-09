@@ -76,11 +76,6 @@ namespace webshop_back.Service
             using var doc = JsonDocument.Parse(respBody);
             var root = doc.RootElement;
 
-            // Nahnadno popunjavamo order sa PSP podacima
-            order.PaymentId = root.GetProperty("payment_id").GetString();
-            order.PaymentUrl = root.GetProperty("payment_url").GetString();
-            order.Stan = root.TryGetProperty("stan", out var s) ? s.GetString() : null;
-            order.GlobalTransactionId = root.TryGetProperty("acquirer_timestamp", out var at) ? at.GetString() : null;
 
             // Menjamo status: Pending (dok PSP ne izvrši callback) ili Success/Failed
             order.Status = OrderStatus.Pending;
@@ -90,8 +85,6 @@ namespace webshop_back.Service
 
             return new PaymentInitResponse
             {
-                PaymentId = order.PaymentId!,
-                PaymentUrl = order.PaymentUrl!,
                 Amount = req.Amount,
                 Currency = req.Currency
             };

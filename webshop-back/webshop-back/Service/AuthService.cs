@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using webshop_back.Data;
 using webshop_back.Data.Models;
 using webshop_back.DTOs.Auth;
@@ -25,28 +23,17 @@ namespace webshop_back.Services
             IConfiguration configuration,
             IHostEnvironment env)
         {
-            _context = context;
-            _tokenProvider = tokenProvider;
-            _tenantProvider = tenantProvider;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
+            _tenantProvider = tenantProvider ?? throw new ArgumentNullException(nameof(tenantProvider));
             _configuration = configuration;
             _env = env;
         }
 
-        private string? ResolveMerchantId()
+        private Guid? ResolveMerchantId()
         {
-            // 1. pokušaj iz headera
-            var merchantId = _tenantProvider?.CurrentMerchantId;
-
-            if (!string.IsNullOrWhiteSpace(merchantId))
-                return merchantId;
-
-            // 2. fallback samo u Development okruženju
-            if (_env.IsDevelopment())
-            {
-                return _configuration["Dev:DefaultMerchantId"];
-            }
-
-            return null;
+            return _tenantProvider?.CurrentMerchantId ?? _tenantProvider?.CurrentMerchantId;
+            // simpler: return _tenantProvider?.CurrentMerchantId;
         }
 
         public async Task<ResponsePayload<AuthResponse>> Register(RegisterUserRequest request)
@@ -54,7 +41,8 @@ namespace webshop_back.Services
             try
             {
                 var currentMerchant = ResolveMerchantId();
-                if (string.IsNullOrEmpty(currentMerchant))
+
+                if (!currentMerchant.HasValue)
                 {
                     return new ResponsePayload<AuthResponse>
                     {
@@ -63,8 +51,9 @@ namespace webshop_back.Services
                     };
                 }
 
-                if (await _context.Users.AnyAsync(
-                        u => u.Email == request.Email && u.MerchantId == currentMerchant))
+                var merchantId = currentMerchant.Value;
+
+                if (await _context.Users.AnyAsync(u => u.Email == request.Email && u.MerchantId == merchantId))
                 {
                     return new ResponsePayload<AuthResponse>
                     {
@@ -78,7 +67,7 @@ namespace webshop_back.Services
                     Name = request.Name,
                     Email = request.Email,
                     Role = UserRole.User,
-                    MerchantId = currentMerchant
+                    MerchantId = merchantId
                 };
 
                 var hasher = new PasswordHasher<User>();
@@ -121,7 +110,8 @@ namespace webshop_back.Services
             try
             {
                 var currentMerchant = ResolveMerchantId();
-                if (string.IsNullOrEmpty(currentMerchant))
+
+                if (!currentMerchant.HasValue)
                 {
                     return new ResponsePayload<AuthResponse>
                     {
@@ -130,10 +120,12 @@ namespace webshop_back.Services
                     };
                 }
 
+                var merchantId = currentMerchant.Value;
+
                 var user = await _context.Users.AsNoTracking()
                     .SingleOrDefaultAsync(u =>
                         u.Email == request.Email &&
-                        u.MerchantId == currentMerchant);
+                        u.MerchantId == merchantId);
 
                 if (user is null)
                 {

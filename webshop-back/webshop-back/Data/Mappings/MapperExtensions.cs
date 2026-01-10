@@ -33,11 +33,6 @@ namespace webshop_back.Data.Mapping
             Currency = o.Currency,
             Status = o.Status,
             CreatedAt = o.CreatedAt,
-
-            PaymentId = (o.PaymentId ?? ""),
-            MerchantId = (o.MerchantId ?? ""),
-            PaymentUrl = (o.PaymentUrl ?? ""),
-            GlobalTransactionId = (o.GlobalTransactionId ?? ""),
             ExpiresAt = o.ExpiresAt
         };
     }

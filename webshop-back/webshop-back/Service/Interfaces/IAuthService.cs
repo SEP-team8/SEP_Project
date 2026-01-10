@@ -1,5 +1,4 @@
-﻿
-using webshop_back.DTOs.Auth;
+﻿using webshop_back.DTOs.Auth;
 
 public interface IAuthService
 {

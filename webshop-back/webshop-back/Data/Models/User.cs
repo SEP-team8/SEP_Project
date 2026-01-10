@@ -9,6 +9,6 @@
         public byte[]? ProfilePicture { get; set; }
         public UserRole Role { get; set; } = UserRole.User;
 
-        public string? MerchantId { get; set; }
+        public Guid MerchantId { get; set; }
     }
 }

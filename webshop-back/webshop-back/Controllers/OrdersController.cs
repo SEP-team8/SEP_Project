@@ -38,11 +38,8 @@ public class OrdersController : ControllerBase
             return BadRequest("Order must contain at least one item.");
 
         var now = DateTime.UtcNow;
-        var orderId = Guid.NewGuid().ToString("N");
+        var orderId = Guid.NewGuid();
 
-        // privremeni payment id za frontend dok ne dobijemo od PSP
-        var paymentId = "P-" + Guid.NewGuid().ToString("N");
-        var stan = paymentId.Substring(0, 6);
 
         var allowedReturnUrls = System.Text.Json.JsonSerializer
             .Deserialize<string[]>(merchant.AllowedReturnUrls)!;
@@ -60,13 +57,7 @@ public class OrdersController : ControllerBase
             ExpiresAt = now.AddMinutes(15),
 
             Currency = "EUR",
-            Amount = 0m,
-
-            // privremeni payment podaci, PSP će ih nahnadno popuniti
-            PaymentId = null,
-            PaymentUrl = null,
-            Stan = null,
-            GlobalTransactionId = null,
+            Amount = 0,
 
             Items = new List<OrderItem>()
         };
@@ -99,7 +90,6 @@ public class OrdersController : ControllerBase
         return Ok(new
         {
             orderId = order.OrderId,
-            paymentId = order.PaymentId,
             amount = order.Amount,
             currency = order.Currency,
             status = order.Status,
@@ -120,7 +110,6 @@ public class OrdersController : ControllerBase
             Currency = o.Currency,
             Status = o.Status,
             CreatedAt = o.CreatedAt,
-            PaymentId = o.PaymentId,
             MerchantId = o.MerchantId
         });
 
@@ -128,7 +117,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet("{orderId}")]
-    public IActionResult GetOrder(string orderId)
+    public IActionResult GetOrder(Guid orderId)
     {
         var userId = GetUserId();
 
@@ -143,7 +132,6 @@ public class OrdersController : ControllerBase
             Currency = order.Currency,
             Status = order.Status,
             CreatedAt = order.CreatedAt,
-            PaymentId = order.PaymentId,
             MerchantId = order.MerchantId,
             Items = order.Items.Select(i => new OrderItemDto
             {

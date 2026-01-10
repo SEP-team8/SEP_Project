@@ -432,3 +432,20 @@ Invalid merchant credentials.
 ===== PSP RESPONSE =====
 2026-01-10T12:01:38.8730878Z
 {"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=635948&pspTimestamp=2026-01-10T12:01:38.8484478Z"}
+===== PSP REQUEST =====
+2026-01-10T12:13:06.2476839Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "RSD",
+  "MerchantOrderId": "8b8dc6e7-9422-4202-b333-7d25ed280f61",
+  "MerchantTimestamp": "2026-01-10T12:13:06.2458871Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T12:13:08.9797880Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=722037&pspTimestamp=2026-01-10T12:13:08.9559885Z"}

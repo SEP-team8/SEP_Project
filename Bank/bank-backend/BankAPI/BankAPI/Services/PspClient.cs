@@ -20,19 +20,12 @@ namespace BankAPI.Services
                 dto
             );
 
-            var respBody = await response.Content.ReadAsStringAsync();
+            var redirectUrl = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
                 throw new InvalidOperationException(
-                    $"PSP callback failed ({response.StatusCode}): {respBody}"
+                    $"PSP callback failed ({response.StatusCode}): {redirectUrl}"
                 );
-
-            // Očekujemo: { "redirectUrl": "https://merchant/success" }
-            using var doc = JsonDocument.Parse(respBody);
-
-            var redirectUrl = doc.RootElement
-                .GetProperty("redirectUrl")
-                .GetString();
 
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new InvalidOperationException("Callback did not return redirectUrl.");

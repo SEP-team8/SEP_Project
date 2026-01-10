@@ -42,7 +42,8 @@ export function CardPaymentPage() {
             );
 
             setSuccess(true);
-            const redirectUrl = response.data?.redirectUrl;
+            console.log()
+            const redirectUrl = response.data;
 
             if (!redirectUrl) {
                 throw new Error('Missing redirect URL');

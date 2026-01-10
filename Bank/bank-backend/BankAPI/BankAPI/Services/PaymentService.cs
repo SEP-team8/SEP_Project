@@ -3,7 +3,6 @@ using BankAPI.DTOs;
 using BankAPI.Helpers;
 using BankAPI.Helpers.HmacValidator;
 using BankAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -249,8 +248,8 @@ namespace BankAPI.Services
                 {
                     PaymentRequestId = paymentRequest.PaymentRequestId,
                     PaymentRequestUrl = isQrPayment ?
-                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}" :
-                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}"
+                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}" :
+                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}"
                 }
             };
         }

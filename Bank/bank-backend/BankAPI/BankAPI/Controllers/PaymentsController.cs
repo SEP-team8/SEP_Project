@@ -28,8 +28,8 @@ namespace BankAPI.Controllers
         [FromHeader(Name = "Timestamp")] DateTime timestamp,
         [FromHeader(Name = "IsQrPayment")] bool isQrPayment)
         {
-            //if (Math.Abs((DateTime.UtcNow - timestamp).TotalMinutes) > 30)
-            //    return Unauthorized("Timestamp expired");
+            if (Math.Abs((DateTime.UtcNow - timestamp).TotalMinutes) > 30)
+                return Unauthorized("Timestamp expired");
 
             InitializePaymentServiceResult result = await _paymentService.InitializePayment(dto, pspId, signature, timestamp, isQrPayment);
 

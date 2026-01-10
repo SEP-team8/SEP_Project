@@ -124,6 +124,7 @@ namespace PSPbackend.Controllers
             CancellationToken ct
         )
         {
+            // TODO: Validate this request
             if (dto.MerchantID == Guid.Empty ||
                 string.IsNullOrWhiteSpace(dto.Stan))
             {
@@ -132,10 +133,20 @@ namespace PSPbackend.Controllers
 
             var pspTimestamp = DateTime.SpecifyKind(dto.PspTimestamp, DateTimeKind.Utc);
 
+            var merchantId = await _pspDbContext.Merchants
+                .Where(bm => bm.BankMerchantId == dto.MerchantID)
+                .Select(bm => bm.MerchantId)
+                .SingleOrDefaultAsync(ct);
+
+            if (merchantId == Guid.Empty)
+            {
+                return BadRequest("Unknown bank merchant.");
+            }
+
             var transaction = await _pspDbContext.PaymentTransactions
                 .Include(t => t.Merchant)
                 .SingleOrDefaultAsync(t =>
-                    t.MerchantId == dto.MerchantID &&
+                    t.MerchantId == merchantId &&
                     t.Stan == dto.Stan &&
                     t.PspTimestamp == pspTimestamp,
                     ct);

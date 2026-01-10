@@ -9,6 +9,12 @@ import paypalLogo from "../assets/pay-pal.png";
 import cryptocurrency from "../assets/cryptocurrency.png";
 import { useEffect, useMemo, useState } from "react";
 
+const CURRENCY_MAP = {
+  0: "RSD",
+  1: "EUR",
+  2: "USD",
+};
+
 // enum mapping (frontend -> backend)
 const PAYMENT_METHOD = {
   card: 0,
@@ -74,6 +80,7 @@ export default function PaymentCard() {
 
   const [loading, setLoading] = useState(false);
   const [methodsLoading, setMethodsLoading] = useState(false);
+  const [txLoading, setTxLoading] = useState(false)
   const [error, setError] = useState("");
 
   const [availableMethodTypes, setAvailableMethodTypes] = useState([]);
@@ -81,14 +88,53 @@ export default function PaymentCard() {
 
   const [purchase, setPurchase] = useState(null);
 
-  useEffect(() => {
-    setPurchase({
-      merchantOrderId: "ORDER12345",
-      amount: 129.99,
-      currency: "EUR",
-    });
-  }, []);
 
+  // 0) Učitaj transakciju (amount + currency) iz backenda
+  useEffect(() => {
+    async function loadTransactionSummary() {
+      setError("");
+
+      if (!merchantId || !stan || !pspTimestamp) {
+        setError("Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.");
+        return;
+      }
+
+      setTxLoading(true);
+      try {
+        const url =
+          `/api/psp/orderData` +
+          `?merchantId=${merchantId}` +
+          `&stan=${stan}` +
+          `&pspTimestamp=${pspTimestamp}`;
+
+        const res = await fetch(url, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`Ne mogu da učitam podatke o transakciji: ${res.status}. ${txt}`);
+        }
+
+        const data = await res.json();
+
+        setPurchase({
+          amount: data.amount,
+          currency: CURRENCY_MAP[data.currency] ?? data.currency,
+        });
+      } catch (e) {
+        console.error(e);
+        setError(e?.message ?? "Greška prilikom učitavanja transakcije.");
+      } finally {
+        setTxLoading(false);
+      }
+    }
+
+    loadTransactionSummary();
+  }, [merchantId, stan, pspTimestamp]);
+
+  // 1 ucitaj metode plaćanja za merchantId
   useEffect(() => {
     async function loadMethods() {
       setError("");
@@ -297,7 +343,7 @@ export default function PaymentCard() {
         <button
           className="btn-primary"
           onClick={handleContinue}
-          disabled={loading || methodsLoading || !purchase || !availableMethodTypes.length || !!error}
+          disabled={loading || methodsLoading || txLoading || !purchase || !availableMethodTypes.length || !!error}
         >
           {loading ? "Učitavanje..." : "Nastavi sa plaćanjem"}
         </button>

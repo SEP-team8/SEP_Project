@@ -65,7 +65,6 @@ namespace PSPbackend.Controllers
             _pspDbContext.PaymentTransactions.Add(transaction);
             await _pspDbContext.SaveChangesAsync(ct);
 
-            // TODO: Check this url and djust frontend route
             var redirectUrl =
                 $"http://localhost:5172/pay?" +
                 $"merchantId={transaction.MerchantId}" +
@@ -194,6 +193,37 @@ namespace PSPbackend.Controllers
             redirectUrl = $"{redirectUrl}{separator}merchantOrderId={transaction.MerchantOrderId}";
 
             return Ok(redirectUrl);
+        }
+
+        [HttpGet("orderData")]
+        public async Task<IActionResult> GetOrderData(
+        [FromQuery] Guid merchantId,
+        [FromQuery] string stan,
+        [FromQuery] DateTime pspTimestamp,
+        CancellationToken ct)
+        {
+            if (merchantId == Guid.Empty || string.IsNullOrWhiteSpace(stan))
+                return BadRequest("Missing identifiers.");
+
+            var pspTsUtc = DateTime.SpecifyKind(pspTimestamp, DateTimeKind.Utc);
+
+            var tx = await _pspDbContext.PaymentTransactions
+                .SingleOrDefaultAsync(t =>
+                    t.MerchantId == merchantId &&
+                    t.Stan == stan &&
+                    t.PspTimestamp == pspTsUtc,
+                    ct);
+
+            if (tx == null)
+                return NotFound("Payment transaction not found.");
+
+            var dto = new OrderResponseDto
+            {
+                Amount = tx.Amount,
+                Currency = tx.Currency
+            };
+
+            return Ok(dto);
         }
     }
 }

@@ -135,7 +135,9 @@ export default function Cart() {
       // 3) call payments/create on backend (this will call PSP from backend)
       const payResp = await API.post("/payments/create", payReq);
 
-      const paymentUrl = payResp.data?.paymentUrl;
+      console.log(payResp.data);
+
+      const paymentUrl = payResp.data;
       if (!paymentUrl) throw new Error("PaymentUrl from server is missing");
 
       // 4) redirect browser to PSP/paymentUrl

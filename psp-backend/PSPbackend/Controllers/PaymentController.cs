@@ -22,7 +22,6 @@ namespace PSPbackend.Controllers
         {
             _pspDbContext = context;
             _bank = bank;
-
         }
 
         [HttpPost("initPayment")]
@@ -73,7 +72,10 @@ namespace PSPbackend.Controllers
                 $"&stan={transaction.Stan}" +
                 $"&pspTimestamp={transaction.PspTimestamp:o}";
 
-            return Redirect(redirectUrl);
+            return Ok(new
+            {
+                redirectUrl
+            });
         }
 
         // TODO:Ovo se desava u momentu kada smo dosli na url iz metode iznad i zelimo da dobavimo koje su moguce metode placanja za tog merchant-a
@@ -114,7 +116,7 @@ namespace PSPbackend.Controllers
 
             //transaction.Status = TransactionStatus.RedirectedToBank;
 
-            return Redirect(bankResponse.PaymentRequestUrl);
+            return Ok(bankResponse.PaymentRequestUrl);
         }
 
         [HttpPost("bank/callback")]

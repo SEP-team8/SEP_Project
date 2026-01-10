@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import "./PaymentMethods.css";
 import logo from "../assets/psp_logo.png";
 import safeIcon from "../assets/shield.png";
+import { useNavigate } from "react-router-dom";
+
 
 const PAYMENT_METHODS = [
   { value: "Card", label: "Card" },
@@ -27,13 +29,19 @@ export default function PaymentMethodsPage() {
   const [loadingRows, setLoadingRows] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const navigate = useNavigate();  
+
   const uniqueMerchantsCount = useMemo(() => {
     return new Set(rows.map((r) => r.merchantId)).size;
   }, [rows]);
 
   function handleLogout() {
-    console.log("Logout clicked");
+    navigate("/login");
   }
+
+  function handleGoToAddPaymentMethods() {
+    navigate("/addPaymentMethods");
+}
 
   async function loadRows() {
     setError("");
@@ -267,6 +275,17 @@ export default function PaymentMethodsPage() {
 
           <p className="admin-note">Napomena: Nije dozvoljeno brisati poslednju metodu plaćanja za jednog merchant-a.</p>
         </section>
+
+        <div style={{ textAlign: "center", marginTop: "24px" }}>
+        <button
+            className="btn-primary"
+            type="button"
+            onClick={handleGoToAddPaymentMethods}
+        >
+            Add payment methods
+        </button>
+        </div>
+
       </main>
     </div>
   );

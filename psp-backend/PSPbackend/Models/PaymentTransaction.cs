@@ -13,7 +13,7 @@ namespace PSPbackend.Models
 
         public string Stan { get; set; } = string.Empty; //generise ga PSP, a banka ga prima i cuva ovoga 6 cifara
         public DateTime PspTimestamp { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethodType PaymentMethod { get; set; }
 
 
         public DateTime? AcquirerTimestamp { get; set; } 

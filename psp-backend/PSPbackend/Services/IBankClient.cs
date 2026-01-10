@@ -7,6 +7,7 @@ namespace PSPbackend.Services
     {
         Task<InitPaymentResponseDto> CreatePaymentAsync(
                 PaymentTransaction transaction,
+                Guid bankMerchantId,
                 CancellationToken ct);
     }
 }

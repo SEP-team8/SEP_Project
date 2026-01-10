@@ -16,14 +16,15 @@ namespace PSPbackend.Services
             _config = config;
         }
 
-        public async Task<InitPaymentResponseDto> CreatePaymentAsync(PaymentTransaction transaction, CancellationToken ct)
+        public async Task<InitPaymentResponseDto> CreatePaymentAsync(PaymentTransaction transaction, Guid bankMerchantId, CancellationToken ct)
         {
+
             var request = new InitPaymentRequestDto
             {
                 Amount = transaction.Amount,
                 Currency = transaction.Currency,
                 Stan = transaction.Stan,
-                MerchantId = transaction.MerchantId,
+                MerchantId = bankMerchantId,
                 PspTimestamp = transaction.PspTimestamp,
             };
             var bankApiBaseUrl = _config["Bank:ApiBaseUrl"]!;
@@ -33,7 +34,7 @@ namespace PSPbackend.Services
             var _httpClient = _httpFactory.CreateClient();
             _httpClient.BaseAddress = new Uri(bankApiBaseUrl);
 
-            var isQrPayment = transaction.PaymentMethod.Equals(PaymentMethod.QrCode);
+            var isQrPayment = transaction.PaymentMethod.Equals(PaymentMethodType.QrCode);
             var timestamp = transaction.PspTimestamp;
             var payload = SignatureHelper.BuildPayload(request, timestamp);
             var signature = SignatureHelper.CreateSignature(payload, secret);

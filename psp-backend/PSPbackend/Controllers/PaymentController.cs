@@ -103,11 +103,13 @@ namespace PSPbackend.Controllers
             if (transaction == null)
                 return NotFound("Payment transaction not found.");
 
+            var merchant = await _pspDbContext.Merchants.SingleOrDefaultAsync(m => m.MerchantId == req.MerchantId);
+
             transaction.PaymentMethod = req.PaymentMethod;
             await _pspDbContext.SaveChangesAsync(ct);
 
             var bankResponse = await _bank
-                .CreatePaymentAsync(transaction, ct);
+                .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
             // TODO: Add try catch here and if success redirect to bank payment url if error then redirect to webshop error url
 
             //transaction.Status = TransactionStatus.RedirectedToBank;

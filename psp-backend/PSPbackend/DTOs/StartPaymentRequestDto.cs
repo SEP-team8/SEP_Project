@@ -5,6 +5,6 @@ namespace PSPbackend.DTOs
     public class StartPaymentRequestDto
     {
         public Guid MerchantId { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethodType PaymentMethod { get; set; }
     }
 }

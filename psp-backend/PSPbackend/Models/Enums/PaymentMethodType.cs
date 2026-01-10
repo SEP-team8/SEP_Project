@@ -1,6 +1,6 @@
 ﻿namespace PSPbackend.Models.Enums
 {
-    public enum PaymentMethod
+    public enum PaymentMethodType
     {
         Card = 0,
         QrCode = 1,

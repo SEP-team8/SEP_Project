@@ -9,12 +9,16 @@ namespace PSPbackend.Context
 
         public DbSet<Merchant> Merchants => Set<Merchant>();
         public DbSet<PaymentTransaction> PaymentTransactions => Set<PaymentTransaction>();
+        public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
+        public DbSet<MerchantPaymentMethods> MerchantPaymentMethods => Set<MerchantPaymentMethods>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             ConfigureMerchant(modelBuilder);
+            ConfigurePaymentMethod(modelBuilder);
+            ConfigureMerchantPaymentMethods(modelBuilder);
             ConfigurePaymentTransaction(modelBuilder);
         }
 
@@ -49,6 +53,51 @@ namespace PSPbackend.Context
                       .HasMaxLength(2048);
             });
         }
+
+        private static void ConfigureMerchantPaymentMethods(ModelBuilder modelBuilder) 
+        {
+            modelBuilder.Entity<MerchantPaymentMethods>(entity =>
+            {
+                entity.ToTable("MerchantPaymentMethods");
+
+                entity.HasKey(e => new
+                {
+                    e.MerchantId,
+                    e.PaymentMethodId
+                });
+
+                entity.HasOne(e => e.Merchant)
+                  .WithMany(m => m.MerchantPaymentMethods)
+                  .HasForeignKey(e => e.MerchantId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.PaymentMethod)
+                      .WithMany()
+                      .HasForeignKey(e => e.PaymentMethodId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+        }
+
+        private static void ConfigurePaymentMethod(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PaymentMethod>(entity =>
+            {
+                entity.ToTable("PaymentMethods");
+
+                entity.HasKey(e => e.PaymentMethodId);
+
+                entity.Property(e => e.PaymentMethodId)
+                      .ValueGeneratedNever();
+
+                entity.Property(e => e.PaymentMethodType)
+                      .IsRequired()
+                      .HasConversion<int>();
+
+                entity.HasIndex(e => e.PaymentMethodType)
+                      .IsUnique();
+            });
+        }
+
 
         private static void ConfigurePaymentTransaction(ModelBuilder modelBuilder)
         {

@@ -7,6 +7,6 @@ namespace webshop_back.Helpers
         private readonly IHttpContextAccessor _ctx;
         public HttpContextTenantProvider(IHttpContextAccessor ctx) { _ctx = ctx; }
         public Merchant? Current => _ctx.HttpContext?.Items["Merchant"] as Merchant;
-        public string? CurrentMerchantId => Current?.MerchantId;
+        public Guid? CurrentMerchantId => Current?.MerchantId;
     }
 }

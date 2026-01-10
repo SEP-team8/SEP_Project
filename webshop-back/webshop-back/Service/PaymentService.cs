@@ -45,8 +45,7 @@ namespace webshop_back.Service
                 MerchantTimestamp = merchantTimestamp,
                 SuccessUrl = req.SuccessUrl,
                 FailedUrl = req.FailedUrl,
-                ErrorUrl = req.ErrorUrl,
-                CallbackUrl = $"{GetBaseUrl().TrimEnd('/')}/api/payments/webhook"
+                ErrorUrl = req.ErrorUrl
             };
 
             var json = JsonSerializer.Serialize(pspRequest, new JsonSerializerOptions
@@ -76,11 +75,6 @@ namespace webshop_back.Service
             using var doc = JsonDocument.Parse(respBody);
             var root = doc.RootElement;
 
-            // Nahnadno popunjavamo order sa PSP podacima
-            order.PaymentId = root.GetProperty("payment_id").GetString();
-            order.PaymentUrl = root.GetProperty("payment_url").GetString();
-            order.Stan = root.TryGetProperty("stan", out var s) ? s.GetString() : null;
-            order.GlobalTransactionId = root.TryGetProperty("acquirer_timestamp", out var at) ? at.GetString() : null;
 
             // Menjamo status: Pending (dok PSP ne izvrši callback) ili Success/Failed
             order.Status = OrderStatus.Pending;
@@ -90,8 +84,6 @@ namespace webshop_back.Service
 
             return new PaymentInitResponse
             {
-                PaymentId = order.PaymentId!,
-                PaymentUrl = order.PaymentUrl!,
                 Amount = req.Amount,
                 Currency = req.Currency
             };

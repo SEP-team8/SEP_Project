@@ -27,16 +27,15 @@ namespace webshop_back.Data.Seed
 
             merchants.Add(new Merchant
             {
-                MerchantId = "SHOP-123",
+                MerchantId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 Name = "Dev Shop 123",
                 Domain = "shop1.localhost",
                 IsActive = true,
 
                 ApiKeyHash = hash1,
 
-                PspMerchantId = "PSP-SHOP-123",
-                PspMerchantSecret = "psp-secret-123", // kasnije encrypt
-                PspEnvironment = "TEST",
+                PspMerchantId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                PspMerchantSecret = "psp-secret-123",
 
                 AllowedReturnUrls = JsonSerializer.Serialize(new[]
                 {
@@ -54,16 +53,15 @@ namespace webshop_back.Data.Seed
 
             merchants.Add(new Merchant
             {
-                MerchantId = "SHOP-321",
+                MerchantId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
                 Name = "Dev Shop 321",
                 Domain = "shop2.localhost",
                 IsActive = true,
 
                 ApiKeyHash = hash2,
 
-                PspMerchantId = "PSP-SHOP-321",
+                PspMerchantId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
                 PspMerchantSecret = "psp-secret-321",
-                PspEnvironment = "TEST",
 
                 AllowedReturnUrls = JsonSerializer.Serialize(new[]
                 {
@@ -111,8 +109,8 @@ namespace webshop_back.Data.Seed
                     Model = "Corolla",
                     Description = "Compact",
                     Price = 35,
-                    Image = LoadImage("toyota-corolla-hybrid.jpg"),
-                    MerchantId = "SHOP-123"
+                    Image = null,
+                    MerchantId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 },
                 new Vehicle
                 {
@@ -120,8 +118,8 @@ namespace webshop_back.Data.Seed
                     Model = "Octavia",
                     Description = "Family",
                     Price = 45,
-                    Image = LoadImage("2024-skoda-octavia-rs.jpg"),
-                    MerchantId = "SHOP-123"
+                    Image = null,
+                    MerchantId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 },
                 new Vehicle
                 {
@@ -129,8 +127,8 @@ namespace webshop_back.Data.Seed
                     Model = "3 Series",
                     Description = "Premium",
                     Price = 80,
-                    Image = LoadImage("2023_bmw_3-series_sedan_m340i.jpg"),
-                    MerchantId = "SHOP-123"
+                    Image = null,
+                    MerchantId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 },
 
                 // SHOP-321
@@ -140,8 +138,8 @@ namespace webshop_back.Data.Seed
                     Model = "Corolla",
                     Description = "Compact",
                     Price = 35,
-                    Image = LoadImage("toyota-corolla-hybrid.jpg"),
-                    MerchantId = "SHOP-321"
+                    Image = null,
+                    MerchantId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
                 },
                 new Vehicle
                 {
@@ -149,8 +147,8 @@ namespace webshop_back.Data.Seed
                     Model = "Octavia",
                     Description = "Family",
                     Price = 45,
-                    Image = LoadImage("2024-skoda-octavia-rs.jpg"),
-                    MerchantId = "SHOP-321"
+                    Image = null,
+                    MerchantId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
                 },
                 new Vehicle
                 {
@@ -158,10 +156,10 @@ namespace webshop_back.Data.Seed
                     Model = "3 Series",
                     Description = "Premium",
                     Price = 80,
-                    Image = LoadImage("2023_bmw_3-series_sedan_m340i.jpg"),
-                    MerchantId = "SHOP-321"
+                    Image = null,
+                    MerchantId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
                 }
-            };
+            }; ;
 
             db.Vehicles.AddRange(vehicles);
             db.SaveChanges();

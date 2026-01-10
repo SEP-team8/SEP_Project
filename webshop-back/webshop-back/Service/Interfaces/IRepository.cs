@@ -4,28 +4,21 @@ namespace webshop_back.Service.Interfaces
 {
     public interface IRepository
     {
-        Order? GetOrder(string orderId);
+        Order? GetOrder(Guid orderId);
         void AddOrder(Order order);
         void UpdateOrder(Order order);
 
-        IEnumerable<Vehicle> GetVehicles();
-        IEnumerable<Vehicle> GetVehiclesForMerchant(string? merchantId);
+        public IEnumerable<Vehicle> GetVehiclesForMerchant(Guid merchantId);
         Vehicle? GetVehicle(int id);
-        Vehicle? GetVehicleForMerchant(int id, string? merchantId);
         void AddVehicle(Vehicle vehicle);
         void UpdateVehicle(Vehicle vehicle);
         void DeleteVehicle(int id);
 
-
-        Merchant? GetMerchant(string merchantId);
-        Merchant? GetMerchantByMerchantId(string merchantId);
+        Merchant? GetMerchantByMerchantId(Guid merchantId);
         Merchant? GetMerchantByDomain(string domain);
-        void AddMerchant(Merchant merchant);
 
         IEnumerable<Order> GetOrdersForUser(int userId);
-        Order? GetOrderWithItems(string orderId);
-        void AddOrderWithItems(Order order, IEnumerable<OrderItem> items);
-        Order? GetOrderByPaymentId(string paymentId);
+        Order? GetOrderWithItems(Guid orderId);
 
     }
 }

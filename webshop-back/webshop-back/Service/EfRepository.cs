@@ -14,7 +14,7 @@ namespace webshop_back.Service
             _db = db;
         }
 
-        public Order? GetOrder(string orderId)
+        public Order? GetOrder(Guid orderId)
         {
             return _db.Orders.AsNoTracking().FirstOrDefault(o => o.OrderId == orderId);
         }
@@ -33,30 +33,18 @@ namespace webshop_back.Service
             _db.SaveChanges();
         }
 
-        public IEnumerable<Vehicle> GetVehicles()
+        public IEnumerable<Vehicle> GetVehiclesForMerchant(Guid merchantId)
         {
-            return _db.Vehicles.AsNoTracking().ToList();
+            return _db.Vehicles
+                .AsNoTracking()
+                .Where(v => v.MerchantId == merchantId)
+                .ToList();
         }
 
         public Vehicle? GetVehicle(int id)
         {
             return _db.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id);
         }
-
-        public IEnumerable<Vehicle> GetVehiclesForMerchant(string? merchantId)
-        {
-            if (string.IsNullOrEmpty(merchantId))
-                return _db.Vehicles.AsNoTracking().ToList();
-            return _db.Vehicles.AsNoTracking().Where(v => v.MerchantId == merchantId).ToList();
-        }
-
-        public Vehicle? GetVehicleForMerchant(int id, string? merchantId)
-        {
-            if (string.IsNullOrEmpty(merchantId))
-                return GetVehicle(id);
-            return _db.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id && v.MerchantId == merchantId);
-        }
-
 
         public void AddVehicle(Vehicle vehicle)
         {
@@ -87,16 +75,16 @@ namespace webshop_back.Service
             _db.SaveChanges();
         }
 
-        public Merchant? GetMerchant(string merchantId)
+        public Merchant? GetMerchantByMerchantId(Guid merchantId)
         {
-            return _db.Set<Merchant>().AsNoTracking().FirstOrDefault(m => m.MerchantId == merchantId);
+            if (merchantId == Guid.Empty)
+                return null;
+
+            return _db.Set<Merchant>()
+                .AsNoTracking()
+                .FirstOrDefault(m => m.MerchantId == merchantId && m.IsActive);
         }
 
-        public Merchant? GetMerchantByMerchantId(string merchantId)
-        {
-            if (string.IsNullOrEmpty(merchantId)) return null;
-            return _db.Set<Merchant>().AsNoTracking().FirstOrDefault(m => m.MerchantId == merchantId && m.IsActive);
-        }
 
         public Merchant? GetMerchantByDomain(string domain)
         {
@@ -122,12 +110,6 @@ namespace webshop_back.Service
             return null;
         }
 
-        public void AddMerchant(Merchant merchant)
-        {
-            _db.Set<Merchant>().Add(merchant);
-            _db.SaveChanges();
-        }
-
         public IEnumerable<Order> GetOrdersForUser(int userId)
         {
             return _db.Orders
@@ -137,26 +119,12 @@ namespace webshop_back.Service
                 .ToList();
         }
 
-        public Order? GetOrderWithItems(string orderId)
+        public Order? GetOrderWithItems(Guid orderId)
         {
             return _db.Orders
                 .Include(o => o.Items)
                 .AsNoTracking()
                 .FirstOrDefault(o => o.OrderId == orderId);
-        }
-
-        public void AddOrderWithItems(Order order, IEnumerable<OrderItem> items)
-        {
-            _db.Orders.Add(order);
-            if (items != null)
-                _db.Set<OrderItem>().AddRange(items);
-            _db.SaveChanges();
-        }
-
-        public Order? GetOrderByPaymentId(string paymentId)
-        {
-            if (string.IsNullOrEmpty(paymentId)) return null;
-            return _db.Orders.AsNoTracking().FirstOrDefault(o => o.PaymentId == paymentId);
         }
     }
 }

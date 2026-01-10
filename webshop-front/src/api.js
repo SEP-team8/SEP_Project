@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_API_BASE;
 if (!baseURL) {
-  console.warn("VITE_API_BASE nije postavljen! Pokušavam sa defaultom...");
+  console.warn("VITE_API_BASE is not set! I'm trying the default...");
 }
 
 const API = axios.create({
@@ -20,26 +20,30 @@ API.interceptors.request.use((cfg) => {
     };
   }
 
-  // Pošalji X-Merchant-Id header ako postoji u sessionStorage ili env var
   const merchantId =
-    sessionStorage.getItem("merchantId") ||
-    import.meta.env.VITE_MERCHANT_ID ||
-    null;
+    sessionStorage.getItem("merchantId") || import.meta.env.VITE_MERCHANT_ID;
+
+  console.debug("API: sending X-Merchant-Id header ->", merchantId); // <--- debug
+
   if (merchantId) {
     cfg.headers = {
       ...cfg.headers,
       "X-Merchant-Id": merchantId,
     };
+  } else {
+    console.warn(
+      "There is no merchantId to send in the header (X-Merchant-Id)"
+    );
   }
 
   return cfg;
 });
 
 API.interceptors.response.use(
-  (r) => r,
+  (response) => response,
   (err) => {
     if (err?.response?.status === 401) {
-      console.warn("401 Unauthorized");
+      console.warn("401 Unauthorized – the token may have expired");
     }
     return Promise.reject(err);
   }

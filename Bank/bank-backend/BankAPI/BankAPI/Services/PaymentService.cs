@@ -53,55 +53,56 @@ namespace BankAPI.Services
             var paymentRequest = await _context.PaymentRequests
                 .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
 
+            if (paymentRequest == null)
+                return PaymentExecutionResult.NotFound;
+
+            if (paymentRequest.Status != PaymentRequestStatus.Pending)
+                return PaymentExecutionResult.InvalidState;
+
+            if (paymentRequest.ExpiresAt < DateTime.UtcNow)
+            {
+                paymentRequest.Status = PaymentRequestStatus.Expired;
+                await _context.SaveChangesAsync();
+                return PaymentExecutionResult.Expired;
+            }
+
+            // Card validation
+            if (!LuhnFormulaChecker.IsValidLuhn(request.CardNumber))
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+
+                return PaymentExecutionResult.InvalidCard;
+            }
+
+            var card = await _context.Cards
+                .Include(c => c.BankAccount)
+                .FirstOrDefaultAsync(c => c.PAN == request.CardNumber);
+
+            if (card == null)
+                return PaymentExecutionResult.InvalidCard;
+
+            if (IsCardExpired(card.ExpiryMmYy))
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+
+                return PaymentExecutionResult.InvalidCard;
+            }
+
+            if (card.BankAccount.Balance < paymentRequest.Amount)
+                return PaymentExecutionResult.InsufficientFunds;
+
+            var merchant = await _context.Merchants
+                .Include(c => c.BankAccount)
+                .FirstOrDefaultAsync(b => b.Id == paymentRequest.MerchantId);
+
+
+            if (merchant.BankAccount == null)
+                return PaymentExecutionResult.InvalidState;
+
             try
             {
-                if (paymentRequest == null)
-                    return PaymentExecutionResult.NotFound;
-
-                if (paymentRequest.Status != PaymentRequestStatus.Pending)
-                    return PaymentExecutionResult.InvalidState;
-
-                if (paymentRequest.ExpiresAt < DateTime.UtcNow)
-                {
-                    paymentRequest.Status = PaymentRequestStatus.Expired;
-                    await _context.SaveChangesAsync();
-                    return PaymentExecutionResult.Expired;
-                }
-
-                // Card validation
-                if (!LuhnFormulaChecker.IsValidLuhn(request.CardNumber))
-                {
-                    paymentRequest.Status = PaymentRequestStatus.Failed;
-                    await _context.SaveChangesAsync();
-
-                    return PaymentExecutionResult.InvalidCard;
-                }
-
-                var card = await _context.Cards
-                    .Include(c => c.BankAccount)
-                    .FirstOrDefaultAsync(c => c.PAN == request.CardNumber);
-
-                if (card == null)
-                    return PaymentExecutionResult.InvalidCard;
-
-                if (IsCardExpired(card.ExpiryMmYy))
-                {
-                    paymentRequest.Status = PaymentRequestStatus.Failed;
-                    await _context.SaveChangesAsync();
-
-                    return PaymentExecutionResult.InvalidCard;
-                }
-
-                if (card.BankAccount.Balance < paymentRequest.Amount)
-                    return PaymentExecutionResult.InsufficientFunds;
-
-                var merchant = await _context.Merchants
-                    .Include(c => c.BankAccount)
-                    .FirstOrDefaultAsync(b => b.Id == paymentRequest.MerchantId);
-
-                if (merchant.BankAccount == null)
-                    return PaymentExecutionResult.InvalidState;
-
                 card.BankAccount.Balance -= paymentRequest.Amount;
                 merchant.BankAccount.Balance += paymentRequest.Amount;
 
@@ -127,8 +128,9 @@ namespace BankAPI.Services
                     Stan = paymentRequest.Stan,
                     GlobalTransactionId = globalTransactionId,
                     AcquirerTimestamp = acquirerTimestamp,
-                    Status = TransactionStatus.Successfull
-                    // TODO
+                    Status = TransactionStatus.Successfull,
+                    MerchantID = merchant.Id,
+                    PspTimestamp = paymentRequest.PspTimestamp,
                 });
 
                 return PaymentExecutionResult.Success;
@@ -144,6 +146,8 @@ namespace BankAPI.Services
                     GlobalTransactionId = null,
                     AcquirerTimestamp = DateTime.UtcNow,
                     Status = TransactionStatus.Failed,
+                    MerchantID = merchant.Id,
+                    PspTimestamp = paymentRequest.PspTimestamp,
                 });
 
                 return PaymentExecutionResult.InvalidCard;

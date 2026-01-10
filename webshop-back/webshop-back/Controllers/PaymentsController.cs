@@ -20,41 +20,44 @@ namespace webshop_back.Controllers
             _paymentService = paymentService;
         }
 
+        // 1) Init payment
         [HttpPost("create")]
         public async Task<IActionResult> CreatePayment([FromBody] PaymentInitRequest req)
         {
-            if (string.IsNullOrWhiteSpace(req.MerchantOrderId) || string.IsNullOrWhiteSpace(req.MerchantId))
+            if (req.MerchantOrderId == Guid.Empty || req.MerchantId == Guid.Empty)
+            {
                 return BadRequest("Missing MERCHANT_ORDER_ID or MERCHANT_ID.");
+            }
 
             var order = _repo.GetOrderWithItems(req.MerchantOrderId);
             if (order == null)
+            {
                 return BadRequest("Order not found. Create order first via /orders endpoint.");
+            }
 
             var resp = await _paymentService.InitializePaymentToAcquirerAsync(req, order);
             return Ok(resp);
         }
 
-        // 2) Webhook endpoint - PSP calls this to notify final status
+        // 2) PSP webhook callback
         [HttpPost("webhook")]
         public async Task<IActionResult> Webhook()
         {
-            // read raw body
             Request.EnableBuffering();
+
             using var sr = new StreamReader(Request.Body, leaveOpen: true);
             var payload = await sr.ReadToEndAsync();
-            Request.Body.Position = 0; // rewind for further middleware if needed
+            Request.Body.Position = 0;
 
-            // read signature header (psp will send e.g. X-PSP-Signature)
             var signatureHeader = Request.Headers["X-PSP-Signature"].FirstOrDefault();
 
-            // Try to parse payload to find merchant_id or merchant_order_id
             PaymentWebhookRequest? webhook;
             try
             {
-                webhook = JsonSerializer.Deserialize<PaymentWebhookRequest>(payload, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                webhook = JsonSerializer.Deserialize<PaymentWebhookRequest>(
+                    payload,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                );
             }
             catch
             {
@@ -64,76 +67,59 @@ namespace webshop_back.Controllers
             if (webhook == null)
                 return BadRequest("Empty payload");
 
-            // Resolve merchant (by merchant id if present)
-            Merchant? merchant = null;
-            if (!string.IsNullOrEmpty(webhook.MerchantId))
-            {
-                merchant = _repo.GetMerchantByMerchantId(webhook.MerchantId);
-            }
-            // fallback: try to find order and its merchant
-            if (merchant == null && !string.IsNullOrEmpty(webhook.MerchantOrderId))
-            {
-                var order = _repo.GetOrder(webhook.MerchantOrderId);
-                if (order != null)
-                    merchant = _repo.GetMerchantByMerchantId(order.MerchantId ?? "");
-            }
+            if (webhook.MerchantId == Guid.Empty || webhook.MerchantOrderId == Guid.Empty)
+                return BadRequest("Invalid merchant or order id");
 
-            var secret = merchant?.WebhookSecret ?? ""; // consider fallback to app configuration
+            // Resolve merchant directly
+            var merchant = _repo.GetMerchantByMerchantId(webhook.MerchantId);
+            if (merchant == null)
+                return BadRequest("Merchant not found");
 
             // Verify signature
-            var verified = SignatureHelper.VerifyHmacSha256(signatureHeader, payload, secret);
+            var verified = SignatureHelper.VerifyHmacSha256(
+                signatureHeader,
+                payload,
+                merchant.WebhookSecret
+            );
+
             if (!verified)
             {
-                // return 401 so PSP can alert
                 return Unauthorized("Invalid signature");
             }
 
-            // Idempotent update: find order by merchant_order_id or payment_id
-            Order? target = null;
-            if (!string.IsNullOrEmpty(webhook.MerchantOrderId))
-                target = _repo.GetOrder(webhook.MerchantOrderId);
-
-            if (target == null && !string.IsNullOrEmpty(webhook.PaymentId))
+            // Resolve order
+            var order = _repo.GetOrder(webhook.MerchantOrderId);
+            if (order == null)
             {
-                // try by payment id
-                target = _repo.GetOrder(webhook.PaymentId); // if your GetOrder supports this; otherwise implement GetOrderByPaymentId
-            }
-
-            if (target == null)
-            {
-                // optionally create record or log and return 404
                 return NotFound("Order not found");
             }
-            // Update fields idempotently
-            target.Status = webhook.Status ?? target.Status;
-            if (!string.IsNullOrEmpty(webhook.PaymentId))
-                target.PaymentId = webhook.PaymentId;
-            if (!string.IsNullOrEmpty(webhook.GlobalTransactionId))
-                target.GlobalTransactionId = webhook.GlobalTransactionId;
-            if (!string.IsNullOrEmpty(webhook.Stan))
-                target.Stan = webhook.Stan;
-            target.UpdatedAt = DateTime.UtcNow;
 
-            _repo.UpdateOrder(target);
+            // Idempotent update
+            order.UpdatedAt = DateTime.UtcNow;
 
-            // respond 200 quickly
+            // TODO: map PSP status → internal status
+            // order.Status = webhook.Status;
+
+            _repo.UpdateOrder(order);
+
             return Ok();
         }
 
         // 3) Query order status
         [HttpGet("{orderId}/status")]
-        public IActionResult GetStatus(string orderId)
+        public IActionResult GetStatus(Guid orderId)
         {
+            if (orderId == Guid.Empty)
+                return BadRequest("Invalid order id");
+
             var order = _repo.GetOrderWithItems(orderId);
-            if (order == null) return NotFound();
+            if (order == null)
+                return NotFound();
+
             return Ok(new
             {
                 order.OrderId,
                 order.Status,
-                order.PaymentId,
-                order.PaymentUrl,
-                order.GlobalTransactionId,
-                order.Stan,
                 order.ExpiresAt
             });
         }

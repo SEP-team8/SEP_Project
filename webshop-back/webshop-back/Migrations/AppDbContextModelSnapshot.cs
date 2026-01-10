@@ -24,11 +24,9 @@ namespace webshop_back.Migrations
 
             modelBuilder.Entity("webshop_back.Data.Models.Merchant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("MerchantId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AllowedReturnUrls")
                         .HasColumnType("nvarchar(max)");
@@ -37,9 +35,6 @@ namespace webshop_back.Migrations
                         .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
-
-                    b.Property<DateTime?>("ApiKeyRotatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("ContactEmail")
                         .HasMaxLength(255)
@@ -59,27 +54,13 @@ namespace webshop_back.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("MerchantId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("PspConfigSnapshot")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PspEnvironment")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("PspMerchantId")
-                        .IsRequired()
+                    b.Property<Guid>("PspMerchantId")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PspMerchantSecret")
                         .IsRequired()
@@ -90,7 +71,7 @@ namespace webshop_back.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MerchantId");
 
                     b.HasIndex("MerchantId")
                         .IsUnique();
@@ -100,9 +81,9 @@ namespace webshop_back.Migrations
 
             modelBuilder.Entity("webshop_back.Data.Models.Order", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -122,24 +103,8 @@ namespace webshop_back.Migrations
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GlobalTransactionId")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("MerchantId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PaymentId")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("PaymentUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Stan")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -151,7 +116,7 @@ namespace webshop_back.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId");
@@ -170,10 +135,8 @@ namespace webshop_back.Migrations
                     b.Property<int>("Days")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
@@ -188,6 +151,8 @@ namespace webshop_back.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("OrderItems", (string)null);
                 });
@@ -205,9 +170,8 @@ namespace webshop_back.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("MerchantId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -244,7 +208,6 @@ namespace webshop_back.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -256,9 +219,8 @@ namespace webshop_back.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("MerchantId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -279,6 +241,12 @@ namespace webshop_back.Migrations
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webshop_back.Data.Models.Vehicle", null)
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");

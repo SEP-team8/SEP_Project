@@ -67,7 +67,7 @@
     "Parameters": [
       {
         "Name": "orderId",
-        "Type": "System.String",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -83,7 +83,7 @@
     "Parameters": [
       {
         "Name": "orderId",
-        "Type": "System.String",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -359,63 +359,6 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PspSimulatorController",
-    "Method": "CompletePayment",
-    "RelativePath": "psp/complete-payment",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "paymentId",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "action",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "successUrl",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "failedUrl",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PspSimulatorController",
-    "Method": "SimulatePayment",
-    "RelativePath": "psp/simulate-payment",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "paymentId",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "successUrl",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "failedUrl",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []

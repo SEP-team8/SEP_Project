@@ -17,47 +17,60 @@ namespace webshop_back.Controllers
             _repo = repo;
         }
 
+        // GET: api/vehicles
         [HttpGet]
         public IActionResult Get()
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
 
-            var vehicles = _repo.GetVehicles();
-
-            if (!string.IsNullOrEmpty(merchantId))
+            // Require merchant context for listing (multi-tenant)
+            if (!merchantId.HasValue)
             {
-                vehicles = vehicles.Where(v => v.MerchantId == merchantId).ToList();
+                return BadRequest("Merchant context required.");
             }
 
+            var vehicles = _repo.GetVehiclesForMerchant(merchantId.Value);
             return Ok(vehicles);
         }
 
+        // GET: api/vehicles/{id}
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
 
+            if (!merchantId.HasValue)
+            {
+                return BadRequest("Merchant context required.");
+            }
+
             var vehicle = _repo.GetVehicle(id);
             if (vehicle == null) return NotFound();
 
-            if (!string.IsNullOrEmpty(merchantId) && vehicle.MerchantId != merchantId)
-                return NotFound();
+            if (vehicle.MerchantId != merchantId.Value)
+                return NotFound(); // hide existence of vehicles from other merchants
 
             return Ok(vehicle);
         }
 
+        // GET: api/vehicles/{id}/image
         [HttpGet("{id}/image")]
         public IActionResult GetImage(int id)
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
 
+            if (!merchantId.HasValue)
+            {
+                return BadRequest("Merchant context required.");
+            }
+
             var vehicle = _repo.GetVehicle(id);
             if (vehicle == null) return NotFound();
 
-            if (!string.IsNullOrEmpty(merchantId) && vehicle.MerchantId != merchantId)
+            if (vehicle.MerchantId != merchantId.Value)
                 return NotFound();
 
             var img = vehicle.Image;
@@ -72,7 +85,8 @@ namespace webshop_back.Controllers
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
-            if (string.IsNullOrEmpty(merchantId))
+
+            if (!merchantId.HasValue)
             {
                 return Forbid("Merchant context required to create a vehicle.");
             }
@@ -83,7 +97,7 @@ namespace webshop_back.Controllers
                 Model = dto.Model,
                 Description = dto.Description,
                 Price = dto.Price,
-                MerchantId = merchantId
+                MerchantId = merchantId.Value
             };
 
             if (image != null)
@@ -94,6 +108,7 @@ namespace webshop_back.Controllers
             }
 
             _repo.AddVehicle(vehicle);
+
             return CreatedAtAction(nameof(GetById), new { id = vehicle.Id }, vehicle);
         }
 
@@ -103,13 +118,14 @@ namespace webshop_back.Controllers
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
-            if (string.IsNullOrEmpty(merchantId))
+
+            if (!merchantId.HasValue)
                 return Forbid("Merchant context required.");
 
             var vehicle = _repo.GetVehicle(id);
             if (vehicle == null) return NotFound();
 
-            if (vehicle.MerchantId != merchantId)
+            if (vehicle.MerchantId != merchantId.Value)
                 return NotFound();
 
             vehicle.Make = dto.Make;
@@ -134,13 +150,14 @@ namespace webshop_back.Controllers
         {
             var merchant = HttpContext.Items["Merchant"] as Merchant;
             var merchantId = merchant?.MerchantId;
-            if (string.IsNullOrEmpty(merchantId))
+
+            if (!merchantId.HasValue)
                 return Forbid("Merchant context required.");
 
             var vehicle = _repo.GetVehicle(id);
             if (vehicle == null) return NotFound();
 
-            if (vehicle.MerchantId != merchantId)
+            if (vehicle.MerchantId != merchantId.Value)
                 return NotFound();
 
             _repo.DeleteVehicle(id);

@@ -7,9 +7,10 @@ public class TenantResolverMiddleware
     private readonly ILogger<TenantResolverMiddleware> _logger;
     private readonly IConfiguration _config;
 
-    public TenantResolverMiddleware(RequestDelegate next,
-                                    ILogger<TenantResolverMiddleware> logger,
-                                    IConfiguration config)
+    public TenantResolverMiddleware(
+        RequestDelegate next,
+        ILogger<TenantResolverMiddleware> logger,
+        IConfiguration config)
     {
         _next = next;
         _logger = logger;
@@ -20,83 +21,120 @@ public class TenantResolverMiddleware
     {
         try
         {
-            Merchant? m = null;
+            Merchant? merchant = null;
 
-            // 1) Try header (dev / explicit)
+            // 1) Resolve by X-Merchant-Id header (GUID)
             var header = ctx.Request.Headers["X-Merchant-Id"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(header))
+            if (!string.IsNullOrWhiteSpace(header))
             {
-                _logger.LogDebug("TenantResolver: X-Merchant-Id header present: {Header}", header);
-                m = repo.GetMerchantByMerchantId(header);
-                if (m != null)
+                if (Guid.TryParse(header, out var merchantId))
                 {
-                    _logger.LogInformation("TenantResolver: resolved merchant by header X-Merchant-Id={MerchantId}", m.MerchantId);
+                    _logger.LogDebug(
+                        "TenantResolver: X-Merchant-Id header present: {MerchantId}",
+                        merchantId);
+
+                    merchant = repo.GetMerchantByMerchantId(merchantId);
+
+                    if (merchant != null)
+                    {
+                        _logger.LogInformation(
+                            "TenantResolver: resolved merchant by header X-Merchant-Id={MerchantId}",
+                            merchant.MerchantId);
+                    }
+                    else
+                    {
+                        _logger.LogWarning(
+                            "TenantResolver: X-Merchant-Id provided but merchant not found: {MerchantId}",
+                            merchantId);
+                    }
                 }
                 else
                 {
-                    _logger.LogWarning("TenantResolver: X-Merchant-Id header provided but no merchant found: {Header}", header);
+                    _logger.LogWarning(
+                        "TenantResolver: invalid X-Merchant-Id header (not a GUID): {Header}",
+                        header);
+                    Console.WriteLine("______________________________________TenantResolver: invalid X-Merchant-Id header (not a GUID): {Header}______________________",
+                        header);
                 }
             }
 
-            // 2) Try host (api.{shop}.localhost or shop domain)
-            if (m == null)
+            // 2) Resolve by host/domain
+            if (merchant == null)
             {
-                var host = ctx.Request.Host.Host ?? string.Empty;
-                host = host.Trim().ToLowerInvariant(); // normalize
+                var host = (ctx.Request.Host.Host ?? string.Empty)
+                    .Trim()
+                    .ToLowerInvariant();
 
                 _logger.LogDebug("TenantResolver: resolving by host {Host}", host);
 
-                // attempt exact domain match
-                m = repo.GetMerchantByDomain(host);
-                if (m != null)
+                merchant = repo.GetMerchantByDomain(host);
+
+                if (merchant != null)
                 {
-                    _logger.LogInformation("TenantResolver: resolved merchant by host {Host} -> {MerchantId}", host, m.MerchantId);
+                    _logger.LogInformation(
+                        "TenantResolver: resolved merchant by host {Host} -> {MerchantId}",
+                        host,
+                        merchant.MerchantId);
                 }
                 else
                 {
-                    _logger.LogDebug("TenantResolver: no merchant found for host {Host}", host);
+                    _logger.LogDebug(
+                        "TenantResolver: no merchant found for host {Host}",
+                        host);
                 }
             }
 
-            // 3) Fallback: use configured default merchant for dev/localhost (if present)
-            if (m == null)
+            // 3) Dev fallback (localhost only)
+            if (merchant == null)
             {
                 var host = ctx.Request.Host.Host ?? string.Empty;
+
                 if (host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
                     host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase))
                 {
-                    var defaultMerchant = _config["Dev:DefaultMerchantId"];
-                    if (!string.IsNullOrEmpty(defaultMerchant))
+                    var defaultMerchantValue = _config["Dev:DefaultMerchantId"];
+
+                    if (!string.IsNullOrWhiteSpace(defaultMerchantValue) &&
+                        Guid.TryParse(defaultMerchantValue, out var defaultMerchantId))
                     {
-                        _logger.LogDebug("TenantResolver: attempting fallback to Dev:DefaultMerchantId={DefaultMerchant}", defaultMerchant);
-                        m = repo.GetMerchantByMerchantId(defaultMerchant);
-                        if (m != null)
+                        _logger.LogDebug(
+                            "TenantResolver: attempting fallback to Dev:DefaultMerchantId={MerchantId}",
+                            defaultMerchantId);
+
+                        merchant = repo.GetMerchantByMerchantId(defaultMerchantId);
+
+                        if (merchant != null)
                         {
-                            _logger.LogInformation("TenantResolver: resolved merchant by Dev:DefaultMerchantId -> {MerchantId}", m.MerchantId);
+                            _logger.LogInformation(
+                                "TenantResolver: resolved merchant by Dev:DefaultMerchantId -> {MerchantId}",
+                                merchant.MerchantId);
                         }
                         else
                         {
-                            _logger.LogWarning("TenantResolver: Dev:DefaultMerchantId provided but merchant not found: {DefaultMerchant}", defaultMerchant);
+                            _logger.LogWarning(
+                                "TenantResolver: Dev:DefaultMerchantId provided but merchant not found: {MerchantId}",
+                                defaultMerchantId);
                         }
                     }
                 }
             }
 
-            // 4) Attach to context (or leave null)
-            if (m != null)
+            if (merchant != null)
             {
-                ctx.Items["Merchant"] = m;
+                ctx.Items["Merchant"] = merchant;
             }
             else
             {
-                _logger.LogWarning("TenantResolver: no merchant resolved for request {Method} {Path} (Host: {Host})",
-                    ctx.Request.Method, ctx.Request.Path, ctx.Request.Host);
+                _logger.LogWarning(
+                    "TenantResolver: no merchant resolved for request {Method} {Path} (Host: {Host})",
+                    ctx.Request.Method,
+                    ctx.Request.Path,
+                    ctx.Request.Host);
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "TenantResolver: unexpected error while resolving tenant");
-            // do not throw — let request continue (controllers can handle missing merchant)
         }
 
         await _next(ctx);

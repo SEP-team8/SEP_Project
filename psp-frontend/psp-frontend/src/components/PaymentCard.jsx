@@ -170,31 +170,14 @@ export default function PaymentCard() {
     };
 
     try {
-      const res = await fetch("/api/psp/selectPaymentMethod", {
+      const res = await fetch("https://localhost:7150/api/psp/selectPaymentMethod", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-        redirect: "manual",
       });
 
-      const location = res.headers.get("Location");
-      if (location) {
-        window.location.href = location;
-        return;
-      }
-
-      const contentType = res.headers.get("Content-Type") || "";
-      if (contentType.includes("application/json")) {
-        const data = await res.json().catch(() => null);
-        const url = data?.paymentUrl || data?.redirectUrl;
-        if (url) {
-          window.location.href = url;
-          return;
-        }
-      }
-
-      const txt = await res.text().catch(() => "");
-      throw new Error(`Backend nije vratio Location header (redirect ka banci). Status: ${res.status}. ${txt}`);
+      const paymentUrl = await res.text();
+      window.location.href = paymentUrl;
     } catch (e) {
       console.error(e);
       setError(e?.message ?? "Greška prilikom obrade plaćanja.");

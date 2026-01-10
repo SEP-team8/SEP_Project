@@ -67,7 +67,7 @@ namespace PSPbackend.Controllers
 
             // TODO: Check this url and djust frontend route
             var redirectUrl =
-                $"https://localhost:5173/pay?" +
+                $"http://localhost:5172/pay?" +
                 $"merchantId={transaction.MerchantId}" +
                 $"&stan={transaction.Stan}" +
                 $"&pspTimestamp={transaction.PspTimestamp:o}";

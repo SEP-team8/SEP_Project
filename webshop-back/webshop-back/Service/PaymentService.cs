@@ -54,7 +54,7 @@ namespace webshop_back.Service
             });
 
             // ==== LOG request + merchant secret ====
-            LogToFileAndConsole("PSP REQUEST", $"{json}\n");
+            //LogToFileAndConsole("PSP REQUEST", $"{json}\n");
 
             var client = _httpClientFactory.CreateClient("psp-client");
 
@@ -67,7 +67,7 @@ namespace webshop_back.Service
             );
 
             var respBody = await response.Content.ReadAsStringAsync();
-            LogToFileAndConsole("PSP RESPONSE", respBody);
+            //LogToFileAndConsole("PSP RESPONSE", respBody);
 
             if (!response.IsSuccessStatusCode)
                 throw new InvalidOperationException(respBody);

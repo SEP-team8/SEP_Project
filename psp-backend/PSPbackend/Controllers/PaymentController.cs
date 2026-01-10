@@ -76,11 +76,27 @@ namespace PSPbackend.Controllers
             return Redirect(redirectUrl);
         }
 
-        // TODO:Ovo se desava u momentu kada smo dosli na url iz metode iznad i zelimo da dobavimo koje su moguce metode placanja za tog merchant-a
         [HttpGet("paymentMethods/{merchantId}")]
-        public async Task<IActionResult> GetPaymentMethods([FromRoute] int merchantId, CancellationToken ct)
+        public async Task<IActionResult> GetPaymentMethods([FromRoute] Guid merchantId, CancellationToken ct)
         {
-            throw new NotImplementedException("");
+            if (merchantId == Guid.Empty)
+                return BadRequest("Invalid merchant id.");
+
+            var merchantExists = await _pspDbContext.Merchants
+                .AnyAsync(m => m.MerchantId == merchantId, ct);
+
+            if (!merchantExists)
+                return NotFound("Merchant not found.");
+
+            var methods = await _pspDbContext.MerchantPaymentMethods
+            .Where(mpm => mpm.MerchantId == merchantId)
+            .Select(mpm => mpm.PaymentMethod)
+            .ToListAsync(ct);
+
+            if (!methods.Any())
+                return NotFound("No payment methods configured for this merchant.");
+
+            return Ok(methods);
         }
 
         [HttpPost("selectPaymentMethod")]
@@ -105,16 +121,25 @@ namespace PSPbackend.Controllers
 
             var merchant = await _pspDbContext.Merchants.SingleOrDefaultAsync(m => m.MerchantId == req.MerchantId);
 
+            if (merchant == null)
+                return NotFound("Merchant not found.");
+
             transaction.PaymentMethod = req.PaymentMethod;
             await _pspDbContext.SaveChangesAsync(ct);
 
-            var bankResponse = await _bank
+            try
+            {
+                var bankResponse = await _bank
                 .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
-            // TODO: Add try catch here and if success redirect to bank payment url if error then redirect to webshop error url
 
-            //transaction.Status = TransactionStatus.RedirectedToBank;
-
-            return Redirect(bankResponse.PaymentRequestUrl);
+                return Redirect(bankResponse.PaymentRequestUrl);
+            }
+            catch(Exception)
+            {
+                transaction.Status = TransactionStatus.Error;
+                await _pspDbContext.SaveChangesAsync(ct);
+                return Redirect(merchant.ErrorUrl);
+            }
         }
 
         [HttpPost("bank/callback")]
@@ -152,9 +177,8 @@ namespace PSPbackend.Controllers
                 ? transaction.Merchant.SucessUrl
                 : transaction.Merchant.FailedUrl;
 
-            // TODO Add merhcnat order ID to url
-            //redirectUrl +=
-            //    $"?merchantId={transaction.MerchantId}";;
+            var separator = "?";
+            redirectUrl = $"{redirectUrl}{separator}merchantOrderId={transaction.MerchantOrderId}";
 
             return Redirect(redirectUrl);
         }

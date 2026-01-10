@@ -55,10 +55,8 @@ namespace PSPbackend.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                // TODO: Return transactionStatus.Error to webshop
                 var error = await response.Content.ReadAsStringAsync(ct);
-                throw new InvalidOperationException(
-                    $"Bank payment creation failed: {error}");
+                throw new InvalidOperationException($"Bank payment creation failed: {error}");
             }
 
             var bankResponse = await response.Content
@@ -68,8 +66,7 @@ namespace PSPbackend.Services
                 bankResponse.PaymentRequestId == Guid.Empty ||
                 string.IsNullOrWhiteSpace(bankResponse.PaymentRequestUrl))
             {
-                // TODO: Return transactionStatus.Error to webshop
-                throw new InvalidOperationException("Invalid response from bank.");
+                throw new InvalidOperationException("Invalid response from bank, Error ulr will be sent.");
             }
 
             return bankResponse;

@@ -19,7 +19,7 @@ namespace BankAPI.Migrations
                 values: new object[]
                 {
                     new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    "115-0381631249477-31",
+                    "105-0000000000000-29",
                     10000.00m,
                     1
                 });

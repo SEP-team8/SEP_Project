@@ -40,9 +40,7 @@ export function CardPaymentPage() {
                 `https://localhost:7278/api/payments/${paymentRequestId}/pay`,
                 form
             );
-
-            setSuccess(true);
-            console.log()
+            console.log(response)
             const redirectUrl = response.data;
 
             if (!redirectUrl) {

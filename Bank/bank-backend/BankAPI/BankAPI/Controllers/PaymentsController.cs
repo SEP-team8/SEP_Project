@@ -66,10 +66,7 @@ namespace BankAPI.Controllers
         {
             var redirectUrl = await _paymentService.ExecuteCardPayment(paymentRequestId, request);
 
-            return Ok(new
-            {
-                redirectUrl
-            });
+            return Ok(redirectUrl);
         }
 
         [HttpPost("{paymentRequestId}/qr")]

@@ -1,4 +1,6 @@
 ﻿using BankAPI.DTOs;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace BankAPI.Services
 {
@@ -11,13 +13,31 @@ namespace BankAPI.Services
             _httpClient = httpClient;
         }
 
-        public async Task NotifyPaymentStatusAsync(PspPaymentStatusDto dto)
+        public async Task<string> NotifyPaymentStatusAsync(PspPaymentStatusDto dto)
         {
-            // Change this
-            await _httpClient.PostAsJsonAsync(
-                "https://localhost:7150/api/psp/payments/status",
+            using var response = await _httpClient.PostAsJsonAsync(
+                "https://localhost:7150/api/psp/bank/callback",
                 dto
             );
+
+            var respBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException(
+                    $"PSP callback failed ({response.StatusCode}): {respBody}"
+                );
+
+            // Očekujemo: { "redirectUrl": "https://merchant/success" }
+            using var doc = JsonDocument.Parse(respBody);
+
+            var redirectUrl = doc.RootElement
+                .GetProperty("redirectUrl")
+                .GetString();
+
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new InvalidOperationException("Callback did not return redirectUrl.");
+
+            return redirectUrl;
         }
     }
 

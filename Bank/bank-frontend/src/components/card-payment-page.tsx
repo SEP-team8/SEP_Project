@@ -36,12 +36,19 @@ export function CardPaymentPage() {
         setError(null);
 
         try {
-            await axios.post(
+            const response = await axios.post(
                 `https://localhost:7278/api/payments/${paymentRequestId}/pay`,
                 form
             );
 
             setSuccess(true);
+            const redirectUrl = response.data?.redirectUrl;
+
+            if (!redirectUrl) {
+                throw new Error('Missing redirect URL');
+            }
+
+            window.location.href = redirectUrl;
         } catch {
             setError('Payment failed. Please try again.');
         } finally {

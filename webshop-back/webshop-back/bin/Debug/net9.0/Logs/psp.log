@@ -299,3 +299,136 @@ Invalid merchant credentials.
 ===== PSP RESPONSE =====
 2026-01-10T10:52:27.5515113Z
 {"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=236792&pspTimestamp=2026-01-10T10:52:27.4994996Z"}
+===== PSP REQUEST =====
+2026-01-10T11:38:17.8945227Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "6d748830-05e5-4c61-a109-10081b6286a7",
+  "MerchantTimestamp": "2026-01-10T11:38:17.8925876Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP REQUEST =====
+2026-01-10T11:38:19.9038019Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "439f5a5f-582a-4a64-9aa2-8b2661b53984",
+  "MerchantTimestamp": "2026-01-10T11:38:19.9037260Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T11:38:20.0551424Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=732358&pspTimestamp=2026-01-10T11:38:19.7261411Z"}
+===== PSP RESPONSE =====
+2026-01-10T11:38:20.1368884Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=035098&pspTimestamp=2026-01-10T11:38:20.0789355Z"}
+===== PSP REQUEST =====
+2026-01-10T11:39:15.1260683Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "4cf8f3c0-f7a1-41df-98ce-23e072bba956",
+  "MerchantTimestamp": "2026-01-10T11:39:15.1199144Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T11:39:15.3990506Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=510050&pspTimestamp=2026-01-10T11:39:15.3494348Z"}
+===== PSP REQUEST =====
+2026-01-10T11:47:04.3555742Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "94cc7872-be7c-4bdc-b12b-b16aa0e91e71",
+  "MerchantTimestamp": "2026-01-10T11:47:04.3535814Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T11:47:06.4991251Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=907963&pspTimestamp=2026-01-10T11:47:06.2168806Z"}
+===== PSP REQUEST =====
+2026-01-10T11:54:23.3219821Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "b6684197-a81a-4b2f-81fb-b9cb25bdf96b",
+  "MerchantTimestamp": "2026-01-10T11:54:23.3217113Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T11:54:26.0314006Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=145516&pspTimestamp=2026-01-10T11:54:25.9970486Z"}
+===== PSP REQUEST =====
+2026-01-10T11:55:31.4356449Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "EUR",
+  "MerchantOrderId": "4af51e22-f285-492a-806b-dd130bd94f1b",
+  "MerchantTimestamp": "2026-01-10T11:55:31.4354907Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP REQUEST =====
+2026-01-10T11:57:54.1711815Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "RSD",
+  "MerchantOrderId": "871d23c0-9b5e-4bfe-9122-8bcab9c15393",
+  "MerchantTimestamp": "2026-01-10T11:57:54.1710759Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T11:58:10.9876304Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=532506&pspTimestamp=2026-01-10T11:58:10.9702114Z"}
+===== PSP REQUEST =====
+2026-01-10T12:01:38.0598295Z
+{
+  "MerchantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "MerchantPassword": "psp-secret-123",
+  "Amount": 35,
+  "Currency": "RSD",
+  "MerchantOrderId": "2413327d-e714-4f08-813a-a2e2f9c3ea1d",
+  "MerchantTimestamp": "2026-01-10T12:01:38.0597385Z",
+  "SuccessUrl": "http://localhost:5173/success",
+  "FailedUrl": "http://localhost:5173/failed",
+  "ErrorUrl": "http://localhost:5173/payment-result"
+}
+
+===== PSP RESPONSE =====
+2026-01-10T12:01:38.8730878Z
+{"redirectUrl":"https://localhost:5173/pay?merchantId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&stan=635948&pspTimestamp=2026-01-10T12:01:38.8484478Z"}

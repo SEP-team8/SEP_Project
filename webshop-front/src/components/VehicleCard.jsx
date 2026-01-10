@@ -40,7 +40,7 @@ export default function VehicleCard({ v }) {
 
           <div className="text-right">
             <div className="text-sm text-gray-500">per day</div>
-            <div className="text-xl font-bold text-sky-700">{v.price}€</div>
+            <div className="text-xl font-bold text-sky-700">{v.price}RSD</div>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ namespace BankAPI.Services
 {
     public interface IPspClient
     {
-        Task NotifyPaymentStatusAsync(PspPaymentStatusDto dto);
+        Task<string> NotifyPaymentStatusAsync(PspPaymentStatusDto dto);
     }
 
 }

@@ -64,11 +64,12 @@ namespace BankAPI.Controllers
             Guid paymentRequestId,
             [FromBody] CardPaymentRequest request)
         {
-            var result = await _paymentService.ExecuteCardPayment(paymentRequestId, request);
-            if(result == PaymentExecutionResult.Success)
-                return Ok();
+            var redirectUrl = await _paymentService.ExecuteCardPayment(paymentRequestId, request);
 
-            return BadRequest();
+            return Ok(new
+            {
+                redirectUrl
+            });
         }
 
         [HttpPost("{paymentRequestId}/qr")]

@@ -116,7 +116,7 @@ export default function Home() {
                       {v.make} {v.model}
                     </span>
                     <span className="text-sky-700 font-semibold">
-                      {v.price} €/day
+                      {v.price} RSD/day
                     </span>
                   </Link>
                 </li>

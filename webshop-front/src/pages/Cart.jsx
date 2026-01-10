@@ -118,7 +118,7 @@ export default function Cart() {
       const payReq = {
         MerchantId: merchantId,
         Amount: parseFloat(total.toFixed(2)),
-        Currency: "EUR",
+        Currency: "RSD",
         MerchantOrderId: orderId,
         MerchantTimeStamp: new Date().toISOString(),
         SuccessUrl: `${origin}/success`,
@@ -187,7 +187,7 @@ export default function Cart() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="font-semibold">
-                      {(c.price * (c.days || 1)).toFixed(2)} €
+                      {(c.price * (c.days || 1)).toFixed(2)} RSD
                     </div>
                     <button
                       onClick={() => removeItem(i)}
@@ -204,7 +204,7 @@ export default function Cart() {
               <div className="text-sm text-gray-600">
                 Total items: {cart.length}
               </div>
-              <div className="text-lg font-bold">{total.toFixed(2)} €</div>
+              <div className="text-lg font-bold">{total.toFixed(2)} RSD</div>
             </div>
           </div>
 
@@ -212,7 +212,7 @@ export default function Cart() {
             <h3 className="font-semibold mb-3">Summary</h3>
             <div className="text-sm text-gray-600">Total amount:</div>
             <div className="text-2xl font-bold text-sky-700 mt-2">
-              {total.toFixed(2)} €
+              {total.toFixed(2)} RSD
             </div>
             <button
               onClick={pay}

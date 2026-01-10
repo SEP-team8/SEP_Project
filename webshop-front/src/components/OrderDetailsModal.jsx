@@ -50,11 +50,11 @@ export default function OrderDetailsModal({ open, data, loading, onClose }) {
                       <div>
                         <div className="font-medium">{it.vehicleName}</div>
                         <div className="text-xs text-gray-500">
-                          {it.days} day(s) × {it.pricePerDay.toFixed(2)} €/day
+                          {it.days} day(s) × {it.pricePerDay.toFixed(2)} RSD/day
                         </div>
                       </div>
                       <div className="font-semibold">
-                        {it.total.toFixed(2)} €
+                        {it.total.toFixed(2)} RSD
                       </div>
                     </li>
                   ))}

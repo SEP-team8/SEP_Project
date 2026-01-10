@@ -132,7 +132,7 @@ namespace PSPbackend.Controllers
             try
             {
                 var bankResponse = await _bank
-                .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
+                    .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
 
                 return Ok(bankResponse.PaymentRequestUrl);
             }
@@ -193,7 +193,7 @@ namespace PSPbackend.Controllers
             var separator = "?";
             redirectUrl = $"{redirectUrl}{separator}merchantOrderId={transaction.MerchantOrderId}";
 
-            return Redirect(redirectUrl);
+            return Ok(redirectUrl);
         }
     }
 }

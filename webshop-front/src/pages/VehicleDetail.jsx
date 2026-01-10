@@ -77,7 +77,7 @@ export default function VehicleDetail() {
           <div>
             <div className="text-sm text-gray-500">Price</div>
             <div className="text-2xl font-bold text-sky-700">
-              {v.price} € / day
+              {v.price} RSD / day
             </div>
           </div>
 

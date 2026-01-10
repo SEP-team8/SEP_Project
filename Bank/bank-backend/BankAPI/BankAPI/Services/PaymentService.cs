@@ -46,7 +46,7 @@ namespace BankAPI.Services
             return lastDayOfMonth < DateTime.UtcNow.Date;
         }
 
-        public async Task<PaymentExecutionResult>   ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request)
+        public async Task<string> ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request)
         {
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
 
@@ -54,16 +54,16 @@ namespace BankAPI.Services
                 .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
 
             if (paymentRequest == null)
-                return PaymentExecutionResult.NotFound;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
 
             if (paymentRequest.Status != PaymentRequestStatus.Pending)
-                return PaymentExecutionResult.InvalidState;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
 
             if (paymentRequest.ExpiresAt < DateTime.UtcNow)
             {
                 paymentRequest.Status = PaymentRequestStatus.Expired;
                 await _context.SaveChangesAsync();
-                return PaymentExecutionResult.Expired;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
             // Card validation
@@ -72,7 +72,7 @@ namespace BankAPI.Services
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
 
-                return PaymentExecutionResult.InvalidCard;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
             var card = await _context.Cards
@@ -80,18 +80,18 @@ namespace BankAPI.Services
                 .FirstOrDefaultAsync(c => c.PAN == request.CardNumber);
 
             if (card == null)
-                return PaymentExecutionResult.InvalidCard;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
 
             if (IsCardExpired(card.ExpiryMmYy))
             {
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
 
-                return PaymentExecutionResult.InvalidCard;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
             if (card.BankAccount.Balance < paymentRequest.Amount)
-                return PaymentExecutionResult.InsufficientFunds;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
 
             var merchant = await _context.Merchants
                 .Include(c => c.BankAccount)
@@ -99,7 +99,7 @@ namespace BankAPI.Services
 
 
             if (merchant.BankAccount == null)
-                return PaymentExecutionResult.InvalidState;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
 
             try
             {
@@ -122,7 +122,7 @@ namespace BankAPI.Services
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
 
-                await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
+                var redirectUrl = await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
                 {
                     PaymentRequestId = paymentRequestId,
                     Stan = paymentRequest.Stan,
@@ -133,25 +133,31 @@ namespace BankAPI.Services
                     PspTimestamp = paymentRequest.PspTimestamp,
                 });
 
-                return PaymentExecutionResult.Success;
+                return redirectUrl;
             }
             catch
             {
                 await dbTransaction.RollbackAsync();
 
-                await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
-                {
-                    PaymentRequestId = paymentRequestId,
-                    Stan = paymentRequest.Stan,
-                    GlobalTransactionId = null,
-                    AcquirerTimestamp = DateTime.UtcNow,
-                    Status = TransactionStatus.Failed,
-                    MerchantID = merchant.Id,
-                    PspTimestamp = paymentRequest.PspTimestamp,
-                });
-
-                return PaymentExecutionResult.InvalidCard;
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
+        }
+
+
+        private async Task<string> NotifyFailure(Guid paymentRequestId, TransactionStatus status)
+        {
+            var paymentRequest = await _context.PaymentRequests.FindAsync(paymentRequestId);
+
+            return await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
+            {
+                PaymentRequestId = paymentRequestId,
+                Stan = paymentRequest?.Stan!,
+                GlobalTransactionId = null,
+                AcquirerTimestamp = DateTime.UtcNow,
+                Status = status,
+                MerchantID = paymentRequest?.MerchantId ?? Guid.Empty,
+                PspTimestamp = paymentRequest?.PspTimestamp ?? DateTime.UtcNow
+            });
         }
 
         public async Task<PaymentRequestDto> GetPaymentRequest(Guid paymentRequestId)
@@ -242,8 +248,8 @@ namespace BankAPI.Services
                 {
                     PaymentRequestId = paymentRequest.PaymentRequestId,
                     PaymentRequestUrl = isQrPayment ?
-                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}" :
-                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}"
+                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}" :
+                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}"
                 }
             };
         }
@@ -269,7 +275,7 @@ namespace BankAPI.Services
                 Amount = paymentRequest.Amount,
                 Currency = paymentRequest.Currency.ToString(),
                 MerchantName = paymentRequest.Merchant.Name,
-                MerchantAccount = paymentRequest.Merchant.BankAccount.AccountNumber,
+                MerchantAccount = paymentRequest.Merchant.BankAccount.AccountNumber.Replace("-", ""),
                 Purpose = "Placanje robe"
             };
 

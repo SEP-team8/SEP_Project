@@ -5,7 +5,7 @@ namespace BankAPI.Services
 {
     public interface IPaymentService
     {
-        Task<PaymentExecutionResult> ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request);
+        Task<string> ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request);
 
         Task<PaymentRequestDto> GetPaymentRequest(Guid paymentRequestId);
 

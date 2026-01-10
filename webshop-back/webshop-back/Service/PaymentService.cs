@@ -27,7 +27,7 @@ namespace webshop_back.Service
             _env = env;
         }
 
-        public async Task<PaymentInitResponse> InitializePaymentToAcquirerAsync(PaymentInitRequest req, Order order)
+        public async Task<string> InitializePaymentToAcquirerAsync(PaymentInitRequest req, Order order)
         {
             var merchant = _repo.GetMerchantByMerchantId(req.MerchantId);
             if (merchant == null)
@@ -62,7 +62,7 @@ namespace webshop_back.Service
             client.DefaultRequestHeaders.Add("X-Merchant-Password", merchant.PspMerchantSecret);
 
             var response = await client.PostAsync(
-                "/api/payments/init",
+                "https://localhost:7150/api/psp/initPayment",
                 new StringContent(json, Encoding.UTF8, "application/json")
             );
 
@@ -73,7 +73,9 @@ namespace webshop_back.Service
                 throw new InvalidOperationException(respBody);
 
             using var doc = JsonDocument.Parse(respBody);
-            var root = doc.RootElement;
+            var redirectUrl = doc.RootElement
+            .GetProperty("redirectUrl")
+            .GetString();
 
 
             // Menjamo status: Pending (dok PSP ne izvrši callback) ili Success/Failed
@@ -82,11 +84,7 @@ namespace webshop_back.Service
 
             _repo.UpdateOrder(order);
 
-            return new PaymentInitResponse
-            {
-                Amount = req.Amount,
-                Currency = req.Currency
-            };
+            return redirectUrl;
         }
 
         private void LogToFileAndConsole(string title, string content)

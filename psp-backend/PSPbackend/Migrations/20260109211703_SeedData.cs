@@ -25,9 +25,9 @@ namespace PSPbackend.Migrations
             {
                 Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                 Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                "hashed-password",
-                "https://example.com/failed",
-                "https://example.com/success",
+                "psp-secret-123",
+                "http://localhost:5173/failed",
+                "http://localhost:5173/success",
                 "https://example.com/error"
             });
         }

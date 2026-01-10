@@ -22,7 +22,6 @@ namespace PSPbackend.Controllers
         {
             _pspDbContext = context;
             _bank = bank;
-
         }
 
         [HttpPost("initPayment")]
@@ -73,7 +72,10 @@ namespace PSPbackend.Controllers
                 $"&stan={transaction.Stan}" +
                 $"&pspTimestamp={transaction.PspTimestamp:o}";
 
-            return Redirect(redirectUrl);
+            return Ok(new
+            {
+                redirectUrl
+            });
         }
 
         [HttpGet("paymentMethods/{merchantId}")]
@@ -130,15 +132,15 @@ namespace PSPbackend.Controllers
             try
             {
                 var bankResponse = await _bank
-                .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
+                    .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
 
-                return Redirect(bankResponse.PaymentRequestUrl);
+                return Ok(bankResponse.PaymentRequestUrl);
             }
             catch(Exception)
             {
                 transaction.Status = TransactionStatus.Error;
                 await _pspDbContext.SaveChangesAsync(ct);
-                return Redirect(merchant.ErrorUrl);
+                return Ok(merchant.ErrorUrl);
             }
         }
 
@@ -191,7 +193,7 @@ namespace PSPbackend.Controllers
             var separator = "?";
             redirectUrl = $"{redirectUrl}{separator}merchantOrderId={transaction.MerchantOrderId}";
 
-            return Redirect(redirectUrl);
+            return Ok(redirectUrl);
         }
     }
 }

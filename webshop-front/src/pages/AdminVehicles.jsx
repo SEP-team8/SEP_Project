@@ -100,7 +100,7 @@ export default function AdminVehicles() {
                   {v.description}
                 </p>
                 <div className="text-xl font-bold text-sky-700 mt-2">
-                  {v.price} €/day
+                  {v.price} RSD/day
                 </div>
                 <div className="mt-4 flex gap-2">
                   <button

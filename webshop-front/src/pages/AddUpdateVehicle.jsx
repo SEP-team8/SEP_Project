@@ -111,7 +111,7 @@ export default function AddUpdateVehicle() {
             className="border p-2 rounded"
           />
 
-          <label className="text-sm">Cena po danu (€)</label>
+          <label className="text-sm">Cena po danu (RSD)</label>
           <input
             type="number"
             min="0"

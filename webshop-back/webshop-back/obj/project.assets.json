@@ -4473,23 +4473,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Srky\\.nuget\\packages\\": {},
+    "C:\\Users\\gemov\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+      "projectUniqueName": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
       "projectName": "webshop-back",
-      "projectPath": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
-      "packagesPath": "C:\\Users\\Srky\\.nuget\\packages\\",
-      "outputPath": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\obj\\",
+      "projectPath": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+      "packagesPath": "C:\\Users\\gemov\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\webshop-back\\webshop-back\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Srky\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\gemov\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4498,7 +4498,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4517,7 +4516,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net9.0": {
@@ -4591,7 +4590,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

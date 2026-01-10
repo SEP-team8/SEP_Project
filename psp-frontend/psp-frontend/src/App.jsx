@@ -9,6 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/psp" replace />} />
         <Route path="/psp" element={<PaymentPage />} />
+        <Route path="/pay" element={<PaymentPage />} />
       </Routes>
     </BrowserRouter>
   );

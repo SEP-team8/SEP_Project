@@ -9,7 +9,7 @@ export default defineConfig({
     strictPort: true, // ne prelazi na drugi port ako je zauzet
     proxy: {
       "/api": {
-        target: "http://localhost:5199", //PSP backend
+        target: "https://localhost:7150", //PSP backend
         changeOrigin: true,
         secure: false,
       },

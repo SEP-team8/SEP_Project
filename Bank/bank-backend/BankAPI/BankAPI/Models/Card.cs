@@ -17,6 +17,10 @@ namespace BankAPI.Models
         public Guid AccountId { get; set; }
         public BankAccount BankAccount { get; set; }
 
+        [Required]
+        [MaxLength(3)]
+        public string Cvv { get; set; } // TODO: store this value more safely
+
         //[Required]
         //[MaxLength(64)]
         //public string CardToken { get; set; }

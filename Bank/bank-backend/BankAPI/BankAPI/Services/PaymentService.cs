@@ -63,6 +63,18 @@ namespace BankAPI.Services
             {
                 paymentRequest.Status = PaymentRequestStatus.Expired;
                 await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Cvv)
+                || request.Cvv.Length != 3
+                || !request.Cvv.All(char.IsDigit))
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
@@ -71,6 +83,7 @@ namespace BankAPI.Services
             {
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
 
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
@@ -86,12 +99,28 @@ namespace BankAPI.Services
             {
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+
+                return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
+
+            if (card.Cvv != request.Cvv)
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
 
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
             if (card.BankAccount.Balance < paymentRequest.Amount)
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
 
             var merchant = await _context.Merchants
                 .Include(c => c.BankAccount)
@@ -99,7 +128,13 @@ namespace BankAPI.Services
 
 
             if (merchant.BankAccount == null)
+            {
+                paymentRequest.Status = PaymentRequestStatus.Failed;
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
+
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
 
             try
             {
@@ -139,6 +174,19 @@ namespace BankAPI.Services
             {
                 await dbTransaction.RollbackAsync();
 
+                var globalTransactionId = Guid.NewGuid();
+                var acquirerTimestamp = DateTime.UtcNow;
+
+                _context.Transactions.Add(new Transaction
+                {
+                    PaymentRequestId = paymentRequestId,
+                    GlobalTransactionId = globalTransactionId,
+                    AcquirerTimestamp = acquirerTimestamp,
+                    Status = TransactionStatus.Failed
+                });
+
+                await _context.SaveChangesAsync();
+
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
         }
@@ -148,16 +196,18 @@ namespace BankAPI.Services
         {
             var paymentRequest = await _context.PaymentRequests.FindAsync(paymentRequestId);
 
-            return await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
+            var redirectUrl = await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
             {
                 PaymentRequestId = paymentRequestId,
                 Stan = paymentRequest?.Stan!,
-                GlobalTransactionId = null,
+                GlobalTransactionId = Guid.NewGuid(),
                 AcquirerTimestamp = DateTime.UtcNow,
                 Status = status,
                 MerchantID = paymentRequest?.MerchantId ?? Guid.Empty,
                 PspTimestamp = paymentRequest?.PspTimestamp ?? DateTime.UtcNow
             });
+
+            return redirectUrl;
         }
 
         public async Task<PaymentRequestDto> GetPaymentRequest(Guid paymentRequestId)

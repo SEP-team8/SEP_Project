@@ -93,6 +93,10 @@ namespace BankAPI.Context
                 entity.Property(e => e.PAN)
                     .IsRequired();
 
+                entity.Property(e => e.Cvv)
+                    .IsRequired()
+                    .HasMaxLength(3);
+
                 //entity.Property(e => e.CardToken)
                 //    .IsRequired()
                 //    .HasMaxLength(64);

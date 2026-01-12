@@ -93,12 +93,11 @@ export default function Cart() {
     }
 
     try {
-      // 1) create order on backend (existing flow)
       const orderResp = await API.post("/orders", {
         items: cart.map((c) => ({
           vehicleId: c.vehicleId,
           days: c.days || 1,
-          pricePerDay: c.price || 0, // pass price if backend expects it
+          pricePerDay: c.price || 0,
           vehicleName: c.name || "",
         })),
       });
@@ -106,10 +105,7 @@ export default function Cart() {
       const orderId = orderResp.data.orderId;
       if (!orderId) throw new Error("OrderId missing from backend");
 
-      // 2) Prepare payment init payload (target: POST /api/payments/create)
       const origin = window.location.origin;
-
-      // MERCHANT_ID: prefer sessionStorage (set on login or merchant selection), otherwise fallback to env variable
       const merchantId =
         sessionStorage.getItem("merchantId") ||
         import.meta.env.VITE_MERCHANT_ID ||
@@ -132,7 +128,6 @@ export default function Cart() {
         })),
       };
 
-      // 3) call payments/create on backend (this will call PSP from backend)
       const payResp = await API.post("/payments/create", payReq);
 
       console.log(payResp.data);
@@ -140,7 +135,9 @@ export default function Cart() {
       const paymentUrl = payResp.data;
       if (!paymentUrl) throw new Error("PaymentUrl from server is missing");
 
-      // 4) redirect browser to PSP/paymentUrl
+      localStorage.setItem("lastOrderId", orderId);
+      localStorage.setItem("lastOrderRedirectTime", new Date().toISOString());
+
       window.location.href = paymentUrl;
     } catch (err) {
       console.error(err);

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using webshop_back.Data.Models;
 using webshop_back.Service.Interfaces;
-using webshop_back.Helpers;
-using System.Text.Json;
-using webshop_back.DTOs;
 
 namespace webshop_back.Controllers
 {
@@ -20,7 +17,6 @@ namespace webshop_back.Controllers
             _paymentService = paymentService;
         }
 
-        // 1) Init payment
         [HttpPost("create")]
         public async Task<IActionResult> CreatePayment([FromBody] PaymentInitRequest req)
         {
@@ -39,87 +35,61 @@ namespace webshop_back.Controllers
             return Ok(resp);
         }
 
-        // 2) PSP webhook callback
-        [HttpPost("webhook")]
-        public async Task<IActionResult> Webhook()
+
+        [HttpGet("{orderId}/success")]
+        public IActionResult PaymentSuccess(Guid orderId)
         {
-            Request.EnableBuffering();
-
-            using var sr = new StreamReader(Request.Body, leaveOpen: true);
-            var payload = await sr.ReadToEndAsync();
-            Request.Body.Position = 0;
-
-            var signatureHeader = Request.Headers["X-PSP-Signature"].FirstOrDefault();
-
-            PaymentWebhookRequest? webhook;
-            try
-            {
-                webhook = JsonSerializer.Deserialize<PaymentWebhookRequest>(
-                    payload,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-                );
-            }
-            catch
-            {
-                return BadRequest("Invalid payload");
-            }
-
-            if (webhook == null)
-                return BadRequest("Empty payload");
-
-            if (webhook.MerchantId == Guid.Empty || webhook.MerchantOrderId == Guid.Empty)
-                return BadRequest("Invalid merchant or order id");
-
-            // Resolve merchant directly
-            var merchant = _repo.GetMerchantByMerchantId(webhook.MerchantId);
-            if (merchant == null)
-                return BadRequest("Merchant not found");
-
-            // Verify signature
-            var verified = SignatureHelper.VerifyHmacSha256(
-                signatureHeader,
-                payload,
-                merchant.WebhookSecret
-            );
-
-            if (!verified)
-            {
-                return Unauthorized("Invalid signature");
-            }
-
-            // Resolve order
-            var order = _repo.GetOrder(webhook.MerchantOrderId);
+            var order = _repo.GetOrder(orderId);
             if (order == null)
-            {
                 return NotFound("Order not found");
+
+            if (order.Status != OrderStatus.Success)
+            {
+                order.Status = OrderStatus.Success;
+                order.UpdatedAt = DateTime.UtcNow;
+                _repo.UpdateOrder(order);
             }
 
-            // Idempotent update
-            order.UpdatedAt = DateTime.UtcNow;
-
-            // TODO: map PSP status → internal status
-            // order.Status = webhook.Status;
-
-            _repo.UpdateOrder(order);
-
-            return Ok();
+            return Ok(new
+            {
+                orderId = order.OrderId,
+                status = order.Status.ToString()
+            });
         }
 
-        // 3) Query order status
+        
+        [HttpGet("{orderId}/failed")]
+        public IActionResult PaymentFailed(Guid orderId)
+        {
+            var order = _repo.GetOrder(orderId);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.Status != OrderStatus.Failed)
+            {
+                order.Status = OrderStatus.Failed;
+                order.UpdatedAt = DateTime.UtcNow;
+                _repo.UpdateOrder(order);
+            }
+
+            return Ok(new
+            {
+                orderId = order.OrderId,
+                status = order.Status.ToString()
+            });
+        }
+
         [HttpGet("{orderId}/status")]
         public IActionResult GetStatus(Guid orderId)
         {
-            if (orderId == Guid.Empty)
-                return BadRequest("Invalid order id");
-
-            var order = _repo.GetOrderWithItems(orderId);
+            var order = _repo.GetOrder(orderId);
             if (order == null)
                 return NotFound();
 
             return Ok(new
             {
                 order.OrderId,
-                order.Status,
+                status = order.Status.ToString(),
                 order.ExpiresAt
             });
         }

@@ -7,7 +7,8 @@ export default function NavBar() {
 
   const [cartCount, setCartCount] = useState(() => {
     try {
-      return JSON.parse(sessionStorage.getItem("cart") || "[]").length;
+      const arr = JSON.parse(sessionStorage.getItem("cart") || "[]");
+      return Array.isArray(arr) ? arr.length : 0;
     } catch {
       return 0;
     }
@@ -42,7 +43,7 @@ export default function NavBar() {
     function onCartUpdate() {
       try {
         const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
-        setCartCount(cart.length);
+        setCartCount(Array.isArray(cart) ? cart.length : 0);
       } catch {
         setCartCount(0);
       }
@@ -99,12 +100,6 @@ export default function NavBar() {
               <Link to="/vehicles" className="text-gray-600 hover:text-sky-700">
                 Vehicles
               </Link>
-              {/* <Link to="/about" className="text-gray-600 hover:text-sky-700">
-                Kako radi
-              </Link>
-              <Link to="/contact" className="text-gray-600 hover:text-sky-700">
-                Kontakt
-              </Link> */}
             </nav>
           </div>
 

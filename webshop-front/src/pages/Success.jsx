@@ -19,6 +19,7 @@ export default function Success() {
     let mounted = true;
 
     async function markSuccess() {
+      console.log("ALAHUAGBAR");
       try {
         const res = await API.get(`/payments/${orderId}/success`);
         if (!mounted) return;
@@ -28,7 +29,20 @@ export default function Success() {
         if (mounted) setStatus("Success");
       } finally {
         if (mounted) setLoading(false);
-        localStorage.removeItem("lastOrderId");
+
+        try {
+          localStorage.removeItem("lastOrderId");
+          localStorage.removeItem("lastOrderRedirectTime");
+          console.log("NIGGERURURURURURUR");
+        } catch (e) {}
+
+        try {
+          sessionStorage.removeItem("cart");
+          window.dispatchEvent(new CustomEvent("cartUpdated"));
+          console.log("UPDATOVOOOOOSAMMMMM");
+        } catch (e) {
+          console.warn("Failed to clear cart in sessionStorage", e);
+        }
       }
     }
 

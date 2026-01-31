@@ -6,7 +6,7 @@ export default function Cart() {
   const navigate = useNavigate();
 
   const [rawCart, setRawCart] = useState(() =>
-    JSON.parse(sessionStorage.getItem("cart") || "[]")
+    JSON.parse(sessionStorage.getItem("cart") || "[]"),
   );
   const [cart, setCart] = useState([]);
 
@@ -45,7 +45,7 @@ export default function Cart() {
             } catch {
               nameMap[id] = `Vehicle ${id}`;
             }
-          })
+          }),
         );
       } catch (err) {
         console.error("Failed to fetch vehicle names", err);

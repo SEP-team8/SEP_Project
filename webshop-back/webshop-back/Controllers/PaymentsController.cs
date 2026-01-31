@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using webshop_back.Data.Models;
 using webshop_back.Service.Interfaces;
 
@@ -79,6 +81,28 @@ namespace webshop_back.Controllers
             });
         }
 
+
+        [HttpGet("{orderId}/cancelled")]
+        public IActionResult PaymentCancelled(Guid orderId)
+        {
+            var order = _repo.GetOrder(orderId);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.Status != OrderStatus.Cancelled)
+            {
+                order.Status = OrderStatus.Cancelled;
+                order.UpdatedAt = DateTime.UtcNow;
+                _repo.UpdateOrder(order);
+            }
+
+            return Ok(new
+            {
+                orderId = order.OrderId,
+                status = order.Status.ToString()
+            });
+        }
+
         [HttpGet("{orderId}/status")]
         public IActionResult GetStatus(Guid orderId)
         {
@@ -91,6 +115,47 @@ namespace webshop_back.Controllers
                 order.OrderId,
                 status = order.Status.ToString(),
                 order.ExpiresAt
+            });
+        }
+
+        [HttpPost("auto-cancel-pending")]
+        [Authorize]
+        public IActionResult AutoCancelPendingForCurrentUser()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                              ?? User.FindFirst("sub")?.Value
+                              ?? User.FindFirst("userId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Forbid("User id not available in token claims.");
+            }
+
+            var cutoff = DateTime.UtcNow.AddMinutes(-15);
+
+            var userOrders = _repo.GetOrdersForUser(userId);
+
+            if (userOrders == null)
+            {
+                return Ok(new { cancelled = 0 });
+            }
+
+            var toCancel = userOrders
+                .Where(o => o.Status == OrderStatus.Pending &&
+                            (o.UpdatedAt ?? o.CreatedAt) <= cutoff)
+                .ToList();
+
+            foreach (var order in toCancel)
+            {
+                order.Status = OrderStatus.Cancelled;
+                order.UpdatedAt = DateTime.UtcNow;
+                _repo.UpdateOrder(order);
+            }
+
+            return Ok(new
+            {
+                cancelled = toCancel.Count,
+                cancelledIds = toCancel.Select(o => o.OrderId).ToArray()
             });
         }
     }

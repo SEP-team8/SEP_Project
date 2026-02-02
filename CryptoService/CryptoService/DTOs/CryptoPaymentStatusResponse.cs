@@ -1,11 +1,9 @@
-﻿using CryptoService.Models;
-
-namespace CryptoService.DTOs;
+﻿namespace CryptoService.DTOs;
 
 public sealed record CryptoPaymentStatusResponse(
     Guid PaymentId,
-    CryptoPaymentStatus Status,
-    decimal BitcoinAmount,
-    string? TransactionId,
+    CryptoService.Models.CryptoPaymentStatus Status,
+    decimal EthAmount,
+    string? TransactionHash,
     int Confirmations
 );

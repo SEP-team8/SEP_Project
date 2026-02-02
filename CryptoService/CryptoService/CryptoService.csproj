@@ -14,6 +14,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NBitcoin" Version="9.0.4" />
+    <PackageReference Include="Nethereum.HdWallet" Version="5.8.0" />
+    <PackageReference Include="Nethereum.Hex" Version="5.8.0" />
+    <PackageReference Include="Nethereum.Signer" Version="5.8.0" />
+    <PackageReference Include="Nethereum.Util" Version="5.8.0" />
+    <PackageReference Include="Nethereum.Web3" Version="5.8.0" />
     <PackageReference Include="QRCoder" Version="1.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>

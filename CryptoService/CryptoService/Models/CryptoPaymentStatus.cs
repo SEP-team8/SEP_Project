@@ -3,7 +3,7 @@
 public enum CryptoPaymentStatus
 {
     Pending,
-    Detected,       // tx seen but unconfirmed
+    Detected,
     Confirmed,
     Expired,
     Failed

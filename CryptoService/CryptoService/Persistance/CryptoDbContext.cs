@@ -1,36 +1,40 @@
 ﻿using CryptoService.Models;
+using CryptoService.Models.WalletModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace CryptoService.Persistance;
-
-public class CryptoDbContext : DbContext
+namespace CryptoService.Persistance
 {
-    public CryptoDbContext(DbContextOptions<CryptoDbContext> options) : base(options) { }
-    
-    public DbSet<CryptoPayment> CryptoPayments => Set<CryptoPayment>();
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class CryptoDbContext : DbContext
     {
-        modelBuilder.Entity<CryptoPayment>(entity =>
+        public CryptoDbContext(DbContextOptions<CryptoDbContext> options) : base(options) { }
+
+        public DbSet<CryptoPayment> CryptoPayments { get; set; } = null!;
+        public DbSet<Wallet> Wallets { get; set; } = null!;
+        public DbSet<WalletAddress> WalletAddresses { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            entity.Property(x => x.BitcoinAddress)
-                  .IsRequired()
-                  .HasMaxLength(128);
+            modelBuilder.Entity<CryptoPayment>(eb =>
+            {
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.FiatAmount).HasColumnType("decimal(18,2)");
+                eb.Property(x => x.EthAmount).HasColumnType("decimal(36,18)");
+                eb.Property(x => x.AmountWei).HasMaxLength(100);
+                eb.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            });
 
-            entity.Property(x => x.BitcoinAmount)
-                  .HasPrecision(18, 8);
+            modelBuilder.Entity<Wallet>(eb =>
+            {
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            });
 
-            entity.Property(x => x.FiatAmount)
-                  .HasPrecision(18, 2);
+            modelBuilder.Entity<WalletAddress>(eb =>
+            {
+                eb.HasKey(x => x.Id);
+            });
 
-            entity.Property(x => x.Status)
-                  .HasConversion<string>();
-
-            entity.Property(x => x.FiatCurrency)
-                  .HasConversion<string>();
-
-            entity.HasIndex(x => x.BitcoinAddress)
-                  .IsUnique();
-        });
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

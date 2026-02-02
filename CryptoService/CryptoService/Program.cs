@@ -1,5 +1,6 @@
 using CryptoService.Clients;
 using CryptoService.Clients.Interfaces;
+using CryptoService.HostedServices;
 using CryptoService.Persistance;
 using CryptoService.Services;
 using CryptoService.Services.Interfaces;
@@ -8,40 +9,45 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configuration & Logging
+builder.Services.AddOptions();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
-
+// DbContext
 builder.Services.AddDbContext<CryptoDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Http clients + Binance client
+builder.Services.AddHttpClient(); // general
+builder.Services.AddHttpClient<IBinanceClient, BinanceClient>();
+
+// Services
+builder.Services.AddScoped<ICryptoPaymentService, CryptoPaymentService>();
+
+// Hosted background watcher
+builder.Services.AddHostedService<PaymentWatcher>();
+
+// Controllers
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
+    opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICryptoPaymentService, CryptoPaymentService>();
-builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<IBinanceClient, BinanceClient>();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

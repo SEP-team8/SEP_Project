@@ -2,7 +2,7 @@
 
 public sealed record CreateCryptoPaymentResponse(
     Guid PaymentId,
-    string BitcoinAddress,
-    decimal BitcoinAmount,
+    string EthAddress,
+    decimal EthAmount,
     DateTime ExpiresAt
 );

@@ -104,14 +104,14 @@ namespace BankAPI.Services
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
-            if (card.Cvv != request.Cvv)
+            /*if (card.Cvv != request.Cvv)
             {
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
 
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
-            }
+            }*/
 
             if (card.BankAccount.Balance < paymentRequest.Amount)
             {

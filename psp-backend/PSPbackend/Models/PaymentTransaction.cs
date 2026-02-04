@@ -1,4 +1,5 @@
 ﻿using PSPbackend.Models.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PSPbackend.Models
 {
@@ -19,5 +20,12 @@ namespace PSPbackend.Models
         public DateTime? AcquirerTimestamp { get; set; } 
         public TransactionStatus Status { get; set; }
         public Guid GlobalTransactionId { get; set; }
+
+        public Guid? CryptoPaymentId { get; set; }
+        public string? CryptoAddress { get; set; }
+        public string? TransactionHash { get; set; }
+
+        [Column(TypeName = "decimal(36,18)")]
+        public decimal? CryptoAmount { get; set; }
     }
 }

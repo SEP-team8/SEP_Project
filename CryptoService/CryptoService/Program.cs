@@ -1,5 +1,4 @@
-using CryptoService.Clients;
-using CryptoService.Clients.Interfaces;
+
 using CryptoService.HostedServices;
 using CryptoService.Persistance;
 using CryptoService.Services;
@@ -19,7 +18,6 @@ builder.Services.AddDbContext<CryptoDbContext>(options =>
 
 // Http clients + Binance client
 builder.Services.AddHttpClient(); // general
-builder.Services.AddHttpClient<IBinanceClient, BinanceClient>();
 
 // Services
 builder.Services.AddScoped<ICryptoPaymentService, CryptoPaymentService>();

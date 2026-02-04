@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSPbackend.Context;
 
@@ -11,9 +12,11 @@ using PSPbackend.Context;
 namespace PSPbackend.Migrations
 {
     [DbContext(typeof(PspDbContext))]
-    partial class PspDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203151142_AddCryptoColumnsToPaymentTransactions")]
+    partial class AddCryptoColumnsToPaymentTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,9 +111,6 @@ namespace PSPbackend.Migrations
 
                     b.Property<string>("CryptoAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("CryptoAmount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("CryptoPaymentId")
                         .HasColumnType("uniqueidentifier");

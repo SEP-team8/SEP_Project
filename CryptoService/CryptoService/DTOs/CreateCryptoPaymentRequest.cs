@@ -1,5 +1,9 @@
-﻿using CryptoService.Models;
+﻿namespace CryptoService.DTOs;
 
-namespace CryptoService.DTOs;
-
-public sealed record CreateCryptoPaymentRequest(Guid OrderId, decimal FiatAmount, Currency FiatCurrency);
+public sealed record CreateCryptoPaymentRequest(
+        Guid MerchantId,
+        decimal FiatAmount,
+        int Currency,        // numeric enum value (mapira se na CryptoService.Models.Currency)
+        string Stan,
+        DateTime PspTimestamp
+    );

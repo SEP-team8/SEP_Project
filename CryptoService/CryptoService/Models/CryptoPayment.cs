@@ -1,30 +1,28 @@
-﻿namespace CryptoService.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public sealed class CryptoPayment
+namespace CryptoService.Models
 {
-    public Guid Id { get; set; }
+    public sealed class CryptoPayment
+    {
+        public Guid Id { get; set; }
+        public Guid OrderId { get; set; }
+        public decimal FiatAmount { get; set; }
+        public Currency FiatCurrency { get; set; }
 
-    public Guid OrderId { get; set; }
+        [Column(TypeName = "decimal(36,18)")]
+        public decimal EthAmount { get; set; }
+        public string AmountWei { get; set; } = "0";
+        public string EthAddress { get; set; } = string.Empty;
+        public CryptoPaymentStatus Status { get; set; }
+        public string? TransactionHash { get; set; }
 
-    public decimal FiatAmount { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
 
-    public Currency FiatCurrency { get; set; }
+        // correlation to PSP
+        public Guid? MerchantId { get; set; }    // PSP merchantId (psp side)
+        public string? Stan { get; set; }        // PSP stan
+        public DateTime? PspTimestamp { get; set; }
+    }
 
-    // ETH decimal amount (for display)
-    public decimal EthAmount { get; set; }
-
-    // store wei as string to avoid precision loss
-    public string AmountWei { get; set; } = "0";
-
-    // receiving ETH address for this payment
-    public required string EthAddress { get; set; }
-
-    public CryptoPaymentStatus Status { get; set; }
-
-    // transaction hash if known
-    public string? TransactionHash { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime ExpiresAt { get; set; }
 }

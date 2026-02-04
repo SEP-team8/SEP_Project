@@ -3,7 +3,8 @@ import PaymentPage from "./pages/PaymentPage.jsx";
 import PaymentMethodsPage from "./components/PaymentMethods.jsx";
 import LoginPage from "./components/Login.jsx";
 import AddPaymentMethods from "./components/AddPaymentMethods.jsx";
-import './App.css'
+import PayCrypto from "./components/PayCrypto.jsx";
+import "./App.css";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/addPaymentMethods" element={<AddPaymentMethods />} />
+        <Route path="/payCrypto" element={<PayCrypto />} />
       </Routes>
     </BrowserRouter>
   );

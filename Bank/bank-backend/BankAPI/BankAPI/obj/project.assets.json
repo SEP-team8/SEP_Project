@@ -4486,23 +4486,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gemov\\.nuget\\packages\\": {},
+    "C:\\Users\\Srky\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
+      "projectUniqueName": "D:\\GitLab Repo\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
       "projectName": "BankAPI",
-      "projectPath": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
-      "packagesPath": "C:\\Users\\gemov\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\obj\\",
+      "projectPath": "D:\\GitLab Repo\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
+      "packagesPath": "C:\\Users\\Srky\\.nuget\\packages\\",
+      "outputPath": "D:\\GitLab Repo\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\gemov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Srky\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4511,6 +4511,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4529,7 +4530,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -4577,7 +4578,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

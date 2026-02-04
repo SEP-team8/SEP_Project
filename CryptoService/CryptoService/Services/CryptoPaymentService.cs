@@ -1,11 +1,9 @@
 ﻿using System.Numerics;
 using CryptoService.DTOs;
 using CryptoService.Models;
-using CryptoService.Models.WalletModels;
 using CryptoService.Persistance;
 using CryptoService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Nethereum.HdWallet;
 using Nethereum.Util;
 using Nethereum.Web3;
 using Nethereum.Signer;
@@ -32,42 +30,82 @@ namespace CryptoService.Services
             _config = config;
 
             _rpcUrl = config["Ethereum:RpcUrl"]
-                ?? throw new InvalidOperationException("Ethereum RpcUrl missing");
+                ?? throw new InvalidOperationException("Ethereum:RpcUrl missing");
 
-            _confirmations = int.Parse(config["Ethereum:ConfirmationsRequired"] ?? "1");
+            _confirmations = int.Parse(
+                config["Ethereum:ConfirmationsRequired"] ?? "1"
+            );
         }
 
         public async Task<CreateCryptoPaymentResponse> CreatePaymentAsync(
             CreateCryptoPaymentRequest request,
-            CancellationToken cancellationToken)
+            CancellationToken ct)
         {
+            if (request.MerchantId == Guid.Empty)
+                throw new ArgumentException("MerchantId is required");
+
             if (request.FiatAmount <= 0)
-                throw new ArgumentException("Invalid amount");
+                throw new ArgumentException("Invalid fiat amount");
 
-            // DEV: fiksna cena (ili ubaci oracle kasnije)
+            if (string.IsNullOrWhiteSpace(request.Stan))
+                throw new ArgumentException("Stan is required");
+
+            // map numeric currency → enum
+            if (!Enum.IsDefined(typeof(Currency), request.Currency))
+                throw new ArgumentException("Invalid currency value");
+
+            var currency = (Currency)request.Currency;
+
+            // DEV: fiksna cena (kasnije oracle)
             decimal ethPriceUsd = 3000m;
-            decimal ethAmount = Math.Round(request.FiatAmount / ethPriceUsd, 18);
+            decimal fiatInUsd = request.FiatAmount;
 
+            switch (currency)
+            {
+                case Currency.RSD:
+                    fiatInUsd = request.FiatAmount / 110m; // fake kurs
+                    break;
+
+                case Currency.EUR:
+                    fiatInUsd = request.FiatAmount * 1.1m;
+                    break;
+
+                case Currency.USD:
+                    fiatInUsd = request.FiatAmount;
+                    break;
+            }
+
+            decimal ethAmount = Math.Round(fiatInUsd / ethPriceUsd, 18);
             BigInteger wei = UnitConversion.Convert.ToWei(ethAmount);
 
-            string address = await GeneratePaymentAddress(cancellationToken);
+            var ethAddress = await GeneratePaymentAddress(ct);
 
             var payment = new CryptoPayment
             {
                 Id = Guid.NewGuid(),
-                OrderId = request.OrderId,
+
+                // === PSP correlation data ===
+                MerchantId = request.MerchantId,
+                Stan = request.Stan,
+                PspTimestamp = DateTime.SpecifyKind(
+                    request.PspTimestamp,
+                    DateTimeKind.Utc
+                ),
+
                 FiatAmount = request.FiatAmount,
-                FiatCurrency = request.FiatCurrency,
+                FiatCurrency = currency,
+
                 EthAmount = ethAmount,
                 AmountWei = wei.ToString(),
-                EthAddress = address,
+                EthAddress = ethAddress,
+
                 Status = CryptoPaymentStatus.Pending,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(20)
             };
 
             _db.CryptoPayments.Add(payment);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _db.SaveChangesAsync(ct);
 
             return new CreateCryptoPaymentResponse(
                 payment.Id,
@@ -80,11 +118,18 @@ namespace CryptoService.Services
         private async Task<string> GeneratePaymentAddress(CancellationToken ct)
         {
             var mnemonic = _config["Ethereum:WalletMnemonic"];
-            if (string.IsNullOrWhiteSpace(mnemonic))
-                return _config["Ethereum:ShopAddress"]!;
 
-            var wallet = await _db.Wallets.FirstOrDefaultAsync(w => w.IsActive, ct)
-                ?? new WalletModel
+            // fallback → statička adresa (DEV / demo)
+            if (string.IsNullOrWhiteSpace(mnemonic))
+                return _config["Ethereum:ShopAddress"]
+                    ?? throw new InvalidOperationException("Shop address missing");
+
+            var wallet = await _db.Wallets
+                .FirstOrDefaultAsync(w => w.IsActive, ct);
+
+            if (wallet == null)
+            {
+                wallet = new WalletModel
                 {
                     Id = Guid.NewGuid(),
                     IsActive = true,
@@ -92,8 +137,11 @@ namespace CryptoService.Services
                     CreatedAt = DateTime.UtcNow
                 };
 
+                _db.Wallets.Add(wallet);
+                await _db.SaveChangesAsync(ct);
+            }
+
             wallet.CurrentAddressIndex++;
-            _db.Wallets.Update(wallet);
             await _db.SaveChangesAsync(ct);
 
             var hd = new NethereumWallet(mnemonic, null);
@@ -118,10 +166,12 @@ namespace CryptoService.Services
             CancellationToken ct)
         {
             var payment = await _db.CryptoPayments.FindAsync(paymentId);
-            if (payment == null) return null;
+            if (payment == null)
+                return null;
 
             var web3 = new Web3(_rpcUrl);
-            var balance = await web3.Eth.GetBalance.SendRequestAsync(payment.EthAddress);
+            var balance = await web3.Eth.GetBalance
+                .SendRequestAsync(payment.EthAddress);
 
             if (balance >= BigInteger.Parse(payment.AmountWei))
             {
@@ -134,9 +184,14 @@ namespace CryptoService.Services
                 payment.Status,
                 payment.EthAmount,
                 payment.TransactionHash,
-                0
+                _confirmations
             );
         }
+
+        public Task<CryptoPaymentStatusResponse?> GetStatusAsync(
+            Guid id,
+            CancellationToken ct)
+            => CheckPaymentStatusAsync(id, ct);
 
         public async Task<byte[]> GeneratePaymentQrCodeAsync(
             Guid paymentId,
@@ -146,7 +201,9 @@ namespace CryptoService.Services
             if (payment == null)
                 throw new Exception("Payment not found");
 
-            string uri = $"ethereum:{payment.EthAddress}?value={payment.EthAmount}";
+            // EIP-681
+            string uri =
+                $"ethereum:{payment.EthAddress}?value={payment.AmountWei}";
 
             using var gen = new QRCodeGenerator();
             using var data = gen.CreateQrCode(uri, QRCodeGenerator.ECCLevel.Q);
@@ -154,10 +211,8 @@ namespace CryptoService.Services
             return qr.GetGraphic(20);
         }
 
-        public Task<CryptoPaymentStatusResponse?> GetStatusAsync(Guid id, CancellationToken ct)
-            => CheckPaymentStatusAsync(id, ct);
-
-        public Task<GenerateWalletResponse> GenerateShopWalletAsync(CancellationToken ct)
+        public Task<GenerateWalletResponse> GenerateShopWalletAsync(
+            CancellationToken ct)
         {
             var key = EthECKey.GenerateKey();
             return Task.FromResult(

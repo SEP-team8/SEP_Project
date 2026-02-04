@@ -4,6 +4,7 @@
     {
         RSD = 0,
         EUR = 1,
-        USD = 2
+        USD = 2,
+        ETH = 3
     }
 }

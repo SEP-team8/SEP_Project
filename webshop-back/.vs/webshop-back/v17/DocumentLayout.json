@@ -84,7 +84,7 @@
               "RelativeDocumentMoniker": "webshop-back\\appsettings.json",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\appsettings.json",
               "RelativeToolTip": "webshop-back\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-01-09T20:21:57.829Z",
               "IsPinned": true,
@@ -192,8 +192,7 @@
               "RelativeToolTip": "webshop-back\\Controllers\\PaymentsController.cs",
               "ViewState": "AgIAAHQAAAAAAAAAAAAYwHgAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-13T12:05:56.278Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-13T12:05:56.278Z"
             },
             {
               "$type": "Document",

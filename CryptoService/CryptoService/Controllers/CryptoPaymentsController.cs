@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CryptoService.Controllers;
 
 [ApiController]
-[Route("crypto/Payments")]
+[Route("crypto/payments")]
 public class CryptoPaymentsController : ControllerBase
 {
     private readonly ICryptoPaymentService _cryptoPaymentService;
@@ -16,37 +16,78 @@ public class CryptoPaymentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<CreateCryptoPaymentResponse>> CreatePayment([FromBody] CreateCryptoPaymentRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<CreateCryptoPaymentResponse>> CreatePayment(
+        [FromBody] CreateCryptoPaymentRequest request,
+        CancellationToken cancellationToken)
     {
-        if (request.FiatAmount <= 0)
-            return BadRequest("Fiat amount must be greater than zero.");
+        if (request.MerchantId == Guid.Empty)
+            return BadRequest("MerchantId is required.");
 
-        var response = await _cryptoPaymentService.CreatePaymentAsync(request, cancellationToken);
-        return Ok(response);
+        if (request.FiatAmount <= 0)
+            return BadRequest("FiatAmount must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(request.Stan))
+            return BadRequest("Stan is required.");
+
+        try
+        {
+            var response = await _cryptoPaymentService
+                .CreatePaymentAsync(request, cancellationToken);
+
+            return Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                Error = "Crypto payment creation failed",
+                Details = ex.Message
+            });
+        }
     }
 
     [HttpGet("{paymentId:guid}")]
-    public async Task<ActionResult<CryptoPaymentStatusResponse>> GetPaymentStatus(Guid paymentId, CancellationToken cancellationToken)
+    public async Task<ActionResult<CryptoPaymentStatusResponse>> GetPaymentStatus(
+        Guid paymentId,
+        CancellationToken cancellationToken)
     {
-        var status = await _cryptoPaymentService.GetStatusAsync(paymentId, cancellationToken);
-        if (status is null) return NotFound();
+        var status = await _cryptoPaymentService
+            .GetStatusAsync(paymentId, cancellationToken);
+
+        if (status == null)
+            return NotFound();
+
         return Ok(status);
     }
 
     [HttpPost("{paymentId:guid}/check")]
-    public async Task<ActionResult<CryptoPaymentStatusResponse>> CheckPayment(Guid paymentId, CancellationToken cancellationToken)
+    public async Task<ActionResult<CryptoPaymentStatusResponse>> CheckPayment(
+        Guid paymentId,
+        CancellationToken cancellationToken)
     {
-        var status = await _cryptoPaymentService.CheckPaymentStatusAsync(paymentId, cancellationToken);
-        if (status is null) return NotFound();
+        var status = await _cryptoPaymentService
+            .CheckPaymentStatusAsync(paymentId, cancellationToken);
+
+        if (status == null)
+            return NotFound();
+
         return Ok(status);
     }
 
     [HttpGet("{paymentId:guid}/qrcode")]
-    public async Task<IActionResult> GetPaymentQrCode(Guid paymentId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPaymentQrCode(
+        Guid paymentId,
+        CancellationToken cancellationToken)
     {
         try
         {
-            byte[] qrCode = await _cryptoPaymentService.GeneratePaymentQrCodeAsync(paymentId, cancellationToken);
+            var qrCode = await _cryptoPaymentService
+                .GeneratePaymentQrCodeAsync(paymentId, cancellationToken);
+
             return File(qrCode, "image/png");
         }
         catch (Exception ex)

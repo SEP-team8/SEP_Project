@@ -80,7 +80,7 @@ export default function PaymentCard() {
 
   const [loading, setLoading] = useState(false);
   const [methodsLoading, setMethodsLoading] = useState(false);
-  const [txLoading, setTxLoading] = useState(false)
+  const [txLoading, setTxLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [availableMethodTypes, setAvailableMethodTypes] = useState([]);
@@ -88,14 +88,15 @@ export default function PaymentCard() {
 
   const [purchase, setPurchase] = useState(null);
 
-
   // 0) Učitaj transakciju (amount + currency) iz backenda
   useEffect(() => {
     async function loadTransactionSummary() {
       setError("");
 
       if (!merchantId || !stan || !pspTimestamp) {
-        setError("Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.");
+        setError(
+          "Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.",
+        );
         return;
       }
 
@@ -114,7 +115,9 @@ export default function PaymentCard() {
 
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          throw new Error(`Ne mogu da učitam podatke o transakciji: ${res.status}. ${txt}`);
+          throw new Error(
+            `Ne mogu da učitam podatke o transakciji: ${res.status}. ${txt}`,
+          );
         }
 
         const data = await res.json();
@@ -140,7 +143,9 @@ export default function PaymentCard() {
       setError("");
 
       if (!merchantId || !stan || !pspTimestamp) {
-        setError("Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.");
+        setError(
+          "Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.",
+        );
         return;
       }
 
@@ -154,7 +159,9 @@ export default function PaymentCard() {
 
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          throw new Error(`Ne mogu da učitam metode plaćanja: ${res.status}. ${txt}`);
+          throw new Error(
+            `Ne mogu da učitam metode plaćanja: ${res.status}. ${txt}`,
+          );
         }
 
         const data = await res.json();
@@ -166,7 +173,9 @@ export default function PaymentCard() {
         if (!normalized.length) {
           // help za debug: da vidiš šta backend stvarno vraća
           console.log("paymentMethods raw response:", data);
-          throw new Error("Merchant nema podešene metode plaćanja (frontend nije uspeo da mapira response).");
+          throw new Error(
+            "Merchant nema podešene metode plaćanja (frontend nije uspeo da mapira response).",
+          );
         }
 
         setAvailableMethodTypes(normalized);
@@ -208,22 +217,55 @@ export default function PaymentCard() {
 
     setLoading(true);
 
-    const payload = {
-      merchantId,
-      stan,
-      pspTimestamp,
-      paymentMethod: PAYMENT_METHOD[paymentMethod],
-    };
-
     try {
-      const res = await fetch("https://localhost:7150/api/psp/selectPaymentMethod", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const payload = {
+        merchantId,
+        stan,
+        pspTimestamp,
+        paymentMethod: PAYMENT_METHOD[paymentMethod], // card / qr / paypal / crypto
+      };
 
-      const paymentUrl = await res.text();
-      window.location.href = paymentUrl;
+      const res = await fetch(
+        "https://localhost:7150/api/psp/selectPaymentMethod",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(`SelectPaymentMethod failed: ${res.status}. ${txt}`);
+      }
+
+      if (paymentMethod === "crypto") {
+        const body = await res.json();
+        console.log(body);
+
+        // pokušaj da pronađeš URL u bilo kojem property-u
+        let url = body.paymentRequestUrl;
+
+        if (!url) {
+          // fallback: ako DTO je jednostavan string
+          if (typeof body === "string") url = body;
+        }
+
+        if (!url) throw new Error("PSP nije vratio PaymentRequestUrl.");
+
+        // Parsiraj paymentId iz URL query param
+        const sp = new URLSearchParams(new URL(url).search);
+        const paymentId = sp.get("paymentId");
+        if (!paymentId)
+          throw new Error("Ne mogu da dohvatim paymentId iz URL-a.");
+
+        // preusmerenje na stranicu za plaćanje
+        window.location.href = `/payCrypto?paymentId=${encodeURIComponent(paymentId)}`;
+        return;
+      }
+
+      const redirectUrl = await res.text();
+      window.location.href = redirectUrl;
     } catch (e) {
       console.error(e);
       setError(e?.message ?? "Greška prilikom obrade plaćanja.");
@@ -254,7 +296,9 @@ export default function PaymentCard() {
           {!!error && <p>{error}</p>}
 
           {isMethodAvailable("card") && (
-            <label className={`payment-option ${paymentMethod === "card" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "card" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -263,7 +307,10 @@ export default function PaymentCard() {
               />
               <div className="option-content">
                 <h3>Plaćanje karticom</h3>
-                <p>Bićete preusmereni na sigurnu stranicu banke radi unosa podataka</p>
+                <p>
+                  Bićete preusmereni na sigurnu stranicu banke radi unosa
+                  podataka
+                </p>
               </div>
               <div className="logos-right">
                 <img src={visa} alt="Visa" />
@@ -274,7 +321,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("qr") && (
-            <label className={`payment-option ${paymentMethod === "qr" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "qr" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -290,7 +339,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("paypal") && (
-            <label className={`payment-option ${paymentMethod === "paypal" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "paypal" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -306,7 +357,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("crypto") && (
-            <label className={`payment-option ${paymentMethod === "crypto" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "crypto" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -333,9 +386,14 @@ export default function PaymentCard() {
           </div>
 
           <div className="total">
-            Ukupan iznos: <strong>{purchase ? `${purchase.amount} ${purchase.currency}` : "—"}</strong>
+            Ukupan iznos:{" "}
+            <strong>
+              {purchase ? `${purchase.amount} ${purchase.currency}` : "—"}
+            </strong>
           </div>
-          <p className="note">Podaci o kupovini dostavljeni od strane trgovca.</p>
+          <p className="note">
+            Podaci o kupovini dostavljeni od strane trgovca.
+          </p>
         </section>
       </div>
 
@@ -343,7 +401,14 @@ export default function PaymentCard() {
         <button
           className="btn-primary"
           onClick={handleContinue}
-          disabled={loading || methodsLoading || txLoading || !purchase || !availableMethodTypes.length || !!error}
+          disabled={
+            loading ||
+            methodsLoading ||
+            txLoading ||
+            !purchase ||
+            !availableMethodTypes.length ||
+            !!error
+          }
         >
           {loading ? "Učitavanje..." : "Nastavi sa plaćanjem"}
         </button>

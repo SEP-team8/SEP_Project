@@ -6,6 +6,6 @@
         public string EthAddress { get; set; } = string.Empty;
         public decimal EthAmount { get; set; }
         public DateTime ExpiresAt { get; set; }
-
+        public int? ChainId { get;  set; }
     }
 }

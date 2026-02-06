@@ -95,4 +95,30 @@ public class CryptoPaymentsController : ControllerBase
             return BadRequest(new { Error = ex.Message });
         }
     }
+
+    [HttpPost("{paymentId:guid}/submitTx")]
+    public async Task<ActionResult<CryptoPaymentStatusResponse>> SubmitTransaction(
+    Guid paymentId,
+    [FromBody] SubmitCryptoTxDto dto,
+    CancellationToken cancellationToken)
+    {
+        if (paymentId == Guid.Empty || dto == null) return BadRequest("Missing data");
+        if (paymentId != dto.PaymentId) return BadRequest("PaymentId mismatch");
+
+        try
+        {
+            var result = await _cryptoPaymentService.SubmitTransactionAsync(dto, cancellationToken);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+        catch (ArgumentException aex)
+        {
+            return BadRequest(aex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = "SubmitTx failed", Details = ex.Message });
+        }
+    }
+
 }

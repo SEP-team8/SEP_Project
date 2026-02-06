@@ -27,5 +27,6 @@ namespace PSPbackend.Models
 
         [Column(TypeName = "decimal(36,18)")]
         public decimal? CryptoAmount { get; set; }
+        public int? CryptoChainId { get; set; }
     }
 }

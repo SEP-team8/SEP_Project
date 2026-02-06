@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CryptoService.Models.WalletModels
+﻿namespace CryptoService.Models.WalletModels
 {
     public sealed class Wallet
     {

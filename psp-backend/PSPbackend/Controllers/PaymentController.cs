@@ -144,7 +144,6 @@ namespace PSPbackend.Controllers
             transaction.PaymentMethod = req.PaymentMethod;
             await _pspDbContext.SaveChangesAsync(ct);
 
-            // Branch for Crypto payments — modular, does NOT touch bank flow
             if (req.PaymentMethod == PaymentMethodType.Crypto)
             {
                 try
@@ -164,7 +163,7 @@ namespace PSPbackend.Controllers
                     {
                         merchantId = transaction.MerchantId,
                         FiatAmount = transaction.Amount,
-                        currency = (int)transaction.Currency, // fiat currency enum
+                        currency = (int)transaction.Currency,
                         stan = transaction.Stan,
                         pspTimestamp = transaction.PspTimestamp
                     };
@@ -190,14 +189,13 @@ namespace PSPbackend.Controllers
                         return StatusCode(502, "CryptoService invalid response");
                     }
 
-                    // VAŽNO: sačuvaj ETH iznos i postavi currency na ETH
                     transaction.CryptoPaymentId = body.PaymentId;
                     transaction.CryptoAddress = body.EthAddress;
-                    transaction.CryptoAmount = body.EthAmount; // NOVO
-                    transaction.Currency = Currency.ETH;       // NOVO: sada je 3 (ETH)
-                    transaction.Status = TransactionStatus.Initialized; // opcionalno, reset status
+                    transaction.CryptoAmount = body.EthAmount;
+                    transaction.CryptoChainId = body.ChainId;
+                    transaction.Currency = Currency.ETH;
+                    transaction.Status = TransactionStatus.Initialized;
 
-                    // **SaveChanges** nakon što su svi crypto field-ovi postavljeni
                     await _pspDbContext.SaveChangesAsync(ct);
 
                     var frontendBase = _config["PspFrontend:BaseUrl"]?.TrimEnd('/');
@@ -239,6 +237,31 @@ namespace PSPbackend.Controllers
                 await _pspDbContext.SaveChangesAsync(ct);
                 return Ok(merchant.ErrorUrl);
             }
+        }
+
+        [HttpGet("crypto/status")]
+        public async Task<IActionResult> GetCryptoStatus([FromQuery] Guid paymentId, CancellationToken ct)
+        {
+            if (paymentId == Guid.Empty) return BadRequest("paymentId required");
+
+            var tx = await _pspDbContext.PaymentTransactions
+                .Include(t => t.Merchant)
+                .SingleOrDefaultAsync(t => t.CryptoPaymentId == paymentId, ct);
+
+            if (tx == null) return NotFound();
+
+            if (tx.Status == TransactionStatus.Success || tx.Status == TransactionStatus.Failed)
+            {
+                var redirectUrl = tx.Status == TransactionStatus.Success
+                    ? tx.Merchant.SucessUrl
+                    : tx.Merchant.FailedUrl;
+
+                redirectUrl = $"{redirectUrl}?merchantOrderId={tx.MerchantOrderId}";
+
+                return Ok(new { finished = true, redirectUrl });
+            }
+
+            return Ok(new { finished = false, status = tx.Status.ToString() });
         }
 
         [HttpPost("bank/callback")]
@@ -293,31 +316,42 @@ namespace PSPbackend.Controllers
             return Ok(redirectUrl);
         }
 
-        // Separate endpoint for Crypto callbacks from CryptoService (HMAC verification)
         [HttpPost("crypto/callback")]
         [DisableCors]
-        public async Task<IActionResult> CryptoCallback(
-            [FromBody] CryptoPaymentNotificationDto dto,
-            CancellationToken ct)
+        public async Task<IActionResult> CryptoCallback([FromBody] CryptoPaymentNotificationDto dto, CancellationToken ct)
         {
-            // Validate headers (Signature) and HMAC computed over serialized DTO
             if (!Request.Headers.TryGetValue("Signature", out var signatureHeader))
                 return BadRequest("Missing signature header.");
 
             var secret = _config["Psp:SharedSecret"] ?? throw new InvalidOperationException("Psp:SharedSecret missing");
 
-            // Serialize DTO the same way CryptoService does when signing (JSON)
             var serialized = JsonSerializer.Serialize(dto);
             var expected = SignatureHelper.CreateSignature(serialized, secret);
 
             if (!string.Equals(expected, signatureHeader.ToString(), StringComparison.OrdinalIgnoreCase))
                 return Unauthorized("Invalid signature.");
 
-            // Map payment by bankMerchantId -> merchantId
-            var merchantId = await _pspDbContext.Merchants
-                .Where(bm => bm.BankMerchantId == dto.MerchantID)
-                .Select(bm => bm.MerchantId)
+            Guid merchantId = Guid.Empty;
+
+            var byBank = await _pspDbContext.Merchants
+                .Where(m => m.BankMerchantId == dto.MerchantID)
+                .Select(m => m.MerchantId)
                 .SingleOrDefaultAsync(ct);
+
+            if (byBank != Guid.Empty)
+            {
+                merchantId = byBank;
+            }
+            else
+            {
+                var byMerchant = await _pspDbContext.Merchants
+                    .Where(m => m.MerchantId == dto.MerchantID)
+                    .Select(m => m.MerchantId)
+                    .SingleOrDefaultAsync(ct);
+
+                if (byMerchant != Guid.Empty)
+                    merchantId = byMerchant;
+            }
 
             if (merchantId == Guid.Empty)
                 return BadRequest("Unknown bank merchant.");
@@ -337,7 +371,6 @@ namespace PSPbackend.Controllers
             transaction.Status = dto.Status;
             transaction.AcquirerTimestamp = DateTime.UtcNow;
 
-            // If CryptoService included a tx hash, persist it
             if (!string.IsNullOrWhiteSpace(dto.TransactionHash))
                 transaction.TransactionHash = dto.TransactionHash;
 
@@ -351,7 +384,6 @@ namespace PSPbackend.Controllers
 
             return Ok(redirectUrl);
         }
-        // ADDED END
 
         [HttpGet("orderData")]
         public async Task<IActionResult> GetOrderData(
@@ -399,8 +431,7 @@ namespace PSPbackend.Controllers
                     paymentId = tx.CryptoPaymentId,
                     ethAddress = tx.CryptoAddress,
                     ethAmount = tx.CryptoAmount,
-                    currency = (int)tx.Currency,
-                    chainId = 1 // mainnet
+                    chainId = tx.CryptoChainId ?? 0
                 });
             }
 
@@ -415,10 +446,10 @@ namespace PSPbackend.Controllers
                 paymentId = paymentId,
                 ethAddress = body.EthAddress,
                 ethAmount = body.EthAmount,
-                currency = 3, // ETH
                 chainId = body.ChainId
             });
         }
+
 
 
         [HttpPost("crypto/submitTx")]
@@ -437,7 +468,6 @@ namespace PSPbackend.Controllers
             if (!resp.IsSuccessStatusCode)
                 return StatusCode((int)resp.StatusCode, await resp.Content.ReadAsStringAsync(ct));
 
-            // opcionalno: fetch status i vrati klijentu
             var check = await client.PostAsync($"/crypto/payments/{dto.PaymentId}/check", null, ct);
             var status = await check.Content.ReadFromJsonAsync<CryptoPaymentStatusResponse>(cancellationToken: ct);
             return Ok(status);

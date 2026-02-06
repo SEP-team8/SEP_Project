@@ -1,18 +1,10 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using CryptoService.Persistance;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Nethereum.Web3;
-using System.Net.Http;
 
 namespace CryptoService.HostedServices
 {
@@ -23,6 +15,8 @@ namespace CryptoService.HostedServices
         private readonly string _rpcUrl;
         private readonly IHttpClientFactory _httpFactory;
         private readonly IConfiguration _config;
+        private readonly int _confirmationsRequired;
+        private readonly JsonSerializerOptions _jsonOptions;
 
         public PaymentWatcher(
             IServiceProvider services,
@@ -36,11 +30,17 @@ namespace CryptoService.HostedServices
             _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
 
             _rpcUrl = _config["Ethereum:RpcUrl"] ?? throw new InvalidOperationException("Ethereum:RpcUrl not configured");
+            _confirmationsRequired = int.Parse(_config["Ethereum:ConfirmationsRequired"] ?? "1");
+
+            _jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = false
+            };
         }
 
         protected override async Task ExecuteAsync(CancellationToken token)
         {
-            _logger.LogInformation("PaymentWatcher started");
+            _logger.LogInformation("PaymentWatcher started (rpc={Rpc})", _rpcUrl);
 
             while (!token.IsCancellationRequested)
             {
@@ -50,29 +50,99 @@ namespace CryptoService.HostedServices
                     var db = scope.ServiceProvider.GetRequiredService<CryptoDbContext>();
                     var web3 = new Web3(_rpcUrl);
 
-                    // Fetch pending payments that are not expired
-                    var pending = await db.CryptoPayments
-                        .Where(p => p.Status == CryptoService.Models.CryptoPaymentStatus.Pending && p.ExpiresAt > DateTime.UtcNow)
+                    // Fetch payments we should check:
+                    var toCheck = await db.CryptoPayments
+                        .Where(p => (p.Status == CryptoService.Models.CryptoPaymentStatus.Pending || p.Status == CryptoService.Models.CryptoPaymentStatus.Detected)
+                                    && p.ExpiresAt > DateTime.UtcNow)
                         .ToListAsync(token);
 
-                    foreach (var p in pending)
+                    if (toCheck.Count > 0)
+                        _logger.LogInformation("Watcher found {Count} payments to check", toCheck.Count);
+
+                    foreach (var p in toCheck)
                     {
                         try
                         {
-                            var balance = await web3.Eth.GetBalance.SendRequestAsync(p.EthAddress);
-                            var expected = BigInteger.Parse(p.AmountWei);
+                            var expected = BigInteger.Parse(p.AmountWei ?? "0");
 
-                            if (balance >= expected)
+                            // If we have a tx hash, prefer verifying transaction + confirmations
+                            if (!string.IsNullOrWhiteSpace(p.TransactionHash))
                             {
-                                // update entity
-                                p.Status = CryptoService.Models.CryptoPaymentStatus.Detected;
-                                p.TransactionHash ??= null; // may remain null if indexer not used
+                                var txHash = p.TransactionHash.StartsWith("0x") ? p.TransactionHash : "0x" + p.TransactionHash;
 
-                                await db.SaveChangesAsync(token);
-                                _logger.LogInformation("Detected funds for payment {PaymentId} on address {Address}", p.Id, p.EthAddress);
+                                var tx = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(txHash);
+                                var receipt = await web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(txHash);
 
-                                // Notify PSP about the detected payment (async)
-                                await NotifyPspAsync(p, token);
+                                if (receipt != null && receipt.BlockNumber != null)
+                                {
+                                    var latest = await web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+                                    var confirmations = (long)(latest.Value - receipt.BlockNumber.Value) + 1;
+
+                                    if (tx == null)
+                                        tx = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(txHash);
+
+                                    var toAddress = (tx?.To ?? string.Empty).ToLowerInvariant();
+                                    var expectedTo = (p.EthAddress ?? string.Empty).ToLowerInvariant();
+                                    var txValue = tx?.Value ?? BigInteger.Zero;
+
+                                    var validTo = toAddress == expectedTo;
+                                    var validValue = txValue >= expected;
+
+                                    if (validTo && validValue && confirmations >= _confirmationsRequired)
+                                    {
+                                        p.Status = CryptoService.Models.CryptoPaymentStatus.Confirmed;
+                                        p.TransactionHash = txHash;
+                                        // do not overwrite original PspTimestamp; keep the one provided by PSP when creating
+                                        p.PspTimestamp = p.PspTimestamp ?? DateTime.UtcNow;
+
+                                        await db.SaveChangesAsync(token);
+
+                                        _logger.LogInformation("Payment {PaymentId} confirmed (tx {Tx}). Confirmations: {Conf}", p.Id, txHash, confirmations);
+
+                                        // Notify PSP only when confirmed
+                                        await NotifyPspAsync(p, token);
+                                    }
+                                    else if (validTo && validValue)
+                                    {
+                                        p.Status = CryptoService.Models.CryptoPaymentStatus.Detected;
+                                        p.TransactionHash = txHash;
+                                        await db.SaveChangesAsync(token);
+                                        _logger.LogInformation("Payment {PaymentId} detected (tx {Tx}) but waiting confirmations ({Conf}).", p.Id, txHash, confirmations);
+                                    }
+                                    else
+                                    {
+                                        p.TransactionHash = txHash;
+                                        await db.SaveChangesAsync(token);
+                                        _logger.LogWarning("Payment {PaymentId} has tx {Tx} but doesn't match expected to/value.", p.Id, txHash);
+                                    }
+                                }
+                                else
+                                {
+                                    // fallback: check address balance
+                                    var balance = await web3.Eth.GetBalance.SendRequestAsync(p.EthAddress);
+                                    if (balance >= expected)
+                                    {
+                                        p.Status = CryptoService.Models.CryptoPaymentStatus.Detected;
+                                        await db.SaveChangesAsync(token);
+                                        _logger.LogInformation("Payment {PaymentId} balance >= expected but receipt missing. Marked Detected.", p.Id);
+                                    }
+                                    else
+                                    {
+                                        _logger.LogDebug("Payment {PaymentId} tx {Tx} not mined yet.", p.Id, p.TransactionHash);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // No txHash yet — check balance on address
+                                var balance = await web3.Eth.GetBalance.SendRequestAsync(p.EthAddress);
+                                if (balance >= expected)
+                                {
+                                    p.Status = CryptoService.Models.CryptoPaymentStatus.Detected;
+                                    await db.SaveChangesAsync(token);
+                                    _logger.LogInformation("Detected funds on address {Address} for payment {PaymentId} but no txHash provided.", p.EthAddress, p.Id);
+                                    // NOTE: we wait for txHash/receipt before notifying PSP
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -81,27 +151,22 @@ namespace CryptoService.HostedServices
                         }
                     }
 
-                    // Optionally: check Detected ones that have TransactionHash for confirmations here
-
                 }
                 catch (Exception outerEx)
                 {
                     _logger.LogError(outerEx, "PaymentWatcher main loop error");
                 }
 
-                // wait before next iteration
                 try
                 {
                     await Task.Delay(TimeSpan.FromSeconds(30), token);
                 }
-                catch (TaskCanceledException) { /* exit gracefully */ }
+                catch (TaskCanceledException) { /* exit */ }
             }
         }
 
-        // NOTE: We accept the same model type used by DbContext (fully-qualified Models.CryptoPayment).
         private async Task NotifyPspAsync(CryptoService.Models.CryptoPayment payment, CancellationToken ct)
         {
-            // Read PSP config
             var callback = _config["Psp:CallbackUrl"];
             var secret = _config["Psp:SharedSecret"];
             var pspId = _config["Psp:PspId"] ?? string.Empty;
@@ -112,53 +177,92 @@ namespace CryptoService.HostedServices
                 return;
             }
 
-            // Build payload matching PSP's CryptoPaymentNotificationDto shape (primitive JSON, no PSP types referenced)
+            // Build payload with stable property order (as declared)
             var payloadObj = new
             {
                 MerchantID = payment.MerchantId ?? Guid.Empty,
                 Stan = payment.Stan ?? string.Empty,
                 PspTimestamp = payment.PspTimestamp ?? DateTime.UtcNow,
-                Status = 0, // 0 == Success in PSP TransactionStatus enum (keep numeric to avoid referencing PSP types)
+                Status = 0, // 0 == Success
                 TransactionHash = payment.TransactionHash,
                 CryptoPaymentId = payment.Id,
-                GlobalTransactionId = Guid.NewGuid(), // optional; adjust if you have a mapping
+                GlobalTransactionId = Guid.NewGuid(),
                 AcquirerTimestamp = DateTime.UtcNow
             };
 
-            var json = JsonSerializer.Serialize(payloadObj);
-
+            var json = JsonSerializer.Serialize(payloadObj, _jsonOptions);
             var signature = CreateHmacSignature(json, secret);
 
-            try
+            _logger.LogInformation("NotifyPSP preparing callback for payment {PaymentId} -> {CallbackUrl}", payment.Id, callback);
+            _logger.LogDebug("NotifyPSP payload: {Json}", json);
+            _logger.LogDebug("NotifyPSP signature: {Sig}", signature);
+
+            // retry logic
+            var maxAttempts = 3;
+            var attempt = 0;
+            var client = _httpFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+
+            while (attempt < maxAttempts)
             {
-                var client = _httpFactory.CreateClient();
-                using var req = new HttpRequestMessage(HttpMethod.Post, callback)
+                attempt++;
+                try
                 {
-                    Content = new StringContent(json, Encoding.UTF8, "application/json")
-                };
+                    using var req = new HttpRequestMessage(HttpMethod.Post, callback)
+                    {
+                        Content = new StringContent(json, Encoding.UTF8, "application/json")
+                    };
 
-                req.Headers.Add("Signature", signature);
-                if (!string.IsNullOrEmpty(pspId))
-                    req.Headers.Add("PspID", pspId);
+                    req.Headers.Add("Signature", signature);
+                    if (!string.IsNullOrEmpty(pspId))
+                        req.Headers.Add("PspID", pspId);
 
-                _logger.LogInformation("Sending PSP callback for payment {PaymentId} to {CallbackUrl}", payment.Id, callback);
+                    _logger.LogInformation("NotifyPSP attempt {Attempt}/{Max} for payment {PaymentId}", attempt, maxAttempts, payment.Id);
 
-                var resp = await client.SendAsync(req, ct);
+                    var resp = await client.SendAsync(req, ct);
+                    var respText = await resp.Content.ReadAsStringAsync(ct);
 
-                if (!resp.IsSuccessStatusCode)
-                {
-                    _logger.LogWarning("PSP callback returned status {StatusCode} for payment {PaymentId}. Response: {RespText}", resp.StatusCode, payment.Id, await resp.Content.ReadAsStringAsync(ct));
-                    // Optional: implement retry/backoff logic here
+                    if (!resp.IsSuccessStatusCode)
+                    {
+                        _logger.LogWarning("PSP callback returned status {StatusCode} for payment {PaymentId}. Response: {RespText}", resp.StatusCode, payment.Id, respText);
+                        // exponential backoff before retrying
+                        if (attempt < maxAttempts)
+                        {
+                            var delay = TimeSpan.FromSeconds(Math.Pow(2, attempt));
+                            _logger.LogInformation("Waiting {Delay}s before next notify attempt", delay.TotalSeconds);
+                            await Task.Delay(delay, ct);
+                            continue;
+                        }
+                        else
+                        {
+                            _logger.LogError("PSP callback failed after {Attempts} attempts for payment {PaymentId}", attempt, payment.Id);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogInformation("PSP notified successfully for payment {PaymentId}. PSP response: {RespText}", payment.Id, respText);
+                        break;
+                    }
                 }
-                else
+                catch (TaskCanceledException tce) when (!ct.IsCancellationRequested)
                 {
-                    _logger.LogInformation("PSP notified successfully for payment {PaymentId}", payment.Id);
+                    _logger.LogWarning(tce, "Timeout when notifying PSP (attempt {Attempt}) for payment {PaymentId}", attempt, payment.Id);
+                    if (attempt < maxAttempts)
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, attempt)), ct);
+                        continue;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to notify PSP for payment {PaymentId}", payment.Id);
-                // Optional: queue for retry
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Exception when notifying PSP (attempt {Attempt}) for payment {PaymentId}", attempt, payment.Id);
+                    if (attempt < maxAttempts)
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, attempt)), ct);
+                        continue;
+                    }
+                }
             }
         }
 

@@ -14,6 +14,7 @@ export default function PayCrypto() {
   const [loading, setLoading] = useState(false);
   const [payment, setPayment] = useState(null);
   const [error, setError] = useState("");
+  const [statusText, setStatusText] = useState(""); // shows polling status
 
   useEffect(() => {
     async function load() {
@@ -35,6 +36,52 @@ export default function PayCrypto() {
       }
     }
     load();
+  }, [paymentId]);
+
+  // POLLING: check status every 5s until finished
+  useEffect(() => {
+    if (!paymentId) return;
+    let stopped = false;
+    let intervalId = null;
+
+    async function checkStatus() {
+      try {
+        setStatusText("Čekam potvrdu transakcije...");
+        const resp = await fetch(
+          `/api/psp/crypto/status?paymentId=${paymentId}`,
+        );
+        if (!resp.ok) {
+          // not fatal: show message and continue polling
+          setStatusText("Greška pri proveri statusa (server).");
+          return;
+        }
+
+        const body = await resp.json();
+        if (body.finished) {
+          // redirect user to merchant URL
+          window.location.href = body.redirectUrl;
+          stopped = true;
+          if (intervalId) clearInterval(intervalId);
+        } else {
+          // show intermediate status
+          setStatusText(`Status: ${body.status ?? "waiting"}`);
+        }
+      } catch (err) {
+        // network error -> show but keep polling
+        setStatusText("Ne mogu da proverim status (mreža).");
+      }
+    }
+
+    // first immediate check, then interval
+    checkStatus();
+    intervalId = setInterval(() => {
+      if (!stopped) checkStatus();
+    }, 5000);
+
+    return () => {
+      stopped = true;
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [paymentId]);
 
   async function payWithMetaMask() {
@@ -97,10 +144,10 @@ export default function PayCrypto() {
         `Transakcija poslana: ${txResponse.hash}. Status ce biti azuriran.`,
       );
     } catch (e) {
-      if (e?.message.includes("insufficient funds")) {
+      if (e?.message && e.message.includes("insufficient funds")) {
         setError("Nemate dovoljno Ethereum za ovu transakciju.");
       } else {
-        setError(e?.message ?? e);
+        setError(e?.message ?? String(e));
       }
     } finally {
       setLoading(false);
@@ -109,28 +156,40 @@ export default function PayCrypto() {
 
   return (
     <div className="pay-crypto-container">
-      <h2>Crypto placanje</h2>
+      <h2>Crypto plaćanje</h2>
+
       {error && <div className="pay-crypto-error">{error}</div>}
+
       {payment ? (
         <div className="pay-crypto-info">
-          <div className="pay-crypto-card">
-            <p className="label">Iznos za slanje:</p>
-            <p className="value">{payment.ethAmount} ETH</p>
+          <div className="pay-crypto-row">
+            <div className="pay-crypto-card">
+              <p className="label">Iznos za slanje</p>
+              <p className="value">{payment.ethAmount} ETH</p>
+            </div>
+
+            <div className="pay-crypto-card">
+              <p className="label">Adresa primaoca</p>
+              <p className="value mono">{payment.ethAddress}</p>
+            </div>
           </div>
-          <div className="pay-crypto-card">
-            <p className="label">Adresa primaoca:</p>
-            <p className="value">{payment.ethAddress}</p>
+
+          <div className="pay-crypto-actions">
+            <button
+              className="pay-crypto-button"
+              onClick={payWithMetaMask}
+              disabled={loading}
+            >
+              {loading ? "Saljem transakciju..." : "Plati sa MetaMask"}
+            </button>
+            <div className="status-text">
+              {statusText ? statusText : "Čekam na akciju..."}
+            </div>
           </div>
-          <button
-            className="pay-crypto-button"
-            onClick={payWithMetaMask}
-            disabled={loading}
-          >
-            {loading ? "Saljem transakciju..." : "Plati sa MetaMask"}
-          </button>
+
           <p style={{ marginTop: "1rem", fontSize: "0.9rem", color: "#555" }}>
-            Napomena: transakcija ce biti verifikovana na backendu nakon što se
-            pošalje.
+            Napomena: nakon slanja tx, status će biti ažuriran i bićete
+            automatski vraćeni na stranicu trgovca.
           </p>
         </div>
       ) : (

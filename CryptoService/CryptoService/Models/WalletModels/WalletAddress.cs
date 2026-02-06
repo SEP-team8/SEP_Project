@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CryptoService.Models.WalletModels
+﻿namespace CryptoService.Models.WalletModels
 {
     public sealed class WalletAddress
     {

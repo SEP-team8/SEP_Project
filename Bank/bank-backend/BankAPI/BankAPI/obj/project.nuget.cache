@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xLYVKytGpgw=",
+  "dgSpecHash": "m8AEpsXyN9s=",
   "success": true,
-  "projectFilePath": "C:\\Users\\gemov\\Desktop\\Faks\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
+  "projectFilePath": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gemov\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\gemov\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

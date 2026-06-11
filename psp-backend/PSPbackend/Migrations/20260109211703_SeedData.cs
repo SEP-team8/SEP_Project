@@ -28,7 +28,7 @@ namespace PSPbackend.Migrations
                 "psp-secret-123",
                 "http://localhost:5173/failed",
                 "http://localhost:5173/success",
-                "https://example.com/error"
+                "http://localhost:5173/error"
             });
         }
 

@@ -58,27 +58,31 @@ namespace BankAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Cvv")
+                    b.Property<string>("EncryptedCvv")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExpiryMmYy")
                         .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<string>("PAN")
+                    b.Property<string>("PanHash")
                         .IsRequired()
-                        .HasMaxLength(19)
-                        .HasColumnType("nvarchar(19)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("PanLast4")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.HasKey("CardId");
 
                     b.HasIndex("AccountId")
                         .IsUnique();
 
-                    b.HasIndex("PAN")
+                    b.HasIndex("PanHash")
                         .IsUnique();
 
                     b.ToTable("Cards");

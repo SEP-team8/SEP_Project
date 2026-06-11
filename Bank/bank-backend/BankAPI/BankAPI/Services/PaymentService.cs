@@ -3,6 +3,7 @@ using BankAPI.DTOs;
 using BankAPI.Helpers;
 using BankAPI.Helpers.HmacValidator;
 using BankAPI.Models;
+using BankAPI.Services.CardProtector;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -12,17 +13,23 @@ namespace BankAPI.Services
     {
         private readonly BankingDbContext _context;
         private readonly IHmacValidator _hmacValidator;
-        public IPspClient _pspClient;
+        private readonly IPspClient _pspClient;
+        private readonly ICardProtector _cardProtector;
+        private readonly Microsoft.Extensions.Logging.ILogger<PaymentService> _logger;
 
         public PaymentService(
             BankingDbContext context,
             IHmacValidator hmacValidator,
-            IPspClient pspClient
+            IPspClient pspClient,
+            ICardProtector cardProtector,
+            Microsoft.Extensions.Logging.ILogger<PaymentService> logger
         )
         {
             _context = context;
             _hmacValidator = hmacValidator;
             _pspClient = pspClient;
+            _cardProtector = cardProtector;
+            _logger = logger;
         }
 
         private bool IsCardExpired(string expiry)
@@ -48,19 +55,28 @@ namespace BankAPI.Services
 
         public async Task<string> ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request)
         {
+            _logger.LogInformation("ExecuteCardPayment started for paymentRequestId {PaymentRequestId}", paymentRequestId);
+
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
 
             var paymentRequest = await _context.PaymentRequests
                 .FirstOrDefaultAsync(p => p.PaymentRequestId == paymentRequestId);
 
             if (paymentRequest == null)
+            {
+                _logger.LogWarning("PaymentRequest not found for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
 
             if (paymentRequest.Status != PaymentRequestStatus.Pending)
+            {
+                _logger.LogWarning("PaymentRequest status is not Pending for paymentRequestId {PaymentRequestId} - status: {Status}", paymentRequestId, paymentRequest.Status);
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
 
             if (paymentRequest.ExpiresAt < DateTime.UtcNow)
             {
+                _logger.LogWarning("PaymentRequest expired for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 paymentRequest.Status = PaymentRequestStatus.Expired;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
@@ -71,6 +87,7 @@ namespace BankAPI.Services
                 || request.Cvv.Length != 3
                 || !request.Cvv.All(char.IsDigit))
             {
+                _logger.LogWarning("Invalid CVV for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
@@ -81,22 +98,30 @@ namespace BankAPI.Services
             // Card validation
             if (!LuhnFormulaChecker.IsValidLuhn(request.CardNumber))
             {
+                _logger.LogWarning("Invalid card number (Luhn check failed) for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
 
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
+
+            // Compute PAN hash and lookup by hash to avoid storing/ comparing raw PAN values.
+            var panHash = _cardProtector.ComputePanHash(request.CardNumber);
 
             var card = await _context.Cards
                 .Include(c => c.BankAccount)
-                .FirstOrDefaultAsync(c => c.PAN == request.CardNumber);
+                .FirstOrDefaultAsync(c => c.PanHash == panHash);
 
             if (card == null)
+            {
+                _logger.LogWarning("Card not found for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
 
             if (IsCardExpired(card.ExpiryMmYy))
             {
+                _logger.LogWarning("Card expired for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
@@ -104,17 +129,44 @@ namespace BankAPI.Services
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
             }
 
-            if (card.Cvv != request.Cvv)
+            // Unprotect stored CVV and compare. Handle legacy plaintext values by attempting
+            // to unprotect and falling back to plaintext comparison. If plaintext is detected,
+            // re-protect it and persist the encrypted value.
+            string storedCvv;
+            bool wasPlaintext = false;
+            try
+            {
+                storedCvv = _cardProtector.UnprotectCvv(card.EncryptedCvv);
+            }
+            catch
+            {
+                // Assume stored value is plaintext CVV from pre-migration state
+                storedCvv = card.EncryptedCvv;
+                wasPlaintext = true;
+            }
+
+            if (storedCvv != request.Cvv)
             {
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
 
+                _logger.LogWarning("Payment failed validation for paymentRequestId {PaymentRequestId} - card last4 {PanLast4}", paymentRequestId, card.PanLast4);
+
                 return await NotifyFailure(paymentRequestId, TransactionStatus.Failed);
+            }
+
+            if (wasPlaintext)
+            {
+                // Protect and persist the CVV
+                card.EncryptedCvv = _cardProtector.ProtectCvv(storedCvv);
+                _context.Cards.Update(card);
+                await _context.SaveChangesAsync();
             }
 
             if (card.BankAccount.Balance < paymentRequest.Amount)
             {
+                _logger.LogWarning("Insufficient balance for paymentRequestId {PaymentRequestId} - required: {Amount}, balance: {Balance}", paymentRequestId, paymentRequest.Amount, card.BankAccount.Balance);
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
@@ -129,6 +181,7 @@ namespace BankAPI.Services
 
             if (merchant.BankAccount == null)
             {
+                _logger.LogWarning("Merchant bank account not found for paymentRequestId {PaymentRequestId}", paymentRequestId);
                 paymentRequest.Status = PaymentRequestStatus.Failed;
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
@@ -156,6 +209,8 @@ namespace BankAPI.Services
 
                 await _context.SaveChangesAsync();
                 await dbTransaction.CommitAsync();
+
+                _logger.LogInformation("Payment successful for paymentRequestId {PaymentRequestId} - amount {Amount} {Currency} - card last4 {PanLast4}", paymentRequestId, paymentRequest.Amount, paymentRequest.Currency, card.PanLast4);
 
                 var redirectUrl = await _pspClient.NotifyPaymentStatusAsync(new PspPaymentStatusDto
                 {
@@ -244,9 +299,12 @@ namespace BankAPI.Services
 
         public async Task<InitializePaymentServiceResult> InitializePayment(InitPaymentRequestDto dto, Guid pspId, string signature, DateTime timestamp, bool isQrPayment)
         {
+            _logger.LogInformation("InitializePayment started - PspId: {PspId}, MerchantId: {MerchantId}, Amount: {Amount}", pspId, dto.MerchantId, dto.Amount);
+
             var psp = await _context.Psps.FindAsync(pspId);
             if (psp == null)
             {
+                _logger.LogWarning("Invalid PSP - PspId: {PspId}", pspId);
                 return new InitializePaymentServiceResult
                 {
                     Result = InitializePaymentResult.InvalidPsp
@@ -260,6 +318,7 @@ namespace BankAPI.Services
 
             if (!_hmacValidator.Validate(payload, signature, psp.HMACKey))
             {
+                _logger.LogWarning("Invalid signature for InitializePayment - MerchantId: {MerchantId}", dto.MerchantId);
                 return new InitializePaymentServiceResult
                 {
                     Result = InitializePaymentResult.InvalidSignature
@@ -269,6 +328,7 @@ namespace BankAPI.Services
             var merchant = await _context.Merchants.FindAsync(dto.MerchantId);
             if (merchant == null)
             {
+                _logger.LogWarning("Merchant not found - MerchantId: {MerchantId}", dto.MerchantId);
                 return new InitializePaymentServiceResult
                 {
                     Result = InitializePaymentResult.InvalidMerchant
@@ -290,6 +350,8 @@ namespace BankAPI.Services
 
             _context.PaymentRequests.Add(paymentRequest);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Payment request initialized successfully - PaymentRequestId: {PaymentRequestId}, Amount: {Amount} {Currency}", paymentRequest.PaymentRequestId, dto.Amount, dto.Currency);
 
             return new InitializePaymentServiceResult
             {

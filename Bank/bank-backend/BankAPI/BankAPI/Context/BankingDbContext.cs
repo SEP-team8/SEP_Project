@@ -90,20 +90,16 @@ namespace BankAPI.Context
             {
                 entity.HasKey(e => e.CardId);
 
-                entity.Property(e => e.PAN)
+                entity.Property(e => e.PanHash)
+                    .IsRequired()
+                    .HasMaxLength(64);
+
+                entity.Property(e => e.EncryptedCvv)
                     .IsRequired();
 
-                entity.Property(e => e.Cvv)
+                entity.Property(e => e.PanLast4)
                     .IsRequired()
-                    .HasMaxLength(3);
-
-                //entity.Property(e => e.CardToken)
-                //    .IsRequired()
-                //    .HasMaxLength(64);
-
-                //entity.Property(e => e.PanLast4)
-                //    .IsRequired()
-                //    .HasMaxLength(4);
+                    .HasMaxLength(4);
 
                 entity.Property(e => e.CardholderName)
                     .IsRequired()
@@ -121,7 +117,7 @@ namespace BankAPI.Context
                     .HasForeignKey<Card>(e => e.AccountId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasIndex(e => e.PAN)
+                entity.HasIndex(e => e.PanHash)
                     .IsUnique();
             });
         }

@@ -237,15 +237,27 @@ export default function PaymentCard() {
       }
 
       if (paymentMethod === "crypto") {
-        const body = await res.json();
-        // body could be { paymentRequestUrl: "..." } or plain string
-        let url =
-          body.paymentRequestUrl ?? (typeof body === "string" ? body : null);
+        const contentType = res.headers.get("content-type") ?? "";
+        let url = null;
+
+        if (contentType.includes("application/json")) {
+          const body = await res.json();
+          url = body?.paymentRequestUrl ?? (typeof body === "string" ? body : null);
+        } else {
+          const text = await res.text();
+          try {
+            const body = JSON.parse(text);
+            url = body?.paymentRequestUrl ?? (typeof body === "string" ? body : null);
+          } catch {
+            url = text;
+          }
+        }
+
         if (!url) throw new Error("PSP nije vratio PaymentRequestUrl.");
         const sp = new URLSearchParams(new URL(url).search);
         const paymentId = sp.get("paymentId");
         if (!paymentId)
-          throw new Error("Ne mogu da dohvatim paymentId iz URL-a.");
+          throw new Error(`Ne mogu da dohvatim paymentId iz URL-a. Vratio URL: ${url}`);
         window.location.href = `/payCrypto?paymentId=${encodeURIComponent(paymentId)}`;
         return;
       }

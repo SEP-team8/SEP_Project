@@ -23,10 +23,14 @@ namespace PSPbackend.Controllers
         // ADDED START: injektovani HttpClientFactory i Configuration
         private readonly IHttpClientFactory _httpFactory;
         private readonly IConfiguration _config;
-        public PaymentController(IBankClient bank, PspDbContext context, IHttpClientFactory httpFactory, IConfiguration config)
+        public PaymentController(
+            PspDbContext context,
+            IPaymentMethodRouter router,
+            IHttpClientFactory httpFactory,
+            IConfiguration config)
         {
             _pspDbContext = context;
-            _bank = bank;
+            _router = router;
             _httpFactory = httpFactory;
             _config = config;
         }
@@ -153,15 +157,11 @@ namespace PSPbackend.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (NotSupportedException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
+            catch (Exception ex)
             {
                 transaction.Status = TransactionStatus.Error;
                 await _pspDbContext.SaveChangesAsync(ct);
-                return Ok(merchant.ErrorUrl);
+                return StatusCode(500, ex.Message);
             }
         }
 

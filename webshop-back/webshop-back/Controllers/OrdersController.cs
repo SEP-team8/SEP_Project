@@ -56,7 +56,7 @@ public class OrdersController : ControllerBase
             UpdatedAt = now,
             ExpiresAt = now.AddMinutes(15),
 
-            Currency = "EUR",
+            Currency = "RSD",
             Amount = 0,
 
             Items = new List<OrderItem>()

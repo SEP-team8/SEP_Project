@@ -106,6 +106,18 @@ namespace PSPbackend.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("CryptoAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("CryptoAmount")
+                        .HasColumnType("decimal(36,18)");
+
+                    b.Property<int?>("CryptoChainId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("CryptoPaymentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Currency")
                         .HasColumnType("int");
 
@@ -123,6 +135,9 @@ namespace PSPbackend.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("TransactionHash")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MerchantId", "Stan", "PspTimestamp");
 

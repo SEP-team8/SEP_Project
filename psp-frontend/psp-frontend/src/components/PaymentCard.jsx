@@ -33,9 +33,7 @@ function parseQuery() {
 }
 
 function normalizePaymentMethodType(value) {
-  // value može biti: 0/1/2/3 ili "Card"/"QrCode"/"PayPal"/"Crypto"
   if (typeof value === "number") return value;
-
   if (typeof value === "string") {
     const m = value.toLowerCase();
     if (m === "card") return 0;
@@ -43,30 +41,21 @@ function normalizePaymentMethodType(value) {
     if (m === "paypal") return 2;
     if (m === "crypto") return 3;
   }
-
   return null;
 }
 
 function normalizeMethodFromApi(method) {
-  /**
-   * Backend ti vraća LISTU PaymentMethod objekata:
-   * { paymentMethodId: "...", paymentMethodType: 0 } ili "...Type": "Card"
-   */
   if (method == null) return null;
 
-  // slučaj: backend vraća broj direktno [0,1,2]
   if (typeof method === "number" || typeof method === "string") {
     return normalizePaymentMethodType(method);
   }
 
-  // slučaj: backend vraća objekat PaymentMethod
   if (typeof method === "object") {
-    // najčešće: { paymentMethodType: 0 } ili { paymentMethodType: "Card" }
     if ("paymentMethodType" in method) {
       return normalizePaymentMethodType(method.paymentMethodType);
     }
 
-    // fallback ako nekad dođe { paymentMethod: { paymentMethodType: ... } }
     if (method.paymentMethod && "paymentMethodType" in method.paymentMethod) {
       return normalizePaymentMethodType(method.paymentMethod.paymentMethodType);
     }
@@ -75,12 +64,20 @@ function normalizeMethodFromApi(method) {
   return null;
 }
 
+function methodNumberToKey(n) {
+  if (n === 0) return "card";
+  if (n === 1) return "qr";
+  if (n === 2) return "paypal";
+  if (n === 3) return "crypto";
+  return null;
+}
+
 export default function PaymentCard() {
   const { merchantId, stan, pspTimestamp } = useMemo(() => parseQuery(), []);
 
   const [loading, setLoading] = useState(false);
   const [methodsLoading, setMethodsLoading] = useState(false);
-  const [txLoading, setTxLoading] = useState(false)
+  const [txLoading, setTxLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [availableMethodTypes, setAvailableMethodTypes] = useState([]);
@@ -88,14 +85,15 @@ export default function PaymentCard() {
 
   const [purchase, setPurchase] = useState(null);
 
-
   // 0) Učitaj transakciju (amount + currency) iz backenda
   useEffect(() => {
     async function loadTransactionSummary() {
       setError("");
 
       if (!merchantId || !stan || !pspTimestamp) {
-        setError("Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.");
+        setError(
+          "Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.",
+        );
         return;
       }
 
@@ -114,7 +112,9 @@ export default function PaymentCard() {
 
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          throw new Error(`Ne mogu da učitam podatke o transakciji: ${res.status}. ${txt}`);
+          throw new Error(
+            `Ne mogu da učitam podatke o transakciji: ${res.status}. ${txt}`,
+          );
         }
 
         const data = await res.json();
@@ -134,13 +134,15 @@ export default function PaymentCard() {
     loadTransactionSummary();
   }, [merchantId, stan, pspTimestamp]);
 
-  // 1 ucitaj metode plaćanja za merchantId
+  // 1) ucitaj metode plaćanja za merchantId
   useEffect(() => {
     async function loadMethods() {
       setError("");
 
       if (!merchantId || !stan || !pspTimestamp) {
-        setError("Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.");
+        setError(
+          "Nedostaju parametri transakcije (merchantId/stan/pspTimestamp) u URL-u.",
+        );
         return;
       }
 
@@ -154,29 +156,33 @@ export default function PaymentCard() {
 
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          throw new Error(`Ne mogu da učitam metode plaćanja: ${res.status}. ${txt}`);
+          throw new Error(
+            `Ne mogu da učitam metode plaćanja: ${res.status}. ${txt}`,
+          );
         }
 
         const data = await res.json();
+
+        // ALWAYS log raw response to help debugging
+        console.log("paymentMethods raw response:", data);
 
         const normalized = (Array.isArray(data) ? data : [])
           .map(normalizeMethodFromApi)
           .filter((x) => x !== null);
 
         if (!normalized.length) {
-          // help za debug: da vidiš šta backend stvarno vraća
-          console.log("paymentMethods raw response:", data);
-          throw new Error("Merchant nema podešene metode plaćanja (frontend nije uspeo da mapira response).");
+          throw new Error(
+            "Merchant nema podešene metode plaćanja (frontend nije uspeo da mapira response).",
+          );
         }
 
         setAvailableMethodTypes(normalized);
 
-        // default: prvi dostupni
-        const first = normalized[0];
-        if (first === 0) setPaymentMethod("card");
-        else if (first === 1) setPaymentMethod("qr");
-        else if (first === 2) setPaymentMethod("paypal");
-        else if (first === 3) setPaymentMethod("crypto");
+        // NEW: choose default by preferred priority card > qr > paypal > crypto
+        const priority = [0, 1, 2, 3];
+        const picked = priority.find((p) => normalized.includes(p));
+        const pickedKey = methodNumberToKey(picked ?? normalized[0]);
+        if (pickedKey) setPaymentMethod(pickedKey);
       } catch (e) {
         console.error(e);
         setError(e?.message ?? "Greška prilikom učitavanja metoda plaćanja.");
@@ -208,22 +214,56 @@ export default function PaymentCard() {
 
     setLoading(true);
 
-    const payload = {
-      merchantId,
-      stan,
-      pspTimestamp,
-      paymentMethod: PAYMENT_METHOD[paymentMethod],
-    };
-
     try {
-      const res = await fetch("https://localhost:7150/api/psp/selectPaymentMethod", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const payload = {
+        merchantId,
+        stan,
+        pspTimestamp,
+        paymentMethod: PAYMENT_METHOD[paymentMethod],
+      };
 
-      const paymentUrl = await res.text();
-      window.location.href = paymentUrl;
+      const res = await fetch(
+        "https://localhost:7150/api/psp/selectPaymentMethod",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(`SelectPaymentMethod failed: ${res.status}. ${txt}`);
+      }
+
+      if (paymentMethod === "crypto") {
+        const contentType = res.headers.get("content-type") ?? "";
+        let url = null;
+
+        if (contentType.includes("application/json")) {
+          const body = await res.json();
+          url = body?.paymentRequestUrl ?? (typeof body === "string" ? body : null);
+        } else {
+          const text = await res.text();
+          try {
+            const body = JSON.parse(text);
+            url = body?.paymentRequestUrl ?? (typeof body === "string" ? body : null);
+          } catch {
+            url = text;
+          }
+        }
+
+        if (!url) throw new Error("PSP nije vratio PaymentRequestUrl.");
+        const sp = new URLSearchParams(new URL(url).search);
+        const paymentId = sp.get("paymentId");
+        if (!paymentId)
+          throw new Error(`Ne mogu da dohvatim paymentId iz URL-a. Vratio URL: ${url}`);
+        window.location.href = `/payCrypto?paymentId=${encodeURIComponent(paymentId)}`;
+        return;
+      }
+
+      const redirectUrl = await res.text();
+      window.location.href = redirectUrl;
     } catch (e) {
       console.error(e);
       setError(e?.message ?? "Greška prilikom obrade plaćanja.");
@@ -251,10 +291,12 @@ export default function PaymentCard() {
           <h2>Izaberite način plaćanja</h2>
 
           {methodsLoading && <p>Učitavanje metoda plaćanja...</p>}
-          {!!error && <p>{error}</p>}
+          {!!error && <p className="error">{error}</p>}
 
           {isMethodAvailable("card") && (
-            <label className={`payment-option ${paymentMethod === "card" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "card" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -263,7 +305,10 @@ export default function PaymentCard() {
               />
               <div className="option-content">
                 <h3>Plaćanje karticom</h3>
-                <p>Bićete preusmereni na sigurnu stranicu banke radi unosa podataka</p>
+                <p>
+                  Bićete preusmereni na sigurnu stranicu banke radi unosa
+                  podataka
+                </p>
               </div>
               <div className="logos-right">
                 <img src={visa} alt="Visa" />
@@ -274,7 +319,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("qr") && (
-            <label className={`payment-option ${paymentMethod === "qr" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "qr" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -290,7 +337,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("paypal") && (
-            <label className={`payment-option ${paymentMethod === "paypal" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "paypal" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -306,7 +355,9 @@ export default function PaymentCard() {
           )}
 
           {isMethodAvailable("crypto") && (
-            <label className={`payment-option ${paymentMethod === "crypto" ? "selected" : ""}`}>
+            <label
+              className={`payment-option ${paymentMethod === "crypto" ? "selected" : ""}`}
+            >
               <input
                 type="radio"
                 name="payment"
@@ -322,6 +373,15 @@ export default function PaymentCard() {
               </div>
             </label>
           )}
+
+          {/* If only crypto is available, show hint */}
+          {availableMethodTypes.length === 1 &&
+            availableMethodTypes[0] === PAYMENT_METHOD.crypto && (
+              <p className="note" style={{ marginTop: "12px" }}>
+                Napomena: jedina dostupna metoda plaćanja za ovog trgovca je{" "}
+                <strong>Crypto</strong>.
+              </p>
+            )}
         </section>
 
         <section className="purchase-info">
@@ -333,9 +393,14 @@ export default function PaymentCard() {
           </div>
 
           <div className="total">
-            Ukupan iznos: <strong>{purchase ? `${purchase.amount} ${purchase.currency}` : "—"}</strong>
+            Ukupan iznos:{" "}
+            <strong>
+              {purchase ? `${purchase.amount} ${purchase.currency}` : "—"}
+            </strong>
           </div>
-          <p className="note">Podaci o kupovini dostavljeni od strane trgovca.</p>
+          <p className="note">
+            Podaci o kupovini dostavljeni od strane trgovca.
+          </p>
         </section>
       </div>
 
@@ -343,7 +408,14 @@ export default function PaymentCard() {
         <button
           className="btn-primary"
           onClick={handleContinue}
-          disabled={loading || methodsLoading || txLoading || !purchase || !availableMethodTypes.length || !!error}
+          disabled={
+            loading ||
+            methodsLoading ||
+            txLoading ||
+            !purchase ||
+            !availableMethodTypes.length ||
+            !!error
+          }
         >
           {loading ? "Učitavanje..." : "Nastavi sa plaćanjem"}
         </button>

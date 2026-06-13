@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("webshop-back")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fbb5ee5eb80de5b2a1a0ca942f143d8bf265035b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f9f72236964292002cde3e17ea87a2e1db62640")]
 [assembly: System.Reflection.AssemblyProductAttribute("webshop-back")]
 [assembly: System.Reflection.AssemblyTitleAttribute("webshop-back")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

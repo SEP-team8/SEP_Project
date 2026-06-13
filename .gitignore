@@ -10,3 +10,9 @@ out/
 *.suo
 *.userosscache
 *.sln.docstates
+*.exe
+*.AssemblyAttributes.cs
+*.cache
+*.editorconfig
+*.pdb
+*.futdcache.v2

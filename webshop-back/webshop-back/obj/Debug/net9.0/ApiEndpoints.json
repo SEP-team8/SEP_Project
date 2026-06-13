@@ -75,6 +75,38 @@
   },
   {
     "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "PaymentCancelled",
+    "RelativePath": "api/payments/{orderId}/cancelled",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "PaymentFailed",
+    "RelativePath": "api/payments/{orderId}/failed",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
     "Method": "GetStatus",
     "RelativePath": "api/payments/{orderId}/status",
     "HttpMethod": "GET",
@@ -91,6 +123,32 @@
   },
   {
     "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "PaymentSuccess",
+    "RelativePath": "api/payments/{orderId}/success",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
+    "Method": "AutoCancelPendingForCurrentUser",
+    "RelativePath": "api/payments/auto-cancel-pending",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "webshop_back.Controllers.PaymentsController",
     "Method": "CreatePayment",
     "RelativePath": "api/payments/create",
     "HttpMethod": "POST",
@@ -103,16 +161,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "webshop_back.Controllers.PaymentsController",
-    "Method": "Webhook",
-    "RelativePath": "api/payments/webhook",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {

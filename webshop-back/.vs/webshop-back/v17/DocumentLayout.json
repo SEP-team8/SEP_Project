@@ -9,6 +9,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|d:\\gitlab repo\\sep_project\\webshop-back\\webshop-back\\webshop-back.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C7D5D8D9-BAE5-47DD-B6B7-BD409F2D942C}|webshop-back\\webshop-back.csproj|solutionrelative:webshop-back\\webshop-back.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,10 +32,31 @@
               "RelativeDocumentMoniker": "webshop-back\\appsettings.json",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\appsettings.json",
               "RelativeToolTip": "webshop-back\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-01-09T20:21:57.829Z",
               "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "webshop-back",
+              "DocumentMoniker": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+              "RelativeDocumentMoniker": "webshop-back\\webshop-back.csproj",
+              "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+              "RelativeToolTip": "webshop-back\\webshop-back.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-06-13T15:02:50.608Z",
               "EditorCaption": ""
             },
             {
@@ -42,18 +67,10 @@
               "RelativeDocumentMoniker": "webshop-back\\Program.cs",
               "ToolTip": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\Program.cs",
               "RelativeToolTip": "webshop-back\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAGUAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-09T21:15:53.867Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             }
           ]
         }

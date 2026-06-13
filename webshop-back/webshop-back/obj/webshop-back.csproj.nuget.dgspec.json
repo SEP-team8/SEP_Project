@@ -1,37 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj": {}
+    "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj": {
+    "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+        "projectUniqueName": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
         "projectName": "webshop-back",
-        "projectPath": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
-        "packagesPath": "C:\\Users\\gemov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\webshop-back\\webshop-back\\obj\\",
+        "projectPath": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\webshop-back.csproj",
+        "packagesPath": "C:\\Users\\Srky\\.nuget\\packages\\",
+        "outputPath": "D:\\GitLab Repo\\SEP_Project\\webshop-back\\webshop-back\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gemov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Srky\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "framework": "net9.0",
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -45,12 +45,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net9.0": {
-          "framework": "net9.0",
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -58,11 +57,11 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[9.0.11, )"
+              "version": "[8.0.11, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.11, )"
+              "version": "[8.0.11, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -112,24 +111,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[9.0.16, 9.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[9.0.16, 9.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[9.0.16, 9.0.16]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[9.0.16, 9.0.16]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -138,7 +119,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

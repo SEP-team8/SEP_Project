@@ -8,14 +8,14 @@ using Microsoft.Extensions.Logging;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure simple file logger - logs to Desktop
-var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BankAPI-Logs");
-var fileLoggerProvider = new BankAPI.Logging.FileLoggerProvider(logFolder);
+//var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BankAPI-Logs");
+//var fileLoggerProvider = new BankAPI.Logging.FileLoggerProvider(logFolder);
 
-builder.Logging.ClearProviders();
-builder.Logging.AddProvider(fileLoggerProvider);
+//builder.Logging.ClearProviders();
+//builder.Logging.AddProvider(fileLoggerProvider);
 
 // Register FileLoggerProvider in DI container
-builder.Services.AddSingleton(fileLoggerProvider);
+//builder.Services.AddSingleton(fileLoggerProvider);
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -85,16 +85,16 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Correlation-ID"] = context.Request.Headers["X-Correlation-ID"];
     {
         // Set provider's current scope for file logger to include correlation id
-        var provider = app.Services.GetRequiredService<BankAPI.Logging.FileLoggerProvider>();
-        provider.CurrentScope.Value = context.Request.Headers["X-Correlation-ID"].ToString();
-        try
-        {
+        //var provider = app.Services.GetRequiredService<BankAPI.Logging.FileLoggerProvider>();
+        //provider.CurrentScope.Value = context.Request.Headers["X-Correlation-ID"].ToString();
+        //try
+        //{
             await next();
-        }
-        finally
-        {
-            provider.CurrentScope.Value = null;
-        }
+        //}
+        //finally
+        //{
+        //    provider.CurrentScope.Value = null;
+        //}
     }
 });
 

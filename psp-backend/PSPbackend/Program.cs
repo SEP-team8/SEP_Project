@@ -13,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IBankClient, BankClient>();
+builder.Services.AddScoped<IPayPalServiceClient, PayPalServiceClient>();
+builder.Services.AddScoped<IPaymentMethodRouter, PaymentMethodRouter>();
 
 builder.Services.AddDbContext<PspDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))

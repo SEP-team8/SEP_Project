@@ -16,12 +16,12 @@ namespace PSPbackend.Controllers
     public class PaymentController : ControllerBase
     {
         public PspDbContext _pspDbContext;
-        private readonly IBankClient _bank;
+        private readonly IPaymentMethodRouter _router;
 
-        public PaymentController(IBankClient bank, PspDbContext context)
+        public PaymentController(IPaymentMethodRouter router, PspDbContext context)
         {
             _pspDbContext = context;
-            _bank = bank;
+            _router = router;
         }
 
         [HttpPost("initPayment")]
@@ -130,12 +130,14 @@ namespace PSPbackend.Controllers
 
             try
             {
-                var bankResponse = await _bank
-                    .CreatePaymentAsync(transaction, merchant.BankMerchantId, ct);
-
-                return Ok(bankResponse.PaymentRequestUrl);
+                var paymentUrl = await _router.RouteAsync(transaction, merchant, ct); //rutiraj u zavinosti koju opciju je izabrao korisnik za placanje
+                return Ok(paymentUrl);
             }
-            catch(Exception)
+            catch (NotSupportedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
             {
                 transaction.Status = TransactionStatus.Error;
                 await _pspDbContext.SaveChangesAsync(ct);

@@ -9,10 +9,11 @@ services:
     volumes:
       - mssql-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "Your_password123", "-Q", "SELECT 1", "-C"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Your_password123' -Q 'SELECT 1' -C -b"]
       interval: 10s
       timeout: 10s
-      retries: 10
+      retries: 15
+      start_period: 30s
     networks:
       - app-network
 
@@ -21,11 +22,13 @@ services:
       context: ./Bank/bank-backend/BankAPI/BankAPI
       dockerfile: Dockerfile
     depends_on:
-      - mssql
+      mssql:
+        condition: service_healthy
     environment:
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=BankDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
       PspApi__BaseUrl: http://psp-api:80
+      BankFrontend__BaseUrl: http://bank.localhost:8080
       ASPNETCORE_ENVIRONMENT: Production
     networks:
       - app-network
@@ -35,9 +38,12 @@ services:
       context: ./psp-backend/PSPbackend
       dockerfile: Dockerfile
     depends_on:
-      - mssql
-      - bank-api
-      - crypto-service
+      mssql:
+        condition: service_healthy
+      bank-api:
+        condition: service_started
+      crypto-service:
+        condition: service_started
     environment:
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=PspDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
@@ -56,11 +62,12 @@ services:
       context: ./CryptoService/CryptoService
       dockerfile: Dockerfile
     depends_on:
-      - mssql
+      mssql:
+        condition: service_healthy
     environment:
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=CryptoPspDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
-      Psp__CallbackUrl: http://psp.localhost:8080/api/psp/crypto/callback
+      Psp__CallbackUrl: http://psp-api:80/api/psp/crypto/callback
       Psp__PspId: BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB
       Psp__SharedSecret: super_secret_hmac_key_123
       ASPNETCORE_ENVIRONMENT: Production
@@ -72,8 +79,10 @@ services:
       context: ./webshop-back/webshop-back
       dockerfile: Dockerfile
     depends_on:
-      - mssql
-      - psp-api
+      mssql:
+        condition: service_healthy
+      psp-api:
+        condition: service_started
     environment:
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=WebshopDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
@@ -128,6 +137,19 @@ services:
         VITE_MERCHANT_ID: 33333333-3333-3333-3333-333333333333
     depends_on:
       - webshop-api
+    networks:
+      - app-network
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command: http --domain=${NGROK_DOMAIN} psp-api:80
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    depends_on:
+      - psp-api
+    ports:
+      - "4040:4040"
     networks:
       - app-network
 

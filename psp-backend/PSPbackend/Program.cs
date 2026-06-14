@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PSPbackend.Context;
 using PSPbackend.Services;
@@ -17,7 +18,10 @@ builder.Services.AddScoped<IPayPalServiceClient, PayPalServiceClient>();
 builder.Services.AddScoped<IPaymentMethodRouter, PaymentMethodRouter>();
 
 builder.Services.AddDbContext<PspDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()
+    )
 );
 
 builder.Services.AddCors(options =>
@@ -48,5 +52,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PspDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();

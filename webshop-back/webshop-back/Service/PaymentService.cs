@@ -62,7 +62,7 @@ namespace webshop_back.Service
             client.DefaultRequestHeaders.Add("X-Merchant-Password", merchant.PspMerchantSecret);
 
             var response = await client.PostAsync(
-                "https://localhost:7150/api/psp/initPayment",
+                "/api/psp/initPayment",
                 new StringContent(json, Encoding.UTF8, "application/json")
             );
 

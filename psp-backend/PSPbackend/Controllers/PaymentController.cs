@@ -72,8 +72,10 @@ namespace PSPbackend.Controllers
             _pspDbContext.PaymentTransactions.Add(transaction);
             await _pspDbContext.SaveChangesAsync(ct);
 
+            var frontendBase = _config["PspFrontend:BaseUrl"]?.TrimEnd('/')
+                ?? "http://localhost:5172";
             var redirectUrl =
-                $"http://localhost:5172/pay?" +
+                $"{frontendBase}/pay?" +
                 $"merchantId={transaction.MerchantId}" +
                 $"&stan={transaction.Stan}" +
                 $"&pspTimestamp={transaction.PspTimestamp:o}";

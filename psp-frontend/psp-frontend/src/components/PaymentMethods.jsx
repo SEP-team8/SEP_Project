@@ -49,7 +49,7 @@ export default function PaymentMethodsPage() {
     setLoadingRows(true);
 
     try {
-      const res = await fetch("https://localhost:7150/api/admin/paymentMethods/getAllrows", {
+      const res = await fetch("/api/admin/paymentMethods/getAllrows", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -99,7 +99,7 @@ export default function PaymentMethodsPage() {
         paymentMethodType: selectedMethod, // string: "Card" | "QrCode" ...
       };
 
-      const res = await fetch("https://localhost:7150/api/admin/paymentMethods/add", {
+      const res = await fetch("/api/admin/paymentMethods/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -131,7 +131,7 @@ export default function PaymentMethodsPage() {
     setSaving(true);
     try {
       const url =
-        `https://localhost:7150/api/admin/paymentMethods/delete` +
+        `/api/admin/paymentMethods/delete` +
         `?merchantId=${merchantIdToDelete}` +
         `&paymentMethodType=${methodTypeToDelete}`;
 

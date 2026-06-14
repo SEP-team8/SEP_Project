@@ -18,7 +18,7 @@ namespace BankAPI.Services
         public async Task<string> NotifyPaymentStatusAsync(PspPaymentStatusDto dto)
         {
             using var response = await _httpClient.PostAsJsonAsync(
-                "https://localhost:7150/api/psp/bank/callback",
+                "/api/psp/bank/callback",
                 dto
             );
 

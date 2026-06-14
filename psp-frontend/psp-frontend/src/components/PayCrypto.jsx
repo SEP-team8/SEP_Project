@@ -85,74 +85,96 @@ export default function PayCrypto() {
   }, [paymentId]);
 
   async function payWithMetaMask() {
-    setError("");
-    if (!window.ethereum) {
-      setError("MetaMask nije dostupan");
-      return;
-    }
-    if (!payment) {
-      setError("Podaci o placanju nisu ucitani");
-      return;
-    }
+  setError("");
 
-    try {
-      setLoading(true);
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const from = accounts[0];
-
-      const chainHex = await window.ethereum.request({ method: "eth_chainId" });
-      const currentChainId = parseInt(chainHex, 16);
-      if (payment.chainId && currentChainId !== payment.chainId) {
-        throw new Error(
-          `Molimo prebacite se na odgovarajucu mrezu (chainId ${payment.chainId}).`,
-        );
-      }
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-
-      const tx = {
-        to: payment.ethAddress,
-        value: ethers.parseEther(payment.ethAmount.toString()),
-      };
-
-      const txResponse = await signer.sendTransaction(tx);
-
-      const submitRes = await fetch("/api/psp/crypto/submitTx", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paymentId: paymentId,
-          txHash: txResponse.hash,
-          fromAddress: from,
-        }),
-      });
-
-      if (!submitRes.ok) {
-        const txt = await submitRes.text().catch(() => "");
-        if (txt.includes("insufficient funds")) {
-          throw new Error("Nemate dovoljno Ethereum za ovu transakciju.");
-        }
-        throw new Error(
-          `Neuspelo obavestavanje servera: ${submitRes.status} ${txt}`,
-        );
-      }
-
-      alert(
-        `Transakcija poslana: ${txResponse.hash}. Status ce biti azuriran.`,
-      );
-    } catch (e) {
-      if (e?.message && e.message.includes("insufficient funds")) {
-        setError("Nemate dovoljno Ethereum za ovu transakciju.");
-      } else {
-        setError(e?.message ?? String(e));
-      }
-    } finally {
-      setLoading(false);
-    }
+  if (!window.ethereum) {
+    setError("MetaMask nije dostupan");
+    return;
   }
+
+  if (!payment) {
+    setError("Podaci o placanju nisu ucitani");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    // traži pristup nalogu pre bilo kakvih RPC poziva
+    const provider = new ethers.BrowserProvider(window.ethereum, "any");
+    await provider.send("eth_requestAccounts", []);
+
+    // proveri mrežu
+    const network = await provider.getNetwork();
+    const currentChainId = Number(network.chainId);
+
+    if (payment.chainId && currentChainId !== payment.chainId) {
+      const targetChainHex = "0x" + Number(payment.chainId).toString(16);
+
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: targetChainHex }],
+        });
+      } catch {
+        throw new Error(
+          `Prebacite MetaMask na mrezu sa chainId ${payment.chainId}.`,
+        );
+      }
+    }
+
+    const signer = await provider.getSigner();
+    const from = await signer.getAddress();
+
+    const tx = {
+      to: payment.ethAddress,
+      value: payment.amountWei
+        ? BigInt(payment.amountWei)
+        : ethers.parseEther(String(payment.ethAmount)),
+    };
+
+    const txResponse = await signer.sendTransaction(tx);
+
+    const submitRes = await fetch("/api/psp/crypto/submitTx", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paymentId: paymentId,
+        txHash: txResponse.hash,
+        fromAddress: from,
+      }),
+    });
+
+    if (!submitRes.ok) {
+      const txt = await submitRes.text().catch(() => "");
+      if (txt.includes("insufficient funds")) {
+        throw new Error("Nemate dovoljno Ethereum za ovu transakciju.");
+      }
+      throw new Error(`Neuspelo obavestavanje servera: ${submitRes.status} ${txt}`);
+    }
+
+    alert(`Transakcija poslana: ${txResponse.hash}. Status ce biti azuriran.`);
+  } catch (e) {
+    const message = e?.message ?? String(e);
+
+    if (message.includes("insufficient funds")) {
+      setError("Nemate dovoljno Ethereum za ovu transakciju.");
+    } else if (
+      message.includes("Unauthorized") ||
+      message.includes("could not coalesce") ||
+      e?.code === -32006 ||
+      e?.data?.httpStatus === 401
+    ) {
+      setError(
+        "MetaMask nije dao potrebna odobrenja ili je zahtev odbijen. Otvori MetaMask i ponovo odobri sajt.",
+      );
+    } else {
+      setError(message);
+    }
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <div className="pay-crypto-container">

@@ -223,7 +223,7 @@ export default function PaymentCard() {
       };
 
       const res = await fetch(
-        "https://localhost:7150/api/psp/selectPaymentMethod",
+        "/api/psp/selectPaymentMethod",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

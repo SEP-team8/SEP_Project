@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactLocalhost", policy =>
     {
         policy
-            .WithOrigins("http://localhost:3000")
+            .WithOrigins("http://localhost:3000", "http://bank.localhost")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -44,7 +44,8 @@ builder.Services.AddSingleton<BankAPI.Services.CardProtector.ICardProtector, Ban
 
 builder.Services.AddHttpClient<IPspClient, PspClient>(c =>
 {
-    c.BaseAddress = new Uri("https://localhost:5002"); // PSP API
+    var baseUrl = builder.Configuration["PspApi:BaseUrl"] ?? "http://psp-api:80";
+    c.BaseAddress = new Uri(baseUrl);
 });
 
 // Configure Kestrel to load certificate if configured

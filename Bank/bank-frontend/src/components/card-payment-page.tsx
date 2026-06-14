@@ -22,7 +22,7 @@ export function CardPaymentPage() {
 
         axios
             .get<CardPaymentRequestDto>(
-                `https://localhost:7278/api/payments/${paymentRequestId}`
+                `/api/payments/${paymentRequestId}`
             )
             .then(res => setPayment(res.data))
             .catch(() => setError('Payment request not found'))
@@ -37,7 +37,7 @@ export function CardPaymentPage() {
 
         try {
             const response = await axios.post(
-                `https://localhost:7278/api/payments/${paymentRequestId}/pay`,
+                `/api/payments/${paymentRequestId}/pay`,
                 form
             );
             console.log(response)

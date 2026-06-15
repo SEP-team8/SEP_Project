@@ -72,8 +72,10 @@ namespace PSPbackend.Controllers
             _pspDbContext.PaymentTransactions.Add(transaction);
             await _pspDbContext.SaveChangesAsync(ct);
 
+            var frontendBase = _config["PspFrontend:BaseUrl"]?.TrimEnd('/')
+                ?? "http://localhost:5172";
             var redirectUrl =
-                $"http://localhost:5172/pay?" +
+                $"{frontendBase}/pay?" +
                 $"merchantId={transaction.MerchantId}" +
                 $"&stan={transaction.Stan}" +
                 $"&pspTimestamp={transaction.PspTimestamp:o}";
@@ -330,16 +332,19 @@ namespace PSPbackend.Controllers
                 return BadRequest("paymentId required");
 
             var tx = await _pspDbContext.PaymentTransactions
+                .Include(t => t.Merchant)
                 .SingleOrDefaultAsync(t => t.CryptoPaymentId == paymentId, ct);
 
             if (tx != null)
             {
+                var failedUrl = $"{tx.Merchant.FailedUrl}?merchantOrderId={tx.MerchantOrderId}";
                 return Ok(new
                 {
                     paymentId = tx.CryptoPaymentId,
                     ethAddress = tx.CryptoAddress,
                     ethAmount = tx.CryptoAmount,
-                    chainId = tx.CryptoChainId ?? 0
+                    chainId = tx.CryptoChainId ?? 0,
+                    failedUrl
                 });
             }
 
@@ -365,6 +370,27 @@ namespace PSPbackend.Controllers
                 ethAmount = body.EthAmount,
                 chainId = body.ChainId
             });
+        }
+
+        [HttpPost("crypto/cancel")]
+        public async Task<IActionResult> CancelCryptoPayment([FromQuery] Guid paymentId, CancellationToken ct)
+        {
+            if (paymentId == Guid.Empty)
+                return BadRequest("paymentId required");
+
+            var tx = await _pspDbContext.PaymentTransactions
+                .SingleOrDefaultAsync(t => t.CryptoPaymentId == paymentId, ct);
+
+            if (tx == null)
+                return NotFound();
+
+            if (tx.Status == TransactionStatus.Initialized)
+            {
+                tx.Status = TransactionStatus.Failed;
+                await _pspDbContext.SaveChangesAsync(ct);
+            }
+
+            return Ok();
         }
 
         [HttpPost("crypto/submitTx")]

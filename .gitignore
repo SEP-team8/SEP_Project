@@ -1,3 +1,6 @@
+# Secrets
+.env
+
 # Visual Studio
 .vs/
 **/bin/

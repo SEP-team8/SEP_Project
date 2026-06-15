@@ -1,0 +1,179 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Your_password123' -Q 'SELECT 1' -C -b"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+    networks:
+      - app-network
+
+  bank-api:
+    build:
+      context: ./Bank/bank-backend/BankAPI/BankAPI
+      dockerfile: Dockerfile
+    depends_on:
+      mssql:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=BankDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
+      PspApi__BaseUrl: http://psp-api:80
+      BankFrontend__BaseUrl: http://bank.localhost:8080
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - app-network
+
+  psp-api:
+    build:
+      context: ./psp-backend/PSPbackend
+      dockerfile: Dockerfile
+    depends_on:
+      mssql:
+        condition: service_healthy
+      bank-api:
+        condition: service_started
+      crypto-service:
+        condition: service_started
+    environment:
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=PspDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
+      Bank__ApiBaseUrl: http://bank-api:80
+      CryptoService__BaseUrl: http://crypto-service:80/crypto
+      PspFrontend__BaseUrl: http://psp.localhost:8080
+      PayPal__BaseUrl: https://api-m.sandbox.paypal.com
+      PayPal__ReturnUrl: http://psp.localhost:8080/api/paypal/capture
+      PayPal__CancelUrl: http://psp.localhost:8080/api/paypal/cancel
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - app-network
+
+  crypto-service:
+    build:
+      context: ./CryptoService/CryptoService
+      dockerfile: Dockerfile
+    depends_on:
+      mssql:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=CryptoPspDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
+      Psp__CallbackUrl: http://psp-api:80/api/psp/crypto/callback
+      Psp__PspId: BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB
+      Psp__SharedSecret: super_secret_hmac_key_123
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - app-network
+
+  webshop-api:
+    build:
+      context: ./webshop-back/webshop-back
+      dockerfile: Dockerfile
+    depends_on:
+      mssql:
+        condition: service_healthy
+      psp-api:
+        condition: service_started
+    environment:
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: "Server=tcp:mssql,1433;Initial Catalog=WebshopDb;User ID=sa;Password=Your_password123;TrustServerCertificate=True"
+      Psp__BaseUrl: http://psp-api:80
+      AllowedOrigins__0: http://shop1.localhost:8080
+      AllowedOrigins__1: http://shop2.localhost:8080
+      App__PublicBaseUrl: http://shop1.localhost:8080
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - app-network
+
+  psp-frontend:
+    build:
+      context: ./psp-frontend/psp-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: http://psp.localhost:8080/api
+    depends_on:
+      - psp-api
+    networks:
+      - app-network
+
+  bank-frontend:
+    build:
+      context: ./Bank/bank-frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE: http://bank.localhost:8080/api
+    depends_on:
+      - bank-api
+    networks:
+      - app-network
+
+  shop1-frontend:
+    build:
+      context: ./webshop-front
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: http://shop1.localhost:8080/api
+        VITE_MERCHANT_ID: 11111111-1111-1111-1111-111111111111
+    depends_on:
+      - webshop-api
+    networks:
+      - app-network
+
+  shop2-frontend:
+    build:
+      context: ./webshop-front
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: http://shop2.localhost:8080/api
+        VITE_MERCHANT_ID: 33333333-3333-3333-3333-333333333333
+    depends_on:
+      - webshop-api
+    networks:
+      - app-network
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command: http --domain=${NGROK_DOMAIN} psp-api:80
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    depends_on:
+      - psp-api
+    ports:
+      - "4040:4040"
+    networks:
+      - app-network
+
+  loadbalancer:
+    image: nginx:stable-alpine
+    depends_on:
+      - psp-frontend
+      - bank-frontend
+      - shop1-frontend
+      - shop2-frontend
+      - psp-api
+      - bank-api
+      - crypto-service
+      - webshop-api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+
+volumes:
+  mssql-data:
+
+networks:
+  app-network:
+    driver: bridge

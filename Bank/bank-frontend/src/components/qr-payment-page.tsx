@@ -20,7 +20,7 @@ export function QrPaymentPage() {
 
         axios
             .post<QrPaymentResponseDto>(
-                `https://localhost:7278/api/payments/${paymentRequestId}/qr`
+                `/api/payments/${paymentRequestId}/qr`
             )
             .then(res => setQr(res.data))
             .catch(() => setError('Unable to generate QR code'))

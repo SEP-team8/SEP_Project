@@ -12,9 +12,10 @@ function parseQuery() {
 export default function PayCrypto() {
   const { paymentId } = parseQuery();
   const [loading, setLoading] = useState(false);
+  const [txSent, setTxSent] = useState(false);
   const [payment, setPayment] = useState(null);
   const [error, setError] = useState("");
-  const [statusText, setStatusText] = useState(""); // shows polling status
+  const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -85,73 +86,123 @@ export default function PayCrypto() {
   }, [paymentId]);
 
   async function payWithMetaMask() {
-    setError("");
-    if (!window.ethereum) {
-      setError("MetaMask nije dostupan");
-      return;
-    }
-    if (!payment) {
-      setError("Podaci o placanju nisu ucitani");
-      return;
-    }
+  setError("");
 
-    try {
-      setLoading(true);
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const from = accounts[0];
+  if (!window.ethereum) {
+    setError("MetaMask nije dostupan");
+    return;
+  }
 
-      const chainHex = await window.ethereum.request({ method: "eth_chainId" });
-      const currentChainId = parseInt(chainHex, 16);
-      if (payment.chainId && currentChainId !== payment.chainId) {
+  if (!payment) {
+    setError("Podaci o placanju nisu ucitani");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    // traži pristup nalogu pre bilo kakvih RPC poziva
+    const provider = new ethers.BrowserProvider(window.ethereum, "any");
+    await provider.send("eth_requestAccounts", []);
+
+    // proveri mrežu
+    const network = await provider.getNetwork();
+    const currentChainId = Number(network.chainId);
+
+    if (payment.chainId && currentChainId !== payment.chainId) {
+      const targetChainHex = "0x" + Number(payment.chainId).toString(16);
+
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: targetChainHex }],
+        });
+      } catch {
         throw new Error(
-          `Molimo prebacite se na odgovarajucu mrezu (chainId ${payment.chainId}).`,
+          `Prebacite MetaMask na mrezu sa chainId ${payment.chainId}.`,
         );
       }
+    }
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
+    const signer = await provider.getSigner();
+    const from = await signer.getAddress();
 
-      const tx = {
-        to: payment.ethAddress,
-        value: ethers.parseEther(payment.ethAmount.toString()),
-      };
+    const tx = {
+      to: payment.ethAddress,
+      value: payment.amountWei
+        ? BigInt(payment.amountWei)
+        : ethers.parseEther(String(payment.ethAmount)),
+    };
 
-      const txResponse = await signer.sendTransaction(tx);
+    const txResponse = await signer.sendTransaction(tx);
 
-      const submitRes = await fetch("/api/psp/crypto/submitTx", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paymentId: paymentId,
-          txHash: txResponse.hash,
-          fromAddress: from,
-        }),
-      });
+    const submitRes = await fetch("/api/psp/crypto/submitTx", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paymentId: paymentId,
+        txHash: txResponse.hash,
+        fromAddress: from,
+      }),
+    });
 
-      if (!submitRes.ok) {
-        const txt = await submitRes.text().catch(() => "");
-        if (txt.includes("insufficient funds")) {
-          throw new Error("Nemate dovoljno Ethereum za ovu transakciju.");
-        }
-        throw new Error(
-          `Neuspelo obavestavanje servera: ${submitRes.status} ${txt}`,
-        );
+    if (!submitRes.ok) {
+      const txt = await submitRes.text().catch(() => "");
+      if (txt.includes("insufficient funds")) {
+        throw new Error("Nemate dovoljno Ethereum za ovu transakciju.");
       }
+      throw new Error(`Neuspelo obavestavanje servera: ${submitRes.status} ${txt}`);
+    }
 
-      alert(
-        `Transakcija poslana: ${txResponse.hash}. Status ce biti azuriran.`,
+    setTxSent(true);
+  } catch (e) {
+    const message = e?.message ?? String(e);
+    const isRejected =
+      e?.code === 4001 ||
+      e?.info?.error?.code === 4001 ||
+      message.includes("ACTION_REJECTED") ||
+      message.includes("user rejected") ||
+      message.includes("User denied");
+
+    if (isRejected) {
+      await fetch(`/api/psp/crypto/cancel?paymentId=${paymentId}`, { method: "POST" }).catch(() => {});
+      if (payment?.failedUrl) {
+        window.location.href = payment.failedUrl;
+        return;
+      }
+    } else if (message.includes("insufficient funds")) {
+      setError("Nemate dovoljno Ethereum za ovu transakciju.");
+    } else if (
+      message.includes("Unauthorized") ||
+      message.includes("could not coalesce") ||
+      e?.code === -32006 ||
+      e?.data?.httpStatus === 401
+    ) {
+      setError(
+        "MetaMask nije dao potrebna odobrenja ili je zahtev odbijen. Otvori MetaMask i ponovo odobri sajt.",
       );
-    } catch (e) {
-      if (e?.message && e.message.includes("insufficient funds")) {
-        setError("Nemate dovoljno Ethereum za ovu transakciju.");
-      } else {
-        setError(e?.message ?? String(e));
-      }
-    } finally {
-      setLoading(false);
+    } else {
+      setError(message);
     }
+  } finally {
+    setLoading(false);
+  }
+}
+
+  if (txSent) {
+    return (
+      <div className="pay-crypto-container">
+        <h2>Crypto plaćanje</h2>
+        <div className="pay-crypto-waiting">
+          <div className="pay-crypto-spinner" />
+          <p className="pay-crypto-waiting-title">Transakcija je poslata!</p>
+          <p className="pay-crypto-waiting-sub">
+            Čekam potvrdu na blockchain mreži.<br />
+            Bićete automatski preusmereni na stranicu prodavca.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -182,9 +233,6 @@ export default function PayCrypto() {
             >
               {loading ? "Saljem transakciju..." : "Plati sa MetaMask"}
             </button>
-            <div className="status-text">
-              {statusText ? statusText : "Čekam na akciju..."}
-            </div>
           </div>
 
           <p style={{ marginTop: "1rem", fontSize: "0.9rem", color: "#555" }}>

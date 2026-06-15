@@ -16,18 +16,21 @@ namespace BankAPI.Services
         private readonly IPspClient _pspClient;
         private readonly ICardProtector _cardProtector;
         private readonly Microsoft.Extensions.Logging.ILogger<PaymentService> _logger;
+        private readonly string _bankFrontendBaseUrl;
 
         public PaymentService(
             BankingDbContext context,
             IHmacValidator hmacValidator,
             IPspClient pspClient,
             ICardProtector cardProtector,
-            Microsoft.Extensions.Logging.ILogger<PaymentService> logger
+            Microsoft.Extensions.Logging.ILogger<PaymentService> logger,
+            IConfiguration configuration
         )
         {
             _context = context;
             _hmacValidator = hmacValidator;
             _pspClient = pspClient;
+            _bankFrontendBaseUrl = configuration["BankFrontend:BaseUrl"] ?? "http://bank.localhost:8080";
             _cardProtector = cardProtector;
             _logger = logger;
         }
@@ -360,8 +363,8 @@ namespace BankAPI.Services
                 {
                     PaymentRequestId = paymentRequest.PaymentRequestId,
                     PaymentRequestUrl = isQrPayment ?
-                        $"http://localhost:3000/payQr/{paymentRequest.PaymentRequestId}" :
-                        $"http://localhost:3000/payCard/{paymentRequest.PaymentRequestId}"
+                        $"{_bankFrontendBaseUrl}/payQr/{paymentRequest.PaymentRequestId}" :
+                        $"{_bankFrontendBaseUrl}/payCard/{paymentRequest.PaymentRequestId}"
                 }
             };
         }

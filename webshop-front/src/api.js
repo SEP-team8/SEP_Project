@@ -1,12 +1,9 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_BASE;
-if (!baseURL) {
-  console.warn("VITE_API_BASE is not set! I'm trying the default...");
-}
+const baseURL = import.meta.env.VITE_API_BASE || "/api";
 
 const API = axios.create({
-  baseURL: baseURL || "https://api.shop1.localhost:7171/api",
+  baseURL,
   withCredentials: false,
   timeout: 20000,
 });

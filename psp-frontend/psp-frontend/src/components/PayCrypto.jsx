@@ -12,9 +12,10 @@ function parseQuery() {
 export default function PayCrypto() {
   const { paymentId } = parseQuery();
   const [loading, setLoading] = useState(false);
+  const [txSent, setTxSent] = useState(false);
   const [payment, setPayment] = useState(null);
   const [error, setError] = useState("");
-  const [statusText, setStatusText] = useState(""); // shows polling status
+  const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -153,11 +154,23 @@ export default function PayCrypto() {
       throw new Error(`Neuspelo obavestavanje servera: ${submitRes.status} ${txt}`);
     }
 
-    alert(`Transakcija poslana: ${txResponse.hash}. Status ce biti azuriran.`);
+    setTxSent(true);
   } catch (e) {
     const message = e?.message ?? String(e);
+    const isRejected =
+      e?.code === 4001 ||
+      e?.info?.error?.code === 4001 ||
+      message.includes("ACTION_REJECTED") ||
+      message.includes("user rejected") ||
+      message.includes("User denied");
 
-    if (message.includes("insufficient funds")) {
+    if (isRejected) {
+      await fetch(`/api/psp/crypto/cancel?paymentId=${paymentId}`, { method: "POST" }).catch(() => {});
+      if (payment?.failedUrl) {
+        window.location.href = payment.failedUrl;
+        return;
+      }
+    } else if (message.includes("insufficient funds")) {
       setError("Nemate dovoljno Ethereum za ovu transakciju.");
     } else if (
       message.includes("Unauthorized") ||
@@ -175,6 +188,22 @@ export default function PayCrypto() {
     setLoading(false);
   }
 }
+
+  if (txSent) {
+    return (
+      <div className="pay-crypto-container">
+        <h2>Crypto plaćanje</h2>
+        <div className="pay-crypto-waiting">
+          <div className="pay-crypto-spinner" />
+          <p className="pay-crypto-waiting-title">Transakcija je poslata!</p>
+          <p className="pay-crypto-waiting-sub">
+            Čekam potvrdu na blockchain mreži.<br />
+            Bićete automatski preusmereni na stranicu prodavca.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pay-crypto-container">
@@ -204,9 +233,6 @@ export default function PayCrypto() {
             >
               {loading ? "Saljem transakciju..." : "Plati sa MetaMask"}
             </button>
-            <div className="status-text">
-              {statusText ? statusText : "Čekam na akciju..."}
-            </div>
           </div>
 
           <p style={{ marginTop: "1rem", fontSize: "0.9rem", color: "#555" }}>

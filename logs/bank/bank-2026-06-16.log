@@ -1,0 +1,832 @@
+﻿[2026-06-16 20:26:20.481] [INFO] [corrId=-] [Command] Executed DbCommand (23ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 20:26:20.511] [INFO] [corrId=-] [Command] Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 20:26:20.523] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 20:26:20.525] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 20:26:20.555] [INFO] [corrId=-] [Command] Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2026-06-16 20:26:20.593] [INFO] [corrId=-] [Migrations] No migrations were applied. The database is already up to date.
+[2026-06-16 20:26:20.621] [WARN] [corrId=-] [FileSystemXmlRepository] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+[2026-06-16 20:26:20.643] [WARN] [corrId=-] [XmlKeyManager] No XML encryptor configured. Key {b0c66ab4-6b2d-4b3a-a8ee-07a43ea7b94e} may be persisted to storage in unencrypted form.
+[2026-06-16 20:26:20.666] [WARN] [corrId=-] [Diagnostics] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:80'.
+[2026-06-16 20:26:20.719] [INFO] [corrId=-] [Lifetime] Now listening on: http://[::]:80
+[2026-06-16 20:26:20.719] [INFO] [corrId=-] [Lifetime] Application started. Press Ctrl+C to shut down.
+[2026-06-16 20:26:20.720] [INFO] [corrId=-] [Lifetime] Hosting environment: Production
+[2026-06-16 20:26:20.720] [INFO] [corrId=-] [Lifetime] Content root path: /app
+[2026-06-16 20:26:55.872] [WARN] [corrId=-] [HttpsRedirectionMiddleware] Failed to determine the https port for redirect.
+[2026-06-16 20:26:55.922] [INFO] [corrId=ed55fe89-2193-4efb-978a-7e9a6c2e5242] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 20:26:56.150] [INFO] [corrId=ed55fe89-2193-4efb-978a-7e9a6c2e5242] [Command] Executed DbCommand (23ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 20:26:56.201] [INFO] [corrId=ed55fe89-2193-4efb-978a-7e9a6c2e5242] [Command] Executed DbCommand (4ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 20:26:56.304] [INFO] [corrId=ed55fe89-2193-4efb-978a-7e9a6c2e5242] [Command] Executed DbCommand (8ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 20:26:56.312] [INFO] [corrId=ed55fe89-2193-4efb-978a-7e9a6c2e5242] [PaymentService] Payment request initialized successfully - PaymentRequestId: 47d623db-fbdf-4be5-a3d7-b3e24b15da9a, Amount: 35.00 RSD
+[2026-06-16 20:26:56.653] [INFO] [corrId=f3f35e3f-b074-4a3c-a2a4-abf038dfce12] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 20:27:11.993] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [PaymentService] ExecuteCardPayment started for paymentRequestId 47d623db-fbdf-4be5-a3d7-b3e24b15da9a
+[2026-06-16 20:27:12.008] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 20:27:12.030] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [Command] Executed DbCommand (4ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 20:27:12.062] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [Command] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+[2026-06-16 20:27:12.073] [WARN] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [PaymentService] Payment failed validation for paymentRequestId 47d623db-fbdf-4be5-a3d7-b3e24b15da9a - card last4 1111
+[2026-06-16 20:27:12.084] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 20:27:12.085] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 20:27:12.157] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [ClientHandler] Received HTTP response headers after 68.5039ms - 200
+[2026-06-16 20:27:12.158] [INFO] [corrId=f5fc8a9c-6551-46de-bfed-59462143c3f9] [LogicalHandler] End processing HTTP request after 76.8423ms - 200
+[2026-06-16 20:33:32.829] [INFO] [corrId=-] [Lifetime] Application is shutting down...
+[2026-06-16 20:37:53.509] [INFO] [corrId=-] [Command] Executed DbCommand (449ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+CREATE DATABASE [BankDb];
+[2026-06-16 20:37:53.684] [INFO] [corrId=-] [Command] Executed DbCommand (170ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [BankDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+[2026-06-16 20:37:53.718] [INFO] [corrId=-] [Command] Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 20:37:53.838] [INFO] [corrId=-] [Command] Executed DbCommand (40ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+[2026-06-16 20:37:53.840] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 20:37:53.862] [INFO] [corrId=-] [Command] Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 20:37:53.895] [INFO] [corrId=-] [Command] Executed DbCommand (29ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2026-06-16 20:37:53.919] [INFO] [corrId=-] [Migrations] Applying migration '20260106002825_InitialCreate'.
+[2026-06-16 20:37:53.993] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [BankAccounts] (
+    [AccountId] uniqueidentifier NOT NULL,
+    [AccountNumber] nvarchar(max) NOT NULL,
+    [Balance] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    CONSTRAINT [PK_BankAccounts] PRIMARY KEY ([AccountId])
+);
+[2026-06-16 20:37:53.996] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Psps] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [HMACKey] nvarchar(255) NOT NULL,
+    CONSTRAINT [PK_Psps] PRIMARY KEY ([Id])
+);
+[2026-06-16 20:37:54.000] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Cards] (
+    [CardId] uniqueidentifier NOT NULL,
+    [PAN] nvarchar(19) NOT NULL,
+    [CardholderName] nvarchar(100) NOT NULL,
+    [ExpiryMmYy] nvarchar(5) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Cards] PRIMARY KEY ([CardId]),
+    CONSTRAINT [FK_Cards_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 20:37:54.005] [INFO] [corrId=-] [Command] Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Merchants] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Merchants] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Merchants_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 20:37:54.009] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [PaymentRequests] (
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [MerchantId] uniqueidentifier NOT NULL,
+    [PspId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    [Stan] nvarchar(450) NOT NULL,
+    [PspTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_PaymentRequests] PRIMARY KEY ([PaymentRequestId]),
+    CONSTRAINT [FK_PaymentRequests_Merchants_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [Merchants] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_PaymentRequests_Psps_PspId] FOREIGN KEY ([PspId]) REFERENCES [Psps] ([Id]) ON DELETE NO ACTION
+);
+[2026-06-16 20:37:54.014] [INFO] [corrId=-] [Command] Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Transactions] (
+    [TransactionId] int NOT NULL IDENTITY,
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [GlobalTransactionId] uniqueidentifier NOT NULL,
+    [AcquirerTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    CONSTRAINT [PK_Transactions] PRIMARY KEY ([TransactionId]),
+    CONSTRAINT [FK_Transactions_PaymentRequests_PaymentRequestId] FOREIGN KEY ([PaymentRequestId]) REFERENCES [PaymentRequests] ([PaymentRequestId]) ON DELETE CASCADE
+);
+[2026-06-16 20:37:54.017] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_AccountId] ON [Cards] ([AccountId]);
+[2026-06-16 20:37:54.019] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_PAN] ON [Cards] ([PAN]);
+[2026-06-16 20:37:54.022] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Merchants_AccountId] ON [Merchants] ([AccountId]);
+[2026-06-16 20:37:54.024] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_PaymentRequests_MerchantId_Stan_PspTimestamp] ON [PaymentRequests] ([MerchantId], [Stan], [PspTimestamp]);
+[2026-06-16 20:37:54.027] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_PaymentRequests_PspId] ON [PaymentRequests] ([PspId]);
+[2026-06-16 20:37:54.029] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Transactions_GlobalTransactionId] ON [Transactions] ([GlobalTransactionId]);
+[2026-06-16 20:37:54.032] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_Transactions_PaymentRequestId] ON [Transactions] ([PaymentRequestId]);
+[2026-06-16 20:37:54.042] [INFO] [corrId=-] [Command] Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260106002825_InitialCreate', N'8.0.22');
+[2026-06-16 20:37:54.052] [INFO] [corrId=-] [Migrations] Applying migration '20260106002915_SeedData'.
+[2026-06-16 20:37:54.171] [INFO] [corrId=-] [Command] Executed DbCommand (83ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'AccountId', N'AccountNumber', N'Balance', N'Currency') AND [object_id] = OBJECT_ID(N'[BankAccounts]'))
+    SET IDENTITY_INSERT [BankAccounts] ON;
+INSERT INTO [BankAccounts] ([AccountId], [AccountNumber], [Balance], [Currency])
+VALUES ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', N'105-0000000000000-29', 10000.0, 1);
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'AccountId', N'AccountNumber', N'Balance', N'Currency') AND [object_id] = OBJECT_ID(N'[BankAccounts]'))
+    SET IDENTITY_INSERT [BankAccounts] OFF;
+[2026-06-16 20:37:54.202] [INFO] [corrId=-] [Command] Executed DbCommand (29ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'HMACKey') AND [object_id] = OBJECT_ID(N'[Psps]'))
+    SET IDENTITY_INSERT [Psps] ON;
+INSERT INTO [Psps] ([Id], [Name], [HMACKey])
+VALUES ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', N'Demo PSP', N'super_secret_hmac_key_123');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'HMACKey') AND [object_id] = OBJECT_ID(N'[Psps]'))
+    SET IDENTITY_INSERT [Psps] OFF;
+[2026-06-16 20:37:54.223] [INFO] [corrId=-] [Command] Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'AccountId') AND [object_id] = OBJECT_ID(N'[Merchants]'))
+    SET IDENTITY_INSERT [Merchants] ON;
+INSERT INTO [Merchants] ([Id], [Name], [AccountId])
+VALUES ('cccccccc-cccc-cccc-cccc-cccccccccccc', N'Demo Web Shop', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'AccountId') AND [object_id] = OBJECT_ID(N'[Merchants]'))
+    SET IDENTITY_INSERT [Merchants] OFF;
+[2026-06-16 20:37:54.270] [INFO] [corrId=-] [Command] Executed DbCommand (46ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CardId', N'PAN', N'CardholderName', N'ExpiryMmYy', N'AccountId') AND [object_id] = OBJECT_ID(N'[Cards]'))
+    SET IDENTITY_INSERT [Cards] ON;
+INSERT INTO [Cards] ([CardId], [PAN], [CardholderName], [ExpiryMmYy], [AccountId])
+VALUES ('dddddddd-dddd-dddd-dddd-dddddddddddd', N'4111111111111111', N'TEST USER', N'12/28', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CardId', N'PAN', N'CardholderName', N'ExpiryMmYy', N'AccountId') AND [object_id] = OBJECT_ID(N'[Cards]'))
+    SET IDENTITY_INSERT [Cards] OFF;
+[2026-06-16 20:37:54.279] [INFO] [corrId=-] [Command] Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260106002915_SeedData', N'8.0.22');
+[2026-06-16 20:37:54.308] [INFO] [corrId=-] [Migrations] Applying migration '20260111201808_AddCvvToCard'.
+[2026-06-16 20:37:54.350] [INFO] [corrId=-] [Command] Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [Cards] ADD [Cvv] nvarchar(3) NOT NULL DEFAULT N'';
+[2026-06-16 20:37:54.351] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260111201808_AddCvvToCard', N'8.0.22');
+[2026-06-16 20:37:54.400] [WARN] [corrId=-] [XmlKeyManager] No XML encryptor configured. Key {dabfa4cf-9507-43ad-826d-de7d07ad12a9} may be persisted to storage in unencrypted form.
+[2026-06-16 20:37:54.425] [WARN] [corrId=-] [Diagnostics] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:80'.
+[2026-06-16 20:37:54.471] [INFO] [corrId=-] [Lifetime] Now listening on: http://[::]:80
+[2026-06-16 20:37:54.472] [INFO] [corrId=-] [Lifetime] Application started. Press Ctrl+C to shut down.
+[2026-06-16 20:37:54.473] [INFO] [corrId=-] [Lifetime] Hosting environment: Production
+[2026-06-16 20:37:54.473] [INFO] [corrId=-] [Lifetime] Content root path: /app
+[2026-06-16 20:42:17.681] [WARN] [corrId=-] [HttpsRedirectionMiddleware] Failed to determine the https port for redirect.
+[2026-06-16 20:42:17.731] [INFO] [corrId=1d949139-763e-4408-8ad0-20635f2b0541] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 20:42:17.930] [INFO] [corrId=1d949139-763e-4408-8ad0-20635f2b0541] [Command] Executed DbCommand (23ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 20:42:17.978] [INFO] [corrId=1d949139-763e-4408-8ad0-20635f2b0541] [Command] Executed DbCommand (6ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 20:42:18.075] [INFO] [corrId=1d949139-763e-4408-8ad0-20635f2b0541] [Command] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 20:42:18.082] [INFO] [corrId=1d949139-763e-4408-8ad0-20635f2b0541] [PaymentService] Payment request initialized successfully - PaymentRequestId: 3ac19c28-1a48-41fe-a4e8-aea392a7cd2d, Amount: 35.00 RSD
+[2026-06-16 20:42:18.415] [INFO] [corrId=4af1bc82-2cc6-4962-8b9a-585d91d7f5e8] [Command] Executed DbCommand (8ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 20:42:42.175] [INFO] [corrId=4fbc4089-727a-4a45-9ce2-db6819290201] [PaymentService] ExecuteCardPayment started for paymentRequestId 3ac19c28-1a48-41fe-a4e8-aea392a7cd2d
+[2026-06-16 20:42:42.185] [INFO] [corrId=4fbc4089-727a-4a45-9ce2-db6819290201] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 20:42:42.205] [ERRO] [corrId=4fbc4089-727a-4a45-9ce2-db6819290201] [Command] Failed executing DbCommand (3ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 20:42:42.217] [ERRO] [corrId=4fbc4089-727a-4a45-9ce2-db6819290201] [Query] An exception occurred while iterating over the results of a query for context type 'BankAPI.Context.BankingDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'PanHash'.
+Invalid column name 'EncryptedCvv'.
+Invalid column name 'PanHash'.
+Invalid column name 'PanLast4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a046fec8-30df-46ac-99e9-733901bdedfa
+Error Number:207,State:1,Class:16
+  EXCEPTION: Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'PanHash'.
+Invalid column name 'EncryptedCvv'.
+Invalid column name 'PanHash'.
+Invalid column name 'PanLast4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a046fec8-30df-46ac-99e9-733901bdedfa
+Error Number:207,State:1,Class:16
+[2026-06-16 20:42:42.225] [ERRO] [corrId=-] [Kestrel] Connection id "0HNMBSV0N3PCV", Request id "0HNMBSV0N3PCV:00000002": An unhandled exception was thrown by the application.
+  EXCEPTION: Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'PanHash'.
+Invalid column name 'EncryptedCvv'.
+Invalid column name 'PanHash'.
+Invalid column name 'PanLast4'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at BankAPI.Services.PaymentService.ExecuteCardPayment(Guid paymentRequestId, CardPaymentRequest request) in /src/Services/PaymentService.cs:line 115
+   at BankAPI.Controllers.PaymentsController.ExecutePayment(Guid paymentRequestId, CardPaymentRequest request) in /src/Controllers/PaymentsController.cs:line 75
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Program.<>c__DisplayClass0_0.<<<Main>$>b__4>d.MoveNext() in /src/Program.cs:line 96
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+ClientConnectionId:a046fec8-30df-46ac-99e9-733901bdedfa
+Error Number:207,State:1,Class:16
+[2026-06-16 21:05:24.602] [INFO] [corrId=-] [Lifetime] Application is shutting down...
+[2026-06-16 21:06:37.778] [INFO] [corrId=-] [Command] Executed DbCommand (340ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+CREATE DATABASE [BankDb];
+[2026-06-16 21:06:38.030] [INFO] [corrId=-] [Command] Executed DbCommand (248ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [BankDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+[2026-06-16 21:06:38.057] [INFO] [corrId=-] [Command] Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:06:38.145] [INFO] [corrId=-] [Command] Executed DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+[2026-06-16 21:06:38.147] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:06:38.168] [INFO] [corrId=-] [Command] Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 21:06:38.186] [INFO] [corrId=-] [Command] Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2026-06-16 21:06:38.210] [INFO] [corrId=-] [Migrations] Applying migration '20260106002825_InitialCreate'.
+[2026-06-16 21:06:38.276] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [BankAccounts] (
+    [AccountId] uniqueidentifier NOT NULL,
+    [AccountNumber] nvarchar(max) NOT NULL,
+    [Balance] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    CONSTRAINT [PK_BankAccounts] PRIMARY KEY ([AccountId])
+);
+[2026-06-16 21:06:38.280] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Psps] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [HMACKey] nvarchar(255) NOT NULL,
+    CONSTRAINT [PK_Psps] PRIMARY KEY ([Id])
+);
+[2026-06-16 21:06:38.285] [INFO] [corrId=-] [Command] Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Cards] (
+    [CardId] uniqueidentifier NOT NULL,
+    [PanHash] nvarchar(64) NOT NULL,
+    [PanLast4] nvarchar(4) NOT NULL,
+    [EncryptedCvv] nvarchar(max) NOT NULL,
+    [CardholderName] nvarchar(100) NOT NULL,
+    [ExpiryMmYy] nvarchar(5) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Cards] PRIMARY KEY ([CardId]),
+    CONSTRAINT [FK_Cards_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 21:06:38.292] [INFO] [corrId=-] [Command] Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Merchants] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Merchants] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Merchants_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 21:06:38.296] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [PaymentRequests] (
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [MerchantId] uniqueidentifier NOT NULL,
+    [PspId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    [Stan] nvarchar(450) NOT NULL,
+    [PspTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_PaymentRequests] PRIMARY KEY ([PaymentRequestId]),
+    CONSTRAINT [FK_PaymentRequests_Merchants_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [Merchants] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_PaymentRequests_Psps_PspId] FOREIGN KEY ([PspId]) REFERENCES [Psps] ([Id]) ON DELETE NO ACTION
+);
+[2026-06-16 21:06:38.303] [INFO] [corrId=-] [Command] Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Transactions] (
+    [TransactionId] int NOT NULL IDENTITY,
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [GlobalTransactionId] uniqueidentifier NOT NULL,
+    [AcquirerTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    CONSTRAINT [PK_Transactions] PRIMARY KEY ([TransactionId]),
+    CONSTRAINT [FK_Transactions_PaymentRequests_PaymentRequestId] FOREIGN KEY ([PaymentRequestId]) REFERENCES [PaymentRequests] ([PaymentRequestId]) ON DELETE CASCADE
+);
+[2026-06-16 21:06:38.306] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_AccountId] ON [Cards] ([AccountId]);
+[2026-06-16 21:06:38.308] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_PanHash] ON [Cards] ([PanHash]);
+[2026-06-16 21:06:38.310] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Merchants_AccountId] ON [Merchants] ([AccountId]);
+[2026-06-16 21:06:38.312] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_PaymentRequests_MerchantId_Stan_PspTimestamp] ON [PaymentRequests] ([MerchantId], [Stan], [PspTimestamp]);
+[2026-06-16 21:06:38.314] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_PaymentRequests_PspId] ON [PaymentRequests] ([PspId]);
+[2026-06-16 21:06:38.318] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Transactions_GlobalTransactionId] ON [Transactions] ([GlobalTransactionId]);
+[2026-06-16 21:06:38.321] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_Transactions_PaymentRequestId] ON [Transactions] ([PaymentRequestId]);
+[2026-06-16 21:06:38.340] [INFO] [corrId=-] [Command] Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260106002825_InitialCreate', N'8.0.22');
+[2026-06-16 21:06:38.358] [INFO] [corrId=-] [Migrations] Applying migration '20260106002915_SeedData'.
+[2026-06-16 21:06:38.407] [ERRO] [corrId=-] [Program] An error occurred while migrating or initializing the database.
+  EXCEPTION: System.InvalidOperationException: There is no property mapped to the column 'Cards.PanHash' which is used in a data operation. Either add a property mapped to this column, or specify the column types in the data operation.
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.GetPropertyMappings(String[] names, String tableName, String schema, IModel model)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.GenerateModificationCommands(InsertDataOperation operation, IModel model)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(InsertDataOperation operation, IModel model, MigrationCommandListBuilder builder, Boolean terminate)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.<>c.<.cctor>b__82_28(MigrationsSqlGenerator g, MigrationOperation o, IModel m, MigrationCommandListBuilder b)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.Generate(IReadOnlyList`1 operations, IModel model, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(IReadOnlyList`1 operations, IModel model, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.GenerateUpSql(Migration migration, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.<>c__DisplayClass16_2.<GetMigrationCommandLists>b__2()
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Program.<Main>$(String[] args) in /src/Program.cs:line 115
+[2026-06-16 21:07:13.219] [INFO] [corrId=-] [Command] Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:07:13.240] [INFO] [corrId=-] [Command] Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 21:07:13.242] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:07:13.243] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 21:07:13.256] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2026-06-16 21:07:13.267] [INFO] [corrId=-] [Migrations] Applying migration '20260106002915_SeedData'.
+[2026-06-16 21:07:13.310] [ERRO] [corrId=-] [Program] An error occurred while migrating or initializing the database.
+  EXCEPTION: System.InvalidOperationException: There is no property mapped to the column 'Cards.PanHash' which is used in a data operation. Either add a property mapped to this column, or specify the column types in the data operation.
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.GetPropertyMappings(String[] names, String tableName, String schema, IModel model)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.GenerateModificationCommands(InsertDataOperation operation, IModel model)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(InsertDataOperation operation, IModel model, MigrationCommandListBuilder builder, Boolean terminate)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.<>c.<.cctor>b__82_28(MigrationsSqlGenerator g, MigrationOperation o, IModel m, MigrationCommandListBuilder b)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationsSqlGenerator.Generate(IReadOnlyList`1 operations, IModel model, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate(IReadOnlyList`1 operations, IModel model, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.GenerateUpSql(Migration migration, MigrationsSqlGenerationOptions options)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.<>c__DisplayClass16_2.<GetMigrationCommandLists>b__2()
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Program.<Main>$(String[] args) in /src/Program.cs:line 115
+[2026-06-16 21:11:05.717] [INFO] [corrId=-] [Command] Executed DbCommand (578ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+CREATE DATABASE [BankDb];
+[2026-06-16 21:11:06.046] [INFO] [corrId=-] [Command] Executed DbCommand (323ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [BankDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+[2026-06-16 21:11:06.078] [INFO] [corrId=-] [Command] Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:11:06.203] [INFO] [corrId=-] [Command] Executed DbCommand (24ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+[2026-06-16 21:11:06.211] [INFO] [corrId=-] [Command] Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+[2026-06-16 21:11:06.234] [INFO] [corrId=-] [Command] Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2026-06-16 21:11:06.258] [INFO] [corrId=-] [Command] Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2026-06-16 21:11:06.277] [INFO] [corrId=-] [Migrations] Applying migration '20260106002825_InitialCreate'.
+[2026-06-16 21:11:06.347] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [BankAccounts] (
+    [AccountId] uniqueidentifier NOT NULL,
+    [AccountNumber] nvarchar(max) NOT NULL,
+    [Balance] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    CONSTRAINT [PK_BankAccounts] PRIMARY KEY ([AccountId])
+);
+[2026-06-16 21:11:06.349] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Psps] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [HMACKey] nvarchar(255) NOT NULL,
+    CONSTRAINT [PK_Psps] PRIMARY KEY ([Id])
+);
+[2026-06-16 21:11:06.353] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Cards] (
+    [CardId] uniqueidentifier NOT NULL,
+    [PanHash] nvarchar(64) NOT NULL,
+    [PanLast4] nvarchar(4) NOT NULL,
+    [EncryptedCvv] nvarchar(max) NOT NULL,
+    [CardholderName] nvarchar(100) NOT NULL,
+    [ExpiryMmYy] nvarchar(5) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Cards] PRIMARY KEY ([CardId]),
+    CONSTRAINT [FK_Cards_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 21:11:06.356] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Merchants] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [AccountId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Merchants] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Merchants_BankAccounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [BankAccounts] ([AccountId]) ON DELETE NO ACTION
+);
+[2026-06-16 21:11:06.360] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [PaymentRequests] (
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [MerchantId] uniqueidentifier NOT NULL,
+    [PspId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Currency] int NOT NULL,
+    [Stan] nvarchar(450) NOT NULL,
+    [PspTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_PaymentRequests] PRIMARY KEY ([PaymentRequestId]),
+    CONSTRAINT [FK_PaymentRequests_Merchants_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [Merchants] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_PaymentRequests_Psps_PspId] FOREIGN KEY ([PspId]) REFERENCES [Psps] ([Id]) ON DELETE NO ACTION
+);
+[2026-06-16 21:11:06.364] [INFO] [corrId=-] [Command] Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [Transactions] (
+    [TransactionId] int NOT NULL IDENTITY,
+    [PaymentRequestId] uniqueidentifier NOT NULL,
+    [GlobalTransactionId] uniqueidentifier NOT NULL,
+    [AcquirerTimestamp] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    CONSTRAINT [PK_Transactions] PRIMARY KEY ([TransactionId]),
+    CONSTRAINT [FK_Transactions_PaymentRequests_PaymentRequestId] FOREIGN KEY ([PaymentRequestId]) REFERENCES [PaymentRequests] ([PaymentRequestId]) ON DELETE CASCADE
+);
+[2026-06-16 21:11:06.366] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_AccountId] ON [Cards] ([AccountId]);
+[2026-06-16 21:11:06.368] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Cards_PanHash] ON [Cards] ([PanHash]);
+[2026-06-16 21:11:06.370] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Merchants_AccountId] ON [Merchants] ([AccountId]);
+[2026-06-16 21:11:06.372] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_PaymentRequests_MerchantId_Stan_PspTimestamp] ON [PaymentRequests] ([MerchantId], [Stan], [PspTimestamp]);
+[2026-06-16 21:11:06.375] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_PaymentRequests_PspId] ON [PaymentRequests] ([PspId]);
+[2026-06-16 21:11:06.376] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Transactions_GlobalTransactionId] ON [Transactions] ([GlobalTransactionId]);
+[2026-06-16 21:11:06.379] [INFO] [corrId=-] [Command] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX [IX_Transactions_PaymentRequestId] ON [Transactions] ([PaymentRequestId]);
+[2026-06-16 21:11:06.387] [INFO] [corrId=-] [Command] Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260106002825_InitialCreate', N'8.0.22');
+[2026-06-16 21:11:06.404] [INFO] [corrId=-] [Migrations] Applying migration '20260106002915_SeedData'.
+[2026-06-16 21:11:06.543] [INFO] [corrId=-] [Command] Executed DbCommand (88ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'AccountId', N'AccountNumber', N'Balance', N'Currency') AND [object_id] = OBJECT_ID(N'[BankAccounts]'))
+    SET IDENTITY_INSERT [BankAccounts] ON;
+INSERT INTO [BankAccounts] ([AccountId], [AccountNumber], [Balance], [Currency])
+VALUES ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', N'105-0000000000000-29', 10000.0, 1);
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'AccountId', N'AccountNumber', N'Balance', N'Currency') AND [object_id] = OBJECT_ID(N'[BankAccounts]'))
+    SET IDENTITY_INSERT [BankAccounts] OFF;
+[2026-06-16 21:11:06.561] [INFO] [corrId=-] [Command] Executed DbCommand (17ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'HMACKey') AND [object_id] = OBJECT_ID(N'[Psps]'))
+    SET IDENTITY_INSERT [Psps] ON;
+INSERT INTO [Psps] ([Id], [Name], [HMACKey])
+VALUES ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', N'Demo PSP', N'super_secret_hmac_key_123');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'HMACKey') AND [object_id] = OBJECT_ID(N'[Psps]'))
+    SET IDENTITY_INSERT [Psps] OFF;
+[2026-06-16 21:11:06.584] [INFO] [corrId=-] [Command] Executed DbCommand (23ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'AccountId') AND [object_id] = OBJECT_ID(N'[Merchants]'))
+    SET IDENTITY_INSERT [Merchants] ON;
+INSERT INTO [Merchants] ([Id], [Name], [AccountId])
+VALUES ('cccccccc-cccc-cccc-cccc-cccccccccccc', N'Demo Web Shop', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name', N'AccountId') AND [object_id] = OBJECT_ID(N'[Merchants]'))
+    SET IDENTITY_INSERT [Merchants] OFF;
+[2026-06-16 21:11:06.589] [INFO] [corrId=-] [Command] Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+                INSERT INTO [Cards] ([CardId], [PanHash], [PanLast4], [EncryptedCvv], [CardholderName], [ExpiryMmYy], [AccountId])
+                VALUES (
+                    'dddddddd-dddd-dddd-dddd-dddddddddddd',
+                    '9bbef19476623ca56c17da75fd57734dbf82530686043a6e491c6d71befe8f6e',
+                    '1111',
+                    '123',
+                    'TEST USER',
+                    '12/28',
+                    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+                )
+[2026-06-16 21:11:06.591] [INFO] [corrId=-] [Command] Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260106002915_SeedData', N'8.0.22');
+[2026-06-16 21:11:06.638] [WARN] [corrId=-] [XmlKeyManager] No XML encryptor configured. Key {4d85b74f-295b-40de-92f6-85f3916eb513} may be persisted to storage in unencrypted form.
+[2026-06-16 21:11:06.654] [WARN] [corrId=-] [Diagnostics] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:80'.
+[2026-06-16 21:11:06.702] [INFO] [corrId=-] [Lifetime] Now listening on: http://[::]:80
+[2026-06-16 21:11:06.702] [INFO] [corrId=-] [Lifetime] Application started. Press Ctrl+C to shut down.
+[2026-06-16 21:11:06.703] [INFO] [corrId=-] [Lifetime] Hosting environment: Production
+[2026-06-16 21:11:06.703] [INFO] [corrId=-] [Lifetime] Content root path: /app
+[2026-06-16 21:23:23.196] [WARN] [corrId=-] [HttpsRedirectionMiddleware] Failed to determine the https port for redirect.
+[2026-06-16 21:23:23.255] [INFO] [corrId=87251e33-c6bf-48de-96b1-90ac39d7c096] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 21:23:23.672] [INFO] [corrId=87251e33-c6bf-48de-96b1-90ac39d7c096] [Command] Executed DbCommand (26ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 21:23:23.717] [INFO] [corrId=87251e33-c6bf-48de-96b1-90ac39d7c096] [Command] Executed DbCommand (6ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 21:23:23.822] [INFO] [corrId=87251e33-c6bf-48de-96b1-90ac39d7c096] [Command] Executed DbCommand (8ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 21:23:23.829] [INFO] [corrId=87251e33-c6bf-48de-96b1-90ac39d7c096] [PaymentService] Payment request initialized successfully - PaymentRequestId: b27dd498-d389-4da5-860e-bb94343ccd4d, Amount: 35.00 RSD
+[2026-06-16 21:23:24.341] [INFO] [corrId=03ad40a5-bdc6-4b20-bf5a-65bff750f3dd] [Command] Executed DbCommand (7ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:23:39.884] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [PaymentService] ExecuteCardPayment started for paymentRequestId b27dd498-d389-4da5-860e-bb94343ccd4d
+[2026-06-16 21:23:39.899] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [Command] Executed DbCommand (3ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:23:39.929] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [Command] Executed DbCommand (9ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 21:23:39.967] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [Command] Executed DbCommand (3ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+[2026-06-16 21:23:39.977] [WARN] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [PaymentService] Payment failed validation for paymentRequestId b27dd498-d389-4da5-860e-bb94343ccd4d - card last4 1111
+[2026-06-16 21:23:39.991] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:23:39.992] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:23:40.086] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [ClientHandler] Received HTTP response headers after 90.4627ms - 200
+[2026-06-16 21:23:40.087] [INFO] [corrId=f113d777-c5b8-45eb-b0eb-4fa4dcafaf1e] [LogicalHandler] End processing HTTP request after 100.309ms - 200
+[2026-06-16 21:25:33.419] [INFO] [corrId=006d5fd8-6ac2-4a48-8f56-15baa7fc4ad0] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 21:25:33.426] [INFO] [corrId=006d5fd8-6ac2-4a48-8f56-15baa7fc4ad0] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 21:25:33.428] [INFO] [corrId=006d5fd8-6ac2-4a48-8f56-15baa7fc4ad0] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 21:25:33.433] [INFO] [corrId=006d5fd8-6ac2-4a48-8f56-15baa7fc4ad0] [Command] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 21:25:33.434] [INFO] [corrId=006d5fd8-6ac2-4a48-8f56-15baa7fc4ad0] [PaymentService] Payment request initialized successfully - PaymentRequestId: 8d80f2cb-5285-4898-b5c5-705be892e94a, Amount: 35.00 RSD
+[2026-06-16 21:25:33.748] [INFO] [corrId=e439e6a6-2cd0-40a9-ad6b-5aca327514cd] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:26:11.534] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [PaymentService] ExecuteCardPayment started for paymentRequestId 8d80f2cb-5285-4898-b5c5-705be892e94a
+[2026-06-16 21:26:11.543] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:26:11.545] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [Command] Executed DbCommand (1ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 21:26:11.548] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [Command] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+[2026-06-16 21:26:11.554] [WARN] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [PaymentService] Payment failed validation for paymentRequestId 8d80f2cb-5285-4898-b5c5-705be892e94a - card last4 1111
+[2026-06-16 21:26:11.554] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:26:11.555] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:26:11.567] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [ClientHandler] Received HTTP response headers after 11.9326ms - 200
+[2026-06-16 21:26:11.568] [INFO] [corrId=2a16cf87-2c90-49f7-93aa-bf4741bfaca2] [LogicalHandler] End processing HTTP request after 13.2351ms - 200
+[2026-06-16 21:28:59.437] [INFO] [corrId=4d3011e5-cd21-4bf6-9a28-8dac207a9444] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 21:28:59.441] [INFO] [corrId=4d3011e5-cd21-4bf6-9a28-8dac207a9444] [Command] Executed DbCommand (2ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 21:28:59.444] [INFO] [corrId=4d3011e5-cd21-4bf6-9a28-8dac207a9444] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 21:28:59.450] [INFO] [corrId=4d3011e5-cd21-4bf6-9a28-8dac207a9444] [Command] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 21:28:59.452] [INFO] [corrId=4d3011e5-cd21-4bf6-9a28-8dac207a9444] [PaymentService] Payment request initialized successfully - PaymentRequestId: 8bcdf9ec-1ae4-4103-9e22-a141dba62789, Amount: 35.00 RSD
+[2026-06-16 21:28:59.764] [INFO] [corrId=c5f74fca-909c-478a-83b9-26c81fefa6a2] [Command] Executed DbCommand (3ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:29:11.527] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [PaymentService] ExecuteCardPayment started for paymentRequestId 8bcdf9ec-1ae4-4103-9e22-a141dba62789
+[2026-06-16 21:29:11.533] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:29:11.535] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [Command] Executed DbCommand (1ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 21:29:11.547] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [Command] Executed DbCommand (2ms) [Parameters=[@p6='?' (DbType = Guid), @p0='?' (DbType = Guid), @p1='?' (Size = 100), @p2='?' (Size = 4000), @p3='?' (Size = 5), @p4='?' (Size = 64), @p5='?' (Size = 4)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Cards] SET [AccountId] = @p0, [CardholderName] = @p1, [EncryptedCvv] = @p2, [ExpiryMmYy] = @p3, [PanHash] = @p4, [PanLast4] = @p5
+OUTPUT 1
+WHERE [CardId] = @p6;
+[2026-06-16 21:29:11.562] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [Command] Executed DbCommand (7ms) [Parameters=[@__paymentRequest_MerchantId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Merchants] AS [m]
+INNER JOIN [BankAccounts] AS [b] ON [m].[AccountId] = [b].[AccountId]
+WHERE [m].[Id] = @__paymentRequest_MerchantId_0
+[2026-06-16 21:29:11.590] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [Command] Executed DbCommand (4ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Guid), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+INSERT INTO [Transactions] ([AcquirerTimestamp], [GlobalTransactionId], [PaymentRequestId], [Status])
+OUTPUT INSERTED.[TransactionId]
+VALUES (@p2, @p3, @p4, @p5);
+[2026-06-16 21:29:11.603] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [PaymentService] Payment successful for paymentRequestId 8bcdf9ec-1ae4-4103-9e22-a141dba62789 - amount 35.00 RSD - card last4 1111
+[2026-06-16 21:29:11.603] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:29:11.603] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:29:11.614] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [ClientHandler] Received HTTP response headers after 10.3557ms - 200
+[2026-06-16 21:29:11.615] [INFO] [corrId=9c8b8402-006f-4d1e-9252-2e0ed996f2d3] [LogicalHandler] End processing HTTP request after 11.6286ms - 200
+[2026-06-16 21:29:32.687] [INFO] [corrId=fa286557-9a13-4125-ac99-d8673e4b58c3] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 45.00
+[2026-06-16 21:29:32.690] [INFO] [corrId=fa286557-9a13-4125-ac99-d8673e4b58c3] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 21:29:32.692] [INFO] [corrId=fa286557-9a13-4125-ac99-d8673e4b58c3] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 21:29:32.699] [INFO] [corrId=fa286557-9a13-4125-ac99-d8673e4b58c3] [Command] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 21:29:32.699] [INFO] [corrId=fa286557-9a13-4125-ac99-d8673e4b58c3] [PaymentService] Payment request initialized successfully - PaymentRequestId: 5f3a3ac4-e73e-44b3-815d-9398630c3797, Amount: 45.00 RSD
+[2026-06-16 21:29:32.994] [INFO] [corrId=838440fb-0c39-41c9-8ec9-6c0dfea6718c] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:29:48.969] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [PaymentService] ExecuteCardPayment started for paymentRequestId 5f3a3ac4-e73e-44b3-815d-9398630c3797
+[2026-06-16 21:29:48.974] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:29:48.976] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [Command] Executed DbCommand (1ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 21:29:48.979] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequest_MerchantId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Merchants] AS [m]
+INNER JOIN [BankAccounts] AS [b] ON [m].[AccountId] = [b].[AccountId]
+WHERE [m].[Id] = @__paymentRequest_MerchantId_0
+[2026-06-16 21:29:48.982] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [Command] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Guid), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+INSERT INTO [Transactions] ([AcquirerTimestamp], [GlobalTransactionId], [PaymentRequestId], [Status])
+OUTPUT INSERTED.[TransactionId]
+VALUES (@p2, @p3, @p4, @p5);
+[2026-06-16 21:29:48.987] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [PaymentService] Payment successful for paymentRequestId 5f3a3ac4-e73e-44b3-815d-9398630c3797 - amount 45.00 RSD - card last4 1111
+[2026-06-16 21:29:48.988] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:29:48.988] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:29:48.998] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [ClientHandler] Received HTTP response headers after 9.1993ms - 200
+[2026-06-16 21:29:48.998] [INFO] [corrId=50d36843-8513-4753-9c08-ac4a24f2db3f] [LogicalHandler] End processing HTTP request after 10.1616ms - 200
+[2026-06-16 21:30:08.248] [INFO] [corrId=b6e2641e-7482-4f91-a82c-4bab19c336f9] [PaymentService] InitializePayment started - PspId: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb, MerchantId: cccccccc-cccc-cccc-cccc-cccccccccccc, Amount: 35.00
+[2026-06-16 21:30:08.251] [INFO] [corrId=b6e2641e-7482-4f91-a82c-4bab19c336f9] [Command] Executed DbCommand (2ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[HMACKey], [p].[Name]
+FROM [Psps] AS [p]
+WHERE [p].[Id] = @__get_Item_0
+[2026-06-16 21:30:08.254] [INFO] [corrId=b6e2641e-7482-4f91-a82c-4bab19c336f9] [Command] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name]
+FROM [Merchants] AS [m]
+WHERE [m].[Id] = @__get_Item_0
+[2026-06-16 21:30:08.260] [INFO] [corrId=b6e2641e-7482-4f91-a82c-4bab19c336f9] [Command] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 450), @p8='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [PaymentRequests] ([PaymentRequestId], [Amount], [Currency], [ExpiresAt], [MerchantId], [PspId], [PspTimestamp], [Stan], [Status])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+[2026-06-16 21:30:08.261] [INFO] [corrId=b6e2641e-7482-4f91-a82c-4bab19c336f9] [PaymentService] Payment request initialized successfully - PaymentRequestId: 1feef526-fb01-4819-89fe-51df5c5837d7, Amount: 35.00 RSD
+[2026-06-16 21:30:08.538] [INFO] [corrId=c28dacf3-403a-40ab-8eef-b2bcb6274f85] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:30:29.325] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [PaymentService] ExecuteCardPayment started for paymentRequestId 1feef526-fb01-4819-89fe-51df5c5837d7
+[2026-06-16 21:30:29.330] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [Command] Executed DbCommand (1ms) [Parameters=[@__paymentRequestId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [p].[PaymentRequestId], [p].[Amount], [p].[Currency], [p].[ExpiresAt], [p].[MerchantId], [p].[PspId], [p].[PspTimestamp], [p].[Stan], [p].[Status]
+FROM [PaymentRequests] AS [p]
+WHERE [p].[PaymentRequestId] = @__paymentRequestId_0
+[2026-06-16 21:30:29.332] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [Command] Executed DbCommand (1ms) [Parameters=[@__panHash_0='?' (Size = 64)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [c].[CardId], [c].[AccountId], [c].[CardholderName], [c].[EncryptedCvv], [c].[ExpiryMmYy], [c].[PanHash], [c].[PanLast4], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Cards] AS [c]
+INNER JOIN [BankAccounts] AS [b] ON [c].[AccountId] = [b].[AccountId]
+WHERE [c].[PanHash] = @__panHash_0
+[2026-06-16 21:30:29.336] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [Command] Executed DbCommand (2ms) [Parameters=[@__paymentRequest_MerchantId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [m].[Id], [m].[AccountId], [m].[Name], [b].[AccountId], [b].[AccountNumber], [b].[Balance], [b].[Currency]
+FROM [Merchants] AS [m]
+INNER JOIN [BankAccounts] AS [b] ON [m].[AccountId] = [b].[AccountId]
+WHERE [m].[Id] = @__paymentRequest_MerchantId_0
+[2026-06-16 21:30:29.340] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [Command] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Guid), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [PaymentRequests] SET [Status] = @p0
+OUTPUT 1
+WHERE [PaymentRequestId] = @p1;
+INSERT INTO [Transactions] ([AcquirerTimestamp], [GlobalTransactionId], [PaymentRequestId], [Status])
+OUTPUT INSERTED.[TransactionId]
+VALUES (@p2, @p3, @p4, @p5);
+[2026-06-16 21:30:29.344] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [PaymentService] Payment successful for paymentRequestId 1feef526-fb01-4819-89fe-51df5c5837d7 - amount 35.00 RSD - card last4 1111
+[2026-06-16 21:30:29.345] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [LogicalHandler] Start processing HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:30:29.345] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [ClientHandler] Sending HTTP request POST http://psp-api/api/psp/bank/callback
+[2026-06-16 21:30:29.355] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [ClientHandler] Received HTTP response headers after 10.4004ms - 200
+[2026-06-16 21:30:29.356] [INFO] [corrId=7ffb470a-2fef-4007-92d8-e9749bf4d95c] [LogicalHandler] End processing HTTP request after 11.3531ms - 200
+[2026-06-16 21:31:26.554] [INFO] [corrId=-] [Lifetime] Application is shutting down...

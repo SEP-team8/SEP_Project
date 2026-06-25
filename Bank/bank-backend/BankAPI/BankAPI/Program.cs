@@ -7,15 +7,19 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure simple file logger - logs to Desktop
-//var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BankAPI-Logs");
-//var fileLoggerProvider = new BankAPI.Logging.FileLoggerProvider(logFolder);
+// PCI DSS 10.5.1 — log all access to network resources and cardholder data.
+// In Docker the working directory is /app, so logs land at /app/logs which is
+// mounted to ./logs/bank on the host via docker-compose volumes.
+var logFolder = builder.Configuration["Logging:FilePath"]
+    ?? Path.Combine(AppContext.BaseDirectory, "logs");
 
-//builder.Logging.ClearProviders();
-//builder.Logging.AddProvider(fileLoggerProvider);
+var fileLoggerProvider = new BankAPI.Logging.FileLoggerProvider(logFolder);
 
-// Register FileLoggerProvider in DI container
-//builder.Services.AddSingleton(fileLoggerProvider);
+// Keep console output (docker logs still works) and add file sink
+builder.Logging.AddProvider(fileLoggerProvider);
+
+// Register so middleware can set the correlation-ID scope on it
+builder.Services.AddSingleton(fileLoggerProvider);
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -84,18 +88,16 @@ app.Use(async (context, next) =>
     }
 
     context.Response.Headers["X-Correlation-ID"] = context.Request.Headers["X-Correlation-ID"];
+
+    var provider = app.Services.GetRequiredService<BankAPI.Logging.FileLoggerProvider>();
+    provider.CurrentScope.Value = context.Request.Headers["X-Correlation-ID"].ToString();
+    try
     {
-        // Set provider's current scope for file logger to include correlation id
-        //var provider = app.Services.GetRequiredService<BankAPI.Logging.FileLoggerProvider>();
-        //provider.CurrentScope.Value = context.Request.Headers["X-Correlation-ID"].ToString();
-        //try
-        //{
-            await next();
-        //}
-        //finally
-        //{
-        //    provider.CurrentScope.Value = null;
-        //}
+        await next();
+    }
+    finally
+    {
+        provider.CurrentScope.Value = null;
     }
 });
 

@@ -51,26 +51,22 @@ namespace BankAPI.Migrations
                 });
 
             // =====================
-            // CARD (not PCI-safe)
+            // CARD
+            // PAN stored as SHA256("4111111111111111"), CVV as plaintext '123' (encrypted on first use)
+            // Using Sql() to avoid EF model-mapping issues with new column names
             // =====================
-            migrationBuilder.InsertData(
-                table: "Cards",
-                columns: new[]
-                {
-                    "CardId",
-                    "PAN",
-                    "CardholderName",
-                    "ExpiryMmYy",
-                    "AccountId"
-                },
-                values: new object[]
-                {
-                    new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                    "4111111111111111",
-                    "TEST USER",
-                    "12/28",
-                    new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-                });
+            migrationBuilder.Sql(@"
+                INSERT INTO [Cards] ([CardId], [PanHash], [PanLast4], [EncryptedCvv], [CardholderName], [ExpiryMmYy], [AccountId])
+                VALUES (
+                    'dddddddd-dddd-dddd-dddd-dddddddddddd',
+                    '9bbef19476623ca56c17da75fd57734dbf82530686043a6e491c6d71befe8f6e',
+                    '1111',
+                    '123',
+                    'TEST USER',
+                    '12/28',
+                    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+                )
+            ");
         }
 
         /// <inheritdoc />

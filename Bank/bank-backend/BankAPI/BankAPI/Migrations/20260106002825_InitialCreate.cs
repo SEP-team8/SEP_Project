@@ -43,7 +43,9 @@ namespace BankAPI.Migrations
                 columns: table => new
                 {
                     CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PAN = table.Column<string>(type: "nvarchar(19)", maxLength: 19, nullable: false),
+                    PanHash = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    PanLast4 = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    EncryptedCvv = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardholderName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ExpiryMmYy = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -138,9 +140,9 @@ namespace BankAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cards_PAN",
+                name: "IX_Cards_PanHash",
                 table: "Cards",
-                column: "PAN",
+                column: "PanHash",
                 unique: true);
 
             migrationBuilder.CreateIndex(

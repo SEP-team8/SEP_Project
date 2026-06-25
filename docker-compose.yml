@@ -30,6 +30,10 @@ services:
       PspApi__BaseUrl: http://psp-api:80
       BankFrontend__BaseUrl: http://bank.localhost:8080
       ASPNETCORE_ENVIRONMENT: Production
+      Logging__FilePath: /app/logs
+    volumes:
+      - ./logs/bank:/app/logs
+      - bank-dp-keys:/root/.aspnet/DataProtection-Keys
     networks:
       - app-network
 
@@ -173,6 +177,7 @@ services:
 
 volumes:
   mssql-data:
+  bank-dp-keys:
 
 networks:
   app-network:

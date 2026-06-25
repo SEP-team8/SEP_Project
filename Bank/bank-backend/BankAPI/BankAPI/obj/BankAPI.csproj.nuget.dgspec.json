@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj": {}
+    "C:\\Users\\Miroslav\\Desktop\\SEP projekat\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj": {
+    "C:\\Users\\Miroslav\\Desktop\\SEP projekat\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Miroslav\\Desktop\\SEP projekat\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
         "projectName": "BankAPI",
-        "projectPath": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
-        "packagesPath": "C:\\Users\\gemov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gemov\\OneDrive\\Desktop\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\obj\\",
+        "projectPath": "C:\\Users\\Miroslav\\Desktop\\SEP projekat\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\BankAPI.csproj",
+        "packagesPath": "C:\\Users\\Miroslav\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Miroslav\\Desktop\\SEP projekat\\SEP_Project\\Bank\\bank-backend\\BankAPI\\BankAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Srky\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Miroslav\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,12 +22,10 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
-            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -45,12 +39,10 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "10.0.300"
+        }
       },
       "frameworks": {
         "net8.0": {
-          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
@@ -95,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

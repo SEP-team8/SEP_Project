@@ -11,12 +11,15 @@ namespace BankAPI.Controllers
     public class PaymentsController : ControllerBase
     {
         public IPaymentService _paymentService;
+        private readonly ILogger<PaymentsController> _logger;
 
         public PaymentsController(
-            IPaymentService paymentService
+            IPaymentService paymentService,
+            ILogger<PaymentsController> logger
         )
         {
             _paymentService = paymentService;
+            _logger = logger;
         }
 
         [HttpPost("init")]
@@ -29,7 +32,12 @@ namespace BankAPI.Controllers
         [FromHeader(Name = "IsQrPayment")] bool isQrPayment)
         {
             if (Math.Abs((DateTime.UtcNow - timestamp).TotalMinutes) > 30)
+            {
+                // PCI DSS 10.2.4 — log all invalid logical access attempts
+                _logger.LogWarning("InitPayment rejected — timestamp expired. PspId: {PspId}, MerchantId: {MerchantId}, RequestTimestamp: {Timestamp}, SourceIp: {Ip}",
+                    pspId, dto.MerchantId, timestamp, HttpContext.Connection.RemoteIpAddress);
                 return Unauthorized("Timestamp expired");
+            }
 
             InitializePaymentServiceResult result = await _paymentService.InitializePayment(dto, pspId, signature, timestamp, isQrPayment);
 
